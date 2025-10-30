@@ -75,7 +75,7 @@ public class ExceptionHandlingMiddleware
                 Details = "Vui lòng kiểm tra lại dữ liệu đầu vào",
                 Errors = ex.Errors
             },
-            
+
             // Built-in Exceptions
             ArgumentException ex => new ErrorResponse
             {
@@ -95,7 +95,7 @@ public class ExceptionHandlingMiddleware
                 Message = "Bạn không có quyền truy cập",
                 Details = ex.Message
             },
-            
+
             // Default
             _ => new ErrorResponse
             {

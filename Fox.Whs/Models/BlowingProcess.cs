@@ -83,6 +83,8 @@ public class BlowingProcessLine
     /// </summary>
     public string ProductionBatch { get; set; } = null!;
 
+    public string CardCode { get; set; } = null!;
+
     /// <summary>
     /// Khách hàng
     /// </summary>
@@ -282,5 +284,6 @@ public class BlowingProcessLine
     /// <summary>
     /// Tồn kho công đoạn Thổi
     /// </summary>
+    [Precision(18, 2)]
     public decimal BlowingStageInventory { get; set; }
 }

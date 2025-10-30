@@ -2,12 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Fox.Whs.Dtos;
 using Fox.Whs.Services;
+using Fox.Whs.Models;
 
 namespace Fox.Whs.Controllers;
 
+/// <summary>
+/// API quản lý công đoạn thổi
+/// </summary>
 [ApiController]
 [Route("api/blowing-processes")]
-[Authorize]
 public class BlowingProcessesController : ControllerBase
 {
     private readonly BlowingProcessService _blowingProcessService;
@@ -25,7 +28,8 @@ public class BlowingProcessesController : ControllerBase
     /// Lấy danh sách tất cả công đoạn thổi
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> GetAll(QueryParam qp)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<BlowingProcess>))]
+    public async Task<IActionResult> GetAll([FromQuery] QueryParam qp)
     {
         _logger.LogInformation("Lấy danh sách tất cả công đoạn thổi");
         var blowingProcesses = await _blowingProcessService.GetAllAsync(qp);
@@ -37,6 +41,7 @@ public class BlowingProcessesController : ControllerBase
     /// Lấy theo công đoạn thổi theo ID
     /// </summary>
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BlowingProcess))]
     public async Task<IActionResult> GetById(int id)
     {
         _logger.LogInformation("Lấy công đoạn thổi theo ID: {Id}", id);

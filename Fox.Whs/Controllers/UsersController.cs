@@ -8,7 +8,7 @@ using Fox.Whs.Dtos;
 namespace Fox.Whs.Controllers;
 
 /// <summary>
-/// API quản lý danh sách Users từ SAP
+/// API quản lý danh sách Users từ SAP (Người dùng)
 /// </summary>
 [ApiController]
 [Route("api/users")]
@@ -30,6 +30,7 @@ public class UsersController : ControllerBase
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Users</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<User>))]
     public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)

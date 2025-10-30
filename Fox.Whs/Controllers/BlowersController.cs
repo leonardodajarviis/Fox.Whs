@@ -30,6 +30,7 @@ public class BlowersController : ControllerBase
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Máy thổi</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Blower>))]
     public async Task<IActionResult> GetBlowers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)

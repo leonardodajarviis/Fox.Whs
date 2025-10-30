@@ -8,7 +8,7 @@ using Fox.Whs.SapModels;
 namespace Fox.Whs.Controllers;
 
 /// <summary>
-/// API quản lý danh sách Items từ SAP
+/// API quản lý danh sách Employees từ SAP (Nhân viên)
 /// </summary>
 [ApiController]
 [Route("api/employees")]
@@ -30,6 +30,7 @@ public class EmployeesController : ControllerBase
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Items</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Employee>))]
     public async Task<IActionResult> GetEmployees([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)

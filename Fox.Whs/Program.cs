@@ -16,6 +16,8 @@ builder.Services.AddSapServiceLayer(builder.Configuration);
 // Đăng ký JWT Authentication và AuthService
 builder.Services.AddAuthServices(builder.Configuration);
 
+// builder.Services.AddOverrideApiBehaviorOptions();
+
 // Đăng ký các service khác
 builder.Services.AddScoped<BlowingProcessService>();
 
@@ -40,6 +42,10 @@ builder.Services.AddCors(options =>
 });
 
 // Thêm Controllers nếu bạn cần
+// builder.Services.AddControllers(opt =>
+// {
+//     opt.Filters.Add<ValidateModelFilter>();
+// });
 builder.Services.AddControllers();
 
 var app = builder.Build();

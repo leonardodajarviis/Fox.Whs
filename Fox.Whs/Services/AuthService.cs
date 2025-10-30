@@ -85,7 +85,7 @@ public class AuthService
     /// </summary>
     private string GenerateJwtToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.AccessSecret));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
@@ -100,7 +100,7 @@ public class AuthService
             issuer: _jwtOptions.Issuer,
             audience: _jwtOptions.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiryInMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_jwtOptions.AccessExpiryInMinutes),
             signingCredentials: credentials
         );
 
@@ -120,7 +120,7 @@ public class AuthService
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_jwtOptions.Secret);
+            var key = Encoding.UTF8.GetBytes(_jwtOptions.AccessSecret);
 
             var validationParameters = new TokenValidationParameters
             {

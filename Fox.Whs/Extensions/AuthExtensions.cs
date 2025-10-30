@@ -23,7 +23,7 @@ public static class AuthExtensions
             .GetSection(JwtOptions.SectionName)
             .Get<JwtOptions>();
 
-        if (jwtOptions == null || string.IsNullOrEmpty(jwtOptions.Secret))
+        if (jwtOptions == null || string.IsNullOrEmpty(jwtOptions.AccessSecret))
         {
             throw new InvalidOperationException("JWT configuration is missing or invalid");
         }
@@ -48,7 +48,7 @@ public static class AuthExtensions
                 ValidateAudience = false,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions?.Secret ?? string.Empty))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions?.AccessSecret ?? string.Empty))
             };
 
             options.Events = new JwtBearerEvents

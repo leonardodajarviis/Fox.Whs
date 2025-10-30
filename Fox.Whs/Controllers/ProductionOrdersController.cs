@@ -8,7 +8,7 @@ using Fox.Whs.SapModels;
 namespace Fox.Whs.Controllers;
 
 /// <summary>
-/// API quản lý danh sách Production Orders từ SAP
+/// API quản lý danh sách Production Orders từ SAP (Lệch sản xuất)
 /// </summary>
 [ApiController]
 [Route("api/production-orders")]
@@ -28,9 +28,11 @@ public class ProductionOrdersController : ControllerBase
     /// </summary>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
+    /// <param name="itemCode">Lọc theo mã hàng hóa</param>
     /// <returns>Danh sách Production Orders</returns>
     [HttpGet]
-    public async Task<IActionResult> GetProductionOrders([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<ProductionOrder>))]
+    public async Task<IActionResult> GetProductionOrders([FromQuery] string? itemCode, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
         {
@@ -44,9 +46,16 @@ public class ProductionOrdersController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Production Orders - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _sapDbContext.ProductionOrders.AsNoTracking().CountAsync();
+        var query = _sapDbContext.ProductionOrders.AsNoTracking().AsQueryable();
 
-        var productionOrders = await _sapDbContext.ProductionOrders.AsNoTracking()
+        if (itemCode is not null)
+        {
+            query = query.Where(po => po.ItemCode == itemCode);
+        }
+
+        var totalRecords = await query.CountAsync();
+
+        var productionOrders = await query
             .Include(po => po.ItemDetail)
             .Include(po => po.BusinessPartnerDetail)
             .OrderBy(po => po.DocEntry)

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 
 namespace Fox.Whs.Extensions;
@@ -55,6 +56,9 @@ public static class SwaggerGenExtensions
                     new List<string>()
                 }
             });
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; // tên file XML
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
         });
         services.AddOpenApi();
 

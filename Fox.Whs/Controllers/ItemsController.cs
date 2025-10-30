@@ -30,6 +30,7 @@ public class ItemsController : ControllerBase
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Items</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Item>))]
     public async Task<IActionResult> GetItems([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
