@@ -14,6 +14,11 @@ public record CreateBlowingProcessDto
     public int ShiftLeaderId { get; set; }
 
     /// <summary>
+    /// Bản nháp
+    /// </summary>
+    public bool IsDraft { get; set; }
+
+    /// <summary>
     /// Ngày sản xuất
     /// </summary>
     [Required(ErrorMessage = "Ngày sản xuất là bắt buộc")]
@@ -49,6 +54,8 @@ public record UpdateBlowingProcessDto
     [Required(ErrorMessage = "Ngày sản xuất là bắt buộc")]
     public DateTime ProductionDate { get; set; }
 
+    public bool IsDraft { get; set; }
+
     /// <summary>
     /// Ca sản xuất
     /// </summary>
@@ -68,6 +75,11 @@ public record UpdateBlowingProcessDto
 public record CreateBlowingProcessLineDto
 {
     /// <summary>
+    /// ID lệnh sản xuất
+    /// </summary>
+    public int ProductionOrderId { get; set; }
+
+    /// <summary>
     /// Mã hàng
     /// </summary>
     [Required(ErrorMessage = "Mã hàng là bắt buộc")]
@@ -80,31 +92,6 @@ public record CreateBlowingProcessLineDto
     [Required(ErrorMessage = "Lô sản xuất là bắt buộc")]
     [StringLength(100)]
     public string ProductionBatch { get; set; } = null!;
-
-    /// <summary>
-    /// Khách hàng
-    /// </summary>
-    [Required(ErrorMessage = "Tên khách hàng là bắt buộc")]
-    [StringLength(200)]
-    public string CustomerName { get; set; } = null!;
-
-    /// <summary>
-    /// Chủng loại
-    /// </summary>
-    [StringLength(100)]
-    public string? ProductType { get; set; }
-
-    /// <summary>
-    /// Độ dày / 1 lá
-    /// </summary>
-    [StringLength(50)]
-    public string? Thickness { get; set; }
-
-    /// <summary>
-    /// Khổ màng BTP
-    /// </summary>
-    [StringLength(50)]
-    public string? SemiProductWidth { get; set; }
 
     /// <summary>
     /// Máy thổi
@@ -295,6 +282,11 @@ public record UpdateBlowingProcessLineDto
     /// ID chi tiết công đoạn (null nếu là dòng mới)
     /// </summary>
     public int? Id { get; set; }
+
+    /// <summary>
+    /// ID lệnh sản xuất
+    /// </summary>
+    public int ProductionOrderId { get; set; }
 
     /// <summary>
     /// Mã hàng

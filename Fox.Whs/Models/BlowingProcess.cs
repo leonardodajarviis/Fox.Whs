@@ -17,6 +17,11 @@ public class BlowingProcess
     public Employee? ShiftLeader { get; set; }
 
     /// <summary>
+    /// Bản nháp
+    /// </summary>
+    public bool IsDraft { get; set; }
+
+    /// <summary>
     /// Tên trưởng ca
     /// </summary>
     [NotMapped]
@@ -31,6 +36,7 @@ public class BlowingProcess
     /// Ca sản xuất
     /// </summary>
     public string ProductionShift { get; set; } = null!;
+
 
     /// <summary>
     /// Tổng sản lượng thổi
@@ -70,6 +76,8 @@ public class BlowingProcessLine
 
     public int BlowingProcessId { get; set; }
 
+    public int ProductionOrderId { get; set; }
+
     [ForeignKey("BlowingProcessId"), JsonIgnore]
     public BlowingProcess? BlowingProcess { get; set; }
 
@@ -83,12 +91,17 @@ public class BlowingProcessLine
     /// </summary>
     public string ProductionBatch { get; set; } = null!;
 
-    public string CardCode { get; set; } = null!;
+    [MaxLength(15)]
+    public string? CardCode { get; set; }
+
+    [ForeignKey("CardCode"), JsonIgnore]
+    public BusinessPartner? BusinessPartner { get; set; }
 
     /// <summary>
     /// Khách hàng
     /// </summary>
-    public string CustomerName { get; set; } = null!;
+    [NotMapped]
+    public string? CustomerName => BusinessPartner?.CardName;
 
     /// <summary>
     /// Chủng loại

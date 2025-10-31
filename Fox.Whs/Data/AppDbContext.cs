@@ -1,3 +1,4 @@
+using BackEnd_LHC.SapModels;
 using Fox.Whs.Models;
 using Fox.Whs.SapModels;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<BlowingProcess> BlowingProcesses { get; set; }
     public DbSet<BlowingProcessLine> BlowingProcessLines { get; set; }
+    public DbSet<ProductionShift> ProductionShifts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

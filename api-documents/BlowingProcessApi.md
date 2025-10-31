@@ -333,11 +333,7 @@ Tạo một công đoạn thổi mới.
 | Trường | Kiểu | Bắt buộc | Giới hạn | Mô tả |
 |--------|------|----------|----------|-------|
 | `itemCode` | string | **Có** | Max 50 ký tự | Mã hàng |
-| `productionBatch` | string | **Có** | Max 100 ký tự | Lô sản xuất |
-| `customerName` | string | **Có** | Max 200 ký tự | Khách hàng |
-| `productType` | string | Không | Max 100 ký tự | Chủng loại |
-| `thickness` | string | Không | Max 50 ký tự | Độ dày / 1 lá |
-| `semiProductWidth` | string | Không | Max 50 ký tự | Khổ màng BTP |
+  `productionOrderId` |int| | **Có** | - | | DocEntry của lệch sản xuất |
 | `blowingMachine` | string | Không | Max 50 ký tự | Máy thổi |
 | `workerId` | integer | Không | - | ID công nhân thổi |
 | `blowingSpeed` | string | Không | Max 50 ký tự | Tốc độ thổi (kg/giờ) |
@@ -382,6 +378,7 @@ Content-Type: application/json
   "productionShift": "Ca 1",
   "lines": [
     {
+      "productionOrderId": 1,
       "itemCode": "PROD001",
       "productionBatch": "LOT-2025-001",
       "customerName": "Công ty ABC",

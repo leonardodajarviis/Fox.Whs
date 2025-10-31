@@ -20,7 +20,7 @@ public class ProductionOrder
     public string ItemCode { get; set; } = null!;
 
     /// <summary>
-    /// Mã khác hàng
+    /// Mã khách hàng
     /// </summary>
     [Column("CardCode")]
     public string? CardCode { get; set; }

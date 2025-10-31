@@ -86,26 +86,53 @@ public class BlowingProcessService
             .Distinct()
             .ToList();
 
-        if (workerIds.Any())
-        {
-            var existingWorkers = await _dbContext.Employees
-                .Where(e => workerIds.Contains(e.Id))
-                .Select(e => e.Id)
-                .ToListAsync();
+        var existingWorkers = await _dbContext.Employees
+            .Where(e => workerIds.Contains(e.Id))
+            .ToDictionaryAsync(w => w.Id);
 
-            var missingWorkers = workerIds.Except(existingWorkers).ToList();
-            if (missingWorkers.Any())
-            {
-                throw new NotFoundException($"Không tìm thấy công nhân với ID: {string.Join(", ", missingWorkers)}");
-            }
+        var itemCodes = dto.Lines
+            .Select(l => l.ItemCode)
+            .Distinct()
+            .ToList();
+
+        var existingItems = await _dbContext.Items
+            .Where(i => itemCodes.Contains(i.ItemCode))
+            .ToDictionaryAsync(i => i.ItemCode);
+
+        var productionOrderIds = dto.Lines
+            .Select(l => l.ProductionOrderId)
+            .Distinct()
+            .ToList();
+
+        var existingProductionOrders = await _dbContext.ProductionOrders
+            .Include(po => po.ItemDetail)
+            .Where(po => productionOrderIds.Contains(po.DocEntry))
+            .ToDictionaryAsync(po => po.DocEntry);
+
+        var lines = new List<BlowingProcessLine>();
+        foreach (var lineDto in dto.Lines)
+        {
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
+
+            var line = MapToBlowingProcessLine(
+                lineDto,
+                productionOrder.ItemCode,
+                productionOrder?.CardCode ?? string.Empty,
+                item.ProductType,
+                item.Thickness,
+                item.SemiProductWidth);
+
+            lines.Add(line);
         }
 
         var blowingProcess = new BlowingProcess
         {
             ShiftLeaderId = dto.ShiftLeaderId,
             ProductionDate = dto.ProductionDate,
+            IsDraft = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
-            Lines = [.. dto.Lines.Select(MapToBlowingProcessLine)]
+            Lines = lines
         };
 
         // Tính toán tổng
@@ -207,16 +234,17 @@ public class BlowingProcessService
 
     #region Private Methods
 
-    private BlowingProcessLine MapToBlowingProcessLine(CreateBlowingProcessLineDto dto)
+    private BlowingProcessLine MapToBlowingProcessLine(CreateBlowingProcessLineDto dto, string itemCode, string? cardCode, string? productType, string? thickness, string? semiProductWidth)
     {
         var line = new BlowingProcessLine
         {
-            ItemCode = dto.ItemCode,
+            ProductionOrderId = dto.ProductionOrderId,
+            ItemCode = itemCode,
+            CardCode = cardCode,
             ProductionBatch = dto.ProductionBatch,
-            CustomerName = dto.CustomerName,
-            ProductType = dto.ProductType,
-            Thickness = dto.Thickness,
-            SemiProductWidth = dto.SemiProductWidth,
+            ProductType = productType,
+            Thickness = thickness,
+            SemiProductWidth = semiProductWidth,
             BlowingMachine = dto.BlowingMachine,
             WorkerId = dto.WorkerId,
             BlowingSpeed = dto.BlowingSpeed,
@@ -264,7 +292,6 @@ public class BlowingProcessService
         {
             ItemCode = dto.ItemCode,
             ProductionBatch = dto.ProductionBatch,
-            CustomerName = dto.CustomerName,
             ProductType = dto.ProductType,
             Thickness = dto.Thickness,
             SemiProductWidth = dto.SemiProductWidth,
