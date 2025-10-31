@@ -187,7 +187,7 @@ public class BlowingProcessLine
     /// <summary>
     /// Ngày cần hàng
     /// </summary>
-    public DateTime? WeighingDate { get; set; }
+    public string? RequiredDate { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành

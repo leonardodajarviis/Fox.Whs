@@ -80,20 +80,6 @@ public record CreateBlowingProcessLineDto
     public int ProductionOrderId { get; set; }
 
     /// <summary>
-    /// Mã hàng
-    /// </summary>
-    [Required(ErrorMessage = "Mã hàng là bắt buộc")]
-    [StringLength(50)]
-    public string ItemCode { get; set; } = null!;
-
-    /// <summary>
-    /// Lô sản xuất
-    /// </summary>
-    [Required(ErrorMessage = "Lô sản xuất là bắt buộc")]
-    [StringLength(100)]
-    public string ProductionBatch { get; set; } = null!;
-
-    /// <summary>
     /// Máy thổi
     /// </summary>
     [StringLength(50)]
@@ -159,7 +145,7 @@ public record CreateBlowingProcessLineDto
     /// <summary>
     /// Ngày cần hàng
     /// </summary>
-    public DateTime? WeighingDate { get; set; }
+    public DateTime? RequiredDate { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành
@@ -289,27 +275,6 @@ public record UpdateBlowingProcessLineDto
     public int ProductionOrderId { get; set; }
 
     /// <summary>
-    /// Mã hàng
-    /// </summary>
-    [Required(ErrorMessage = "Mã hàng là bắt buộc")]
-    [StringLength(50)]
-    public string ItemCode { get; set; } = null!;
-
-    /// <summary>
-    /// Lô sản xuất
-    /// </summary>
-    [Required(ErrorMessage = "Lô sản xuất là bắt buộc")]
-    [StringLength(100)]
-    public string ProductionBatch { get; set; } = null!;
-
-    /// <summary>
-    /// Khách hàng
-    /// </summary>
-    [Required(ErrorMessage = "Tên khách hàng là bắt buộc")]
-    [StringLength(200)]
-    public string CustomerName { get; set; } = null!;
-
-    /// <summary>
     /// Chủng loại
     /// </summary>
     [StringLength(100)]
@@ -389,11 +354,6 @@ public record UpdateBlowingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal ReservedWeight { get; set; }
-
-    /// <summary>
-    /// Ngày cần hàng
-    /// </summary>
-    public DateTime? WeighingDate { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành

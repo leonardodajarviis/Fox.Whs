@@ -48,56 +48,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "id": 1,
       "shiftLeaderId": 5,
       "shiftLeaderName": "Nguyễn Văn A",
+      "isDraft": false,
       "productionDate": "2025-10-29T00:00:00",
       "productionShift": "Ca 1",
       "totalBlowingOutput": 1500.50,
       "totalRewindingOutput": 200.30,
       "totalReservedOutput": 100.00,
-      "totalBlowingLoss": 50.20,
-      "lines": [
-        {
-          "id": 1,
-          "itemCode": "PROD001",
-          "productionBatch": "LOT-2025-001",
-          "customerName": "Công ty ABC",
-          "productType": "PE",
-          "thickness": "50 micron",
-          "semiProductWidth": "1200mm",
-          "blowingMachine": "Máy 01",
-          "workerId": 10,
-          "workerName": "Trần Văn B",
-          "blowingSpeed": "150 kg/h",
-          "startTime": "2025-10-29T07:00:00",
-          "endTime": "2025-10-29T15:00:00",
-          "stopDurationMinutes": 30,
-          "stopReason": "Thay nguyên liệu",
-          "quantityRolls": 10.00,
-          "quantityKg": 800.50,
-          "rewindOrSplitWeight": 100.00,
-          "reservedWeight": 50.00,
-          "weighingDate": "2025-10-30T00:00:00",
-          "isCompleted": true,
-          "actualCompletionDate": "2025-10-29T15:00:00",
-          "delayReason": null,
-          "widthChange": 5.00,
-          "innerCoating": 3.00,
-          "trimmedEdge": 2.00,
-          "electricalIssue": 0.00,
-          "materialLossKg": 10.00,
-          "materialLossReason": "Nguyên liệu lỗi",
-          "humanErrorKg": 5.00,
-          "humanErrorReason": "Nhầm lẫn cài đặt",
-          "machineErrorKg": 3.00,
-          "machineErrorReason": "Máy bị kẹt",
-          "otherErrorKg": 2.00,
-          "otherErrorReason": "Lý do khác",
-          "totalLoss": 30.00,
-          "excessPO": 10.00,
-          "semiProductWarehouseConfirmed": false,
-          "note": "Ghi chú sản xuất",
-          "blowingStageInventory": 500.00
-        }
-      ]
+      "totalBlowingLoss": 50.20
     }
   ],
   "totalCount": 50,
@@ -115,57 +72,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `id` | integer | ID công đoạn thổi |
 | `shiftLeaderId` | integer | ID trưởng ca |
 | `shiftLeaderName` | string | Tên trưởng ca |
+| `isDraft` | bool | Có phải bản nháp không |
 | `productionDate` | datetime | Ngày sản xuất |
 | `productionShift` | string | Ca sản xuất |
 | `totalBlowingOutput` | decimal | Tổng sản lượng thổi (kg) |
 | `totalRewindingOutput` | decimal | Tổng sản lượng tua/chia/tờ (kg) |
 | `totalReservedOutput` | decimal | Tổng sản lượng dự trữ (kg) |
 | `totalBlowingLoss` | decimal | Tổng DC công đoạn thổi (kg) |
-| `lines` | array | Danh sách chi tiết công đoạn thổi |
-
-#### Thông tin Chi tiết (BlowingProcessLine)
-| Trường | Kiểu | Mô tả |
-|--------|------|-------|
-| `id` | integer | ID chi tiết công đoạn |
-| `itemCode` | string | Mã hàng |
-| `productionBatch` | string | Lô sản xuất |
-| `customerName` | string | Khách hàng |
-| `productType` | string | Chủng loại |
-| `thickness` | string | Độ dày / 1 lá |
-| `semiProductWidth` | string | Khổ màng BTP |
-| `blowingMachine` | string | Máy thổi |
-| `workerId` | integer | ID công nhân thổi |
-| `workerName` | string | Tên công nhân thổi |
-| `blowingSpeed` | string | Tốc độ thổi (kg/giờ) |
-| `startTime` | datetime | Thời gian bắt đầu thổi |
-| `endTime` | datetime | Thời gian kết thúc thổi |
-| `stopDurationMinutes` | integer | Thời gian dừng máy (phút) |
-| `stopReason` | string | Nguyên nhân dừng máy |
-| `quantityRolls` | decimal | Sản lượng thổi (số cuộn) |
-| `quantityKg` | decimal | Sản lượng thổi (số kg) |
-| `rewindOrSplitWeight` | decimal | Sản lượng tua/chia/tờ (kg) |
-| `reservedWeight` | decimal | Sản lượng dự trữ (kg) |
-| `weighingDate` | datetime | Ngày cần hàng |
-| `isCompleted` | boolean | Xác nhận hoàn thành |
-| `actualCompletionDate` | datetime | Ngày hoàn thành thực tế |
-| `delayReason` | string | Nguyên nhân chậm tiến độ (QLSX ghi) |
-| `widthChange` | decimal | Đổi khổ (kg) |
-| `innerCoating` | decimal | Tráng lòng (kg) |
-| `trimmedEdge` | decimal | Cắt via (kg) |
-| `electricalIssue` | decimal | Sự cố điện (kg) |
-| `materialLossKg` | decimal | DC nguyên liệu (kg) |
-| `materialLossReason` | string | Ghi rõ nguyên nhân DC nguyên liệu |
-| `humanErrorKg` | decimal | DC con người (kg) |
-| `humanErrorReason` | string | Ghi rõ nguyên nhân DC con người |
-| `machineErrorKg` | decimal | DC lỗi máy (kg) |
-| `machineErrorReason` | string | Ghi rõ nguyên nhân DC lỗi máy |
-| `otherErrorKg` | decimal | DC lỗi khác (kg) |
-| `otherErrorReason` | string | Ghi rõ nguyên nhân DC lỗi khác |
-| `totalLoss` | decimal | Tổng DC (kg) |
-| `excessPO` | decimal | Thừa PO (kg) |
-| `semiProductWarehouseConfirmed` | boolean | Xác nhận của kho BTP |
-| `note` | string | Ghi chú |
-| `blowingStageInventory` | decimal | Tồn kho công đoạn Thổi (kg) |
 
 ---
 
@@ -196,6 +109,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "id": 1,
   "shiftLeaderId": 5,
   "shiftLeaderName": "Nguyễn Văn A",
+  "isDraft": false,
   "productionDate": "2025-10-29T00:00:00",
   "productionShift": "Ca 1",
   "totalBlowingOutput": 1500.50,
@@ -205,6 +119,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "lines": [
     {
       "id": 1,
+      "productionOrderId": 1,
       "itemCode": "PROD001",
       "productionBatch": "LOT-2025-001",
       "customerName": "Công ty ABC",
@@ -223,7 +138,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "quantityKg": 800.50,
       "rewindOrSplitWeight": 100.00,
       "reservedWeight": 50.00,
-      "weighingDate": "2025-10-30T00:00:00",
+      "requiredDate": "2025-10-30T00:00:00",
       "isCompleted": true,
       "actualCompletionDate": "2025-10-29T15:00:00",
       "delayReason": null,
@@ -248,6 +163,68 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   ]
 }
 ```
+
+### Mô tả các trường Response
+
+#### Thông tin Header (BlowingProcess)
+| Trường | Kiểu | Mô tả |
+|--------|------|-------|
+| `id` | integer | ID công đoạn thổi |
+| `shiftLeaderId` | integer | ID trưởng ca |
+| `shiftLeaderName` | string | Tên trưởng ca |
+| `isDraft` | bool | Có phải bản nháp không |
+| `productionDate` | datetime | Ngày sản xuất |
+| `productionShift` | string | Ca sản xuất |
+| `totalBlowingOutput` | decimal | Tổng sản lượng thổi (kg) |
+| `totalRewindingOutput` | decimal | Tổng sản lượng tua/chia/tờ (kg) |
+| `totalReservedOutput` | decimal | Tổng sản lượng dự trữ (kg) |
+| `totalBlowingLoss` | decimal | Tổng DC công đoạn thổi (kg) |
+| `lines` | array | Danh sách chi tiết công đoạn thổi |
+
+#### Thông tin Chi tiết (BlowingProcessLine)
+| Trường | Kiểu | Mô tả |
+|--------|------|-------|
+| `id` | integer | ID chi tiết công đoạn |
+| `productionOrderId` | integer | ID lệch sản xuất SAP |
+| `itemCode` | string | Mã hàng |
+| `productionBatch` | string | Lô sản xuất |
+| `customerName` | string | Khách hàng |
+| `productType` | string | Chủng loại |
+| `thickness` | string | Độ dày / 1 lá |
+| `semiProductWidth` | string | Khổ màng BTP |
+| `blowingMachine` | string | Máy thổi |
+| `workerId` | integer | ID công nhân thổi |
+| `workerName` | string | Tên công nhân thổi |
+| `blowingSpeed` | string | Tốc độ thổi (kg/giờ) |
+| `startTime` | datetime | Thời gian bắt đầu thổi |
+| `endTime` | datetime | Thời gian kết thúc thổi |
+| `stopDurationMinutes` | integer | Thời gian dừng máy (phút) |
+| `stopReason` | string | Nguyên nhân dừng máy |
+| `quantityRolls` | decimal | Sản lượng thổi (số cuộn) |
+| `quantityKg` | decimal | Sản lượng thổi (số kg) |
+| `rewindOrSplitWeight` | decimal | Sản lượng tua/chia/tờ (kg) |
+| `reservedWeight` | decimal | Sản lượng dự trữ (kg) |
+| `requiredDate` | datetime | Ngày cần hàng |
+| `isCompleted` | boolean | Xác nhận hoàn thành |
+| `actualCompletionDate` | datetime | Ngày hoàn thành thực tế |
+| `delayReason` | string | Nguyên nhân chậm tiến độ (QLSX ghi) |
+| `widthChange` | decimal | Đổi khổ (kg) |
+| `innerCoating` | decimal | Tráng lòng (kg) |
+| `trimmedEdge` | decimal | Cắt via (kg) |
+| `electricalIssue` | decimal | Sự cố điện (kg) |
+| `materialLossKg` | decimal | DC nguyên liệu (kg) |
+| `materialLossReason` | string | Ghi rõ nguyên nhân DC nguyên liệu |
+| `humanErrorKg` | decimal | DC con người (kg) |
+| `humanErrorReason` | string | Ghi rõ nguyên nhân DC con người |
+| `machineErrorKg` | decimal | DC lỗi máy (kg) |
+| `machineErrorReason` | string | Ghi rõ nguyên nhân DC lỗi máy |
+| `otherErrorKg` | decimal | DC lỗi khác (kg) |
+| `otherErrorReason` | string | Ghi rõ nguyên nhân DC lỗi khác |
+| `totalLoss` | decimal | Tổng DC (kg) |
+| `excessPO` | decimal | Thừa PO (kg) |
+| `semiProductWarehouseConfirmed` | boolean | Xác nhận của kho BTP |
+| `note` | string | Ghi chú |
+| `blowingStageInventory` | decimal | Tồn kho công đoạn Thổi (kg) |
 
 ### Response Error (404 Not Found)
 ```json
@@ -277,12 +254,7 @@ Tạo một công đoạn thổi mới.
   "productionShift": "Ca 1",
   "lines": [
     {
-      "itemCode": "PROD001",
-      "productionBatch": "LOT-2025-001",
-      "customerName": "Công ty ABC",
-      "productType": "PE",
-      "thickness": "50 micron",
-      "semiProductWidth": "1200mm",
+      "productionOrderId": 1,
       "blowingMachine": "Máy 01",
       "workerId": 10,
       "blowingSpeed": "150 kg/h",
@@ -294,7 +266,7 @@ Tạo một công đoạn thổi mới.
       "quantityKg": 800.50,
       "rewindOrSplitWeight": 100.00,
       "reservedWeight": 50.00,
-      "weighingDate": "2025-10-30T00:00:00",
+      "requiredDate": "2025-10-30T00:00:00",
       "isCompleted": true,
       "actualCompletionDate": "2025-10-29T15:00:00",
       "delayReason": null,
@@ -332,7 +304,6 @@ Tạo một công đoạn thổi mới.
 #### Thông tin Chi tiết (CreateBlowingProcessLineDto)
 | Trường | Kiểu | Bắt buộc | Giới hạn | Mô tả |
 |--------|------|----------|----------|-------|
-| `itemCode` | string | **Có** | Max 50 ký tự | Mã hàng |
   `productionOrderId` |int| | **Có** | - | | DocEntry của lệch sản xuất |
 | `blowingMachine` | string | Không | Max 50 ký tự | Máy thổi |
 | `workerId` | integer | Không | - | ID công nhân thổi |
@@ -345,7 +316,7 @@ Tạo một công đoạn thổi mới.
 | `quantityKg` | decimal | Không | >= 0 | Sản lượng thổi (số kg) |
 | `rewindOrSplitWeight` | decimal | Không | >= 0 | Sản lượng tua/chia/tờ (kg) |
 | `reservedWeight` | decimal | Không | >= 0 | Sản lượng dự trữ (kg) |
-| `weighingDate` | datetime | Không | - | Ngày cần hàng |
+| `requiredDate` | datetime | Không | - | Ngày cần hàng |
 | `isCompleted` | boolean | Không | - | Xác nhận hoàn thành |
 | `actualCompletionDate` | datetime | Không | - | Ngày hoàn thành thực tế |
 | `delayReason` | string | Không | Max 500 ký tự | Nguyên nhân chậm tiến độ (QLSX ghi) |
@@ -379,9 +350,6 @@ Content-Type: application/json
   "lines": [
     {
       "productionOrderId": 1,
-      "itemCode": "PROD001",
-      "productionBatch": "LOT-2025-001",
-      "customerName": "Công ty ABC",
       "quantityKg": 800.50
     }
   ]
@@ -391,59 +359,7 @@ Content-Type: application/json
 ### Response Success (200 OK)
 ```json
 {
-  "id": 1,
-  "shiftLeaderId": 5,
-  "shiftLeaderName": "Nguyễn Văn A",
-  "productionDate": "2025-10-29T00:00:00",
-  "productionShift": "Ca 1",
-  "totalBlowingOutput": 800.50,
-  "totalRewindingOutput": 0.00,
-  "totalReservedOutput": 0.00,
-  "totalBlowingLoss": 0.00,
-  "lines": [
-    {
-      "id": 1,
-      "itemCode": "PROD001",
-      "productionBatch": "LOT-2025-001",
-      "customerName": "Công ty ABC",
-      "productType": null,
-      "thickness": null,
-      "semiProductWidth": null,
-      "blowingMachine": null,
-      "workerId": null,
-      "workerName": null,
-      "blowingSpeed": null,
-      "startTime": null,
-      "endTime": null,
-      "stopDurationMinutes": 0,
-      "stopReason": null,
-      "quantityRolls": 0.00,
-      "quantityKg": 800.50,
-      "rewindOrSplitWeight": 0.00,
-      "reservedWeight": 0.00,
-      "weighingDate": null,
-      "isCompleted": false,
-      "actualCompletionDate": null,
-      "delayReason": null,
-      "widthChange": 0.00,
-      "innerCoating": 0.00,
-      "trimmedEdge": 0.00,
-      "electricalIssue": 0.00,
-      "materialLossKg": 0.00,
-      "materialLossReason": null,
-      "humanErrorKg": 0.00,
-      "humanErrorReason": null,
-      "machineErrorKg": 0.00,
-      "machineErrorReason": null,
-      "otherErrorKg": 0.00,
-      "otherErrorReason": null,
-      "totalLoss": 0.00,
-      "excessPO": 0.00,
-      "semiProductWarehouseConfirmed": false,
-      "note": null,
-      "blowingStageInventory": 0.00
-    }
-  ]
+  "success": true
 }
 ```
 
@@ -494,12 +410,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
   "lines": [
     {
       "id": 1,
-      "itemCode": "PROD001",
-      "productionBatch": "LOT-2025-001",
-      "customerName": "Công ty ABC",
-      "productType": "PE",
-      "thickness": "50 micron",
-      "semiProductWidth": "1200mm",
+      "productionOrderId": 1, 
       "blowingMachine": "Máy 01",
       "workerId": 10,
       "blowingSpeed": "150 kg/h",
@@ -511,7 +422,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
       "quantityKg": 800.50,
       "rewindOrSplitWeight": 100.00,
       "reservedWeight": 50.00,
-      "weighingDate": "2025-10-30T00:00:00",
+      "requiredDate": "2025-10-30T00:00:00",
       "isCompleted": true,
       "actualCompletionDate": "2025-10-29T15:00:00",
       "delayReason": null,
@@ -534,9 +445,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
     },
     {
       "id": null,
-      "itemCode": "PROD002",
-      "productionBatch": "LOT-2025-002",
-      "customerName": "Công ty XYZ",
+      "productionOrderId": 1,
       "quantityKg": 500.00
     }
   ]
@@ -557,12 +466,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
 | Trường | Kiểu | Bắt buộc | Giới hạn | Mô tả |
 |--------|------|----------|----------|-------|
 | `id` | integer | Không | - | ID chi tiết công đoạn (null nếu là dòng mới) |
-| `itemCode` | string | **Có** | Max 50 ký tự | Mã hàng |
-| `productionBatch` | string | **Có** | Max 100 ký tự | Lô sản xuất |
-| `customerName` | string | **Có** | Max 200 ký tự | Khách hàng |
-| `productType` | string | Không | Max 100 ký tự | Chủng loại |
-| `thickness` | string | Không | Max 50 ký tự | Độ dày / 1 lá |
-| `semiProductWidth` | string | Không | Max 50 ký tự | Khổ màng BTP |
+| `productionOrderId` | integer | Có | - | ID lệnh sản xuất SAP |
 | `blowingMachine` | string | Không | Max 50 ký tự | Máy thổi |
 | `workerId` | integer | Không | - | ID công nhân thổi |
 | `blowingSpeed` | string | Không | Max 50 ký tự | Tốc độ thổi (kg/giờ) |
@@ -574,7 +478,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
 | `quantityKg` | decimal | Không | >= 0 | Sản lượng thổi (số kg) |
 | `rewindOrSplitWeight` | decimal | Không | >= 0 | Sản lượng tua/chia/tờ (kg) |
 | `reservedWeight` | decimal | Không | >= 0 | Sản lượng dự trữ (kg) |
-| `weighingDate` | datetime | Không | - | Ngày cần hàng |
+| `requiredDate` | datetime | Không | - | Ngày cần hàng |
 | `isCompleted` | boolean | Không | - | Xác nhận hoàn thành |
 | `actualCompletionDate` | datetime | Không | - | Ngày hoàn thành thực tế |
 | `delayReason` | string | Không | Max 500 ký tự | Nguyên nhân chậm tiến độ (QLSX ghi) |
@@ -625,59 +529,7 @@ Content-Type: application/json
 ### Response Success (200 OK)
 ```json
 {
-  "id": 1,
-  "shiftLeaderId": 5,
-  "shiftLeaderName": "Nguyễn Văn A",
-  "productionDate": "2025-10-29T00:00:00",
-  "productionShift": "Ca 1",
-  "totalBlowingOutput": 850.50,
-  "totalRewindingOutput": 0.00,
-  "totalReservedOutput": 0.00,
-  "totalBlowingLoss": 0.00,
-  "lines": [
-    {
-      "id": 1,
-      "itemCode": "PROD001",
-      "productionBatch": "LOT-2025-001",
-      "customerName": "Công ty ABC",
-      "productType": null,
-      "thickness": null,
-      "semiProductWidth": null,
-      "blowingMachine": null,
-      "workerId": null,
-      "workerName": null,
-      "blowingSpeed": null,
-      "startTime": null,
-      "endTime": null,
-      "stopDurationMinutes": 0,
-      "stopReason": null,
-      "quantityRolls": 0.00,
-      "quantityKg": 850.50,
-      "rewindOrSplitWeight": 0.00,
-      "reservedWeight": 0.00,
-      "weighingDate": null,
-      "isCompleted": false,
-      "actualCompletionDate": null,
-      "delayReason": null,
-      "widthChange": 0.00,
-      "innerCoating": 0.00,
-      "trimmedEdge": 0.00,
-      "electricalIssue": 0.00,
-      "materialLossKg": 0.00,
-      "materialLossReason": null,
-      "humanErrorKg": 0.00,
-      "humanErrorReason": null,
-      "machineErrorKg": 0.00,
-      "machineErrorReason": null,
-      "otherErrorKg": 0.00,
-      "otherErrorReason": null,
-      "totalLoss": 0.00,
-      "excessPO": 0.00,
-      "semiProductWarehouseConfirmed": false,
-      "note": null,
-      "blowingStageInventory": 0.00
-    }
-  ]
+  "success" : true
 }
 ```
 
