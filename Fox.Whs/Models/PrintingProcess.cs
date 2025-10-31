@@ -6,11 +6,75 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fox.Whs.Models;
 
-[Table("Fox_PrintingProcessLines")]
+[Table("FoxWms_PrintingProcesses")]
+public class PrintingProcess
+{
+    [Key]
+    public int Id { get; set; }
+
+    public int ShiftLeaderId { get; set; }
+
+    [ForeignKey("ShiftLeaderId"), JsonIgnore]
+    public Employee? ShiftLeader { get; set; }
+
+    /// <summary>
+    /// Bản nháp
+    /// </summary>
+    public bool IsDraft { get; set; }
+
+    /// <summary>
+    /// Tên trưởng ca
+    /// </summary>
+    [NotMapped]
+    public string? ShiftLeaderName => ShiftLeader?.FirstName;
+
+    /// <summary>
+    /// Ngày sản xuất
+    /// </summary>
+    public DateTime ProductionDate { get; set; }
+
+    /// <summary>
+    /// Ca sản xuất
+    /// </summary>
+    public string ProductionShift { get; set; } = null!;
+
+    /// <summary>
+    /// Tổng sản lượng In
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalPrintingOutput { get; set; }
+
+    /// <summary>
+    /// Tổng DC gia công
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalProcessingMold { get; set; }
+
+    /// <summary>
+    /// Tổng DC công đoạn Thổi
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalBlowingStageMold { get; set; }
+
+    /// <summary>
+    /// Tổng DC công đoạn In
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalPrintingStageMold { get; set; }
+
+    public List<PrintingProcessLine> Lines { get; set; } = [];
+}
+
+[Table("FoxWms_PrintingProcessLines")]
 public class PrintingProcessLine
 {
     [Key]
     public int Id { get; set; }
+
+    public int PrintingProcessId { get; set; }
+
+    [ForeignKey("PrintingProcessId"), JsonIgnore]
+    public PrintingProcess? PrintingProcess { get; set; }
 
     public int ProductionOrderId { get; set; }
 
@@ -22,7 +86,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Lô sản xuất
     /// </summary>
-    public string ProductionBatch { get; set; } = null!;
+    public string? ProductionBatch { get; set; }
 
     [MaxLength(15)]
     public string? CardCode { get; set; }
@@ -44,7 +108,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Độ dày / 1 lá
     /// </summary>
-    public decimal? Thickness { get; set; }
+    public string? Thickness { get; set; }
 
     /// <summary>
     /// Khổ màng BTP
@@ -59,7 +123,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Số màu in
     /// </summary>
-    public int? ColorCount { get; set; }
+    public string? ColorCount { get; set; }
 
     /// <summary>
     /// Máy in
@@ -94,7 +158,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Thời gian dừng máy (phút)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal MachineStopMinutes { get; set; }
 
     /// <summary>
@@ -116,13 +180,13 @@ public class PrintingProcessLine
     /// <summary>
     /// Số kg
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal? WeightKg { get; set; }
 
     /// <summary>
     /// Ngày cần hàng
     /// </summary>
-    public string? RequiredDate { get; set; }
+    public DateTime? RequiredDate { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành
@@ -143,7 +207,7 @@ public class PrintingProcessLine
     /// <summary>
     /// DC gia công (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal ProcessingLossKg { get; set; }
 
     /// <summary>
@@ -155,7 +219,7 @@ public class PrintingProcessLine
     /// <summary>
     /// DC do công đoạn thổi (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal BlowingLossKg { get; set; }
 
     /// <summary>
@@ -167,7 +231,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Đầu cuộn OPP (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal OppRollHeadKg { get; set; }
 
     /// <summary>
@@ -178,7 +242,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Con người (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal HumanLossKg { get; set; }
 
     /// <summary>
@@ -189,7 +253,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Lỗi máy (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal MachineLossKg { get; set; }
 
     /// <summary>
@@ -200,7 +264,7 @@ public class PrintingProcessLine
     /// <summary>
     /// Tổng DC (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal TotalLossKg { get; set; }
 
     /// <summary>
@@ -216,6 +280,6 @@ public class PrintingProcessLine
     /// <summary>
     /// Tồn kho ở công đoạn In (Kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal PrintingStageInventoryKg { get; set; }
 }

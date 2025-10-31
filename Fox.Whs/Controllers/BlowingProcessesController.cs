@@ -32,7 +32,8 @@ public class BlowingProcessesController : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] QueryParam qp)
     {
         _logger.LogInformation("Lấy danh sách tất cả công đoạn thổi");
-        var blowingProcesses = await _blowingProcessService.GetAllAsync(qp);
+        var blowingProcesses = await _blowingProcessService
+            .GetAllAsync(qp);
         return Ok(blowingProcesses);
     }
 

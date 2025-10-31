@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fox.Whs.Models;
 
-[Table("Fox_BlowingProcesses")]
+[Table("FoxWms_BlowingProcesses")]
 public class BlowingProcess
 {
     public int Id { get; set; }
@@ -68,7 +68,7 @@ public class BlowingProcess
 /// <summary>
 /// Thông tin chi tiết công đoạn thổi sản phẩm
 /// </summary>
-[Table("Fox_BlowingProcessLines")]
+[Table("FoxWms_BlowingProcessLines")]
 public class BlowingProcessLine
 {
     [Key]
@@ -125,7 +125,7 @@ public class BlowingProcessLine
 
     [JsonIgnore]
     [ForeignKey("WorkerId")]
-    public Employee? Employee { get; set; }
+    public Employee? Worker { get; set; }
 
     public int? WorkerId { get; set; }
 
@@ -133,7 +133,7 @@ public class BlowingProcessLine
     /// Tên công nhân thổi
     /// </summary>
     [NotMapped]
-    public string? WorkerName => Employee?.FirstName;
+    public string? WorkerName => Worker?.FirstName;
 
     /// <summary>
     /// Tốc độ thổi (kg/giờ)
@@ -163,31 +163,31 @@ public class BlowingProcessLine
     /// <summary>
     /// Sản lượng thổi (số cuộn)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal QuantityRolls { get; set; }
 
     /// <summary>
     /// Sản lượng thổi (số kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Sản lượng tua/chia/tờ (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal RewindOrSplitWeight { get; set; }
 
     /// <summary>
     /// Sản lượng dự trữ (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal ReservedWeight { get; set; }
 
     /// <summary>
     /// Ngày cần hàng
     /// </summary>
-    public string? RequiredDate { get; set; }
+    public DateTime? RequiredDate { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành
@@ -207,31 +207,31 @@ public class BlowingProcessLine
     /// <summary>
     /// Đổi khổ
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal WidthChange { get; set; }
 
     /// <summary>
     /// Tráng lòng
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal InnerCoating { get; set; }
 
     /// <summary>
     /// Cắt via
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal TrimmedEdge { get; set; }
 
     /// <summary>
     /// Sự cố điện
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal ElectricalIssue { get; set; }
 
     /// <summary>
     /// DC nguyên liệu (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal MaterialLossKg { get; set; }
 
     /// <summary>
@@ -242,7 +242,7 @@ public class BlowingProcessLine
     /// <summary>
     /// DC con người (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal HumanErrorKg { get; set; }
 
     /// <summary>
@@ -253,7 +253,7 @@ public class BlowingProcessLine
     /// <summary>
     /// DC lỗi máy (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal MachineErrorKg { get; set; }
 
     /// <summary>
@@ -264,7 +264,7 @@ public class BlowingProcessLine
     /// <summary>
     /// DC lỗi khác (kg)
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal OtherErrorKg { get; set; }
 
     /// <summary>
@@ -275,13 +275,13 @@ public class BlowingProcessLine
     /// <summary>
     /// Tổng DC
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal TotalLoss { get; set; }
 
     /// <summary>
     /// Thừa PO
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal ExcessPO { get; set; }
 
     /// <summary>
@@ -297,6 +297,6 @@ public class BlowingProcessLine
     /// <summary>
     /// Tồn kho công đoạn Thổi
     /// </summary>
-    [Precision(18, 2)]
+    [Precision(18, 4)]
     public decimal BlowingStageInventory { get; set; }
 }

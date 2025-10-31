@@ -9,37 +9,36 @@ using Microsoft.EntityFrameworkCore;
 namespace Fox.Whs.Services;
 
 /// <summary>
-/// Service quản lý công đoạn thổi
+/// Service quản lý công đoạn in
 /// </summary>
-public class BlowingProcessService
+public class PrintingProcessService
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<BlowingProcessService> _logger;
+    private readonly ILogger<PrintingProcessService> _logger;
 
-    public BlowingProcessService(
+    public PrintingProcessService(
         AppDbContext dbContext,
-        ILogger<BlowingProcessService> logger)
+        ILogger<PrintingProcessService> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
     }
 
     /// <summary>
-    /// Lấy danh sách tất cả công đoạn thổi
+    /// Lấy danh sách tất cả công đoạn in
     /// </summary>
-    public async Task<PaginationResponse<BlowingProcess>> GetAllAsync(QueryParam pr)
+    public async Task<PaginationResponse<PrintingProcess>> GetAllAsync(QueryParam pr)
     {
-        var query = _dbContext.BlowingProcesses.AsNoTracking().ApplyFiltering(pr).AsQueryable();
-
+        var query = _dbContext.PrintingProcesses.AsNoTracking().ApplyFiltering(pr).AsQueryable();
 
         var totalCount = await query.CountAsync();
 
         var result = await query
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(bp => bp.ProductionDate)
+            .OrderByDescending(pp => pp.ProductionDate)
             .ToListAsync();
 
-        return new PaginationResponse<BlowingProcess>
+        return new PaginationResponse<PrintingProcess>
         {
             Results = result,
             TotalCount = totalCount,
@@ -48,28 +47,30 @@ public class BlowingProcessService
         };
     }
 
-    public async Task<BlowingProcess> GetByIdAsync(int id)
+    public async Task<PrintingProcess> GetByIdAsync(int id)
     {
-        var blowingProcess = await _dbContext.BlowingProcesses
-            .Include(bp => bp.ShiftLeader)
-            .Include(bp => bp.Lines)
+        var printingProcess = await _dbContext.PrintingProcesses
+            .Include(pp => pp.ShiftLeader)
+            .Include(pp => pp.Lines)
                 .ThenInclude(line => line.Worker)
-            .FirstOrDefaultAsync(bp => bp.Id == id);
+            .Include(pp => pp.Lines)
+                .ThenInclude(line => line.BusinessPartner)
+            .FirstOrDefaultAsync(pp => pp.Id == id);
 
-        if (blowingProcess == null)
+        if (printingProcess == null)
         {
             throw new NotFoundException($"Không tìm với ID: {id}");
         }
 
-        return blowingProcess;
+        return printingProcess;
     }
 
     /// <summary>
-    /// Tạo công đoạn thổi mới
+    /// Tạo công đoạn in mới
     /// </summary>
-    public async Task<BlowingProcess> CreateAsync(CreateBlowingProcessDto dto)
+    public async Task<PrintingProcess> CreateAsync(CreatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn thổi mới cho trưởng ca {LeaderId}", dto.ShiftLeaderId);
+        _logger.LogInformation("Tạo công đoạn in mới cho trưởng ca {LeaderId}", dto.ShiftLeaderId);
 
         // Kiểm tra trưởng ca tồn tại
         var shiftLeaderExists = await _dbContext.Employees
@@ -100,18 +101,18 @@ public class BlowingProcessService
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
-        var lines = new List<BlowingProcessLine>();
+        var lines = new List<PrintingProcessLine>();
         foreach (var lineDto in dto.Lines)
         {
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
 
-            var line = MapCreateToBlowingProcessLine(
+            var line = MapCreateToPrintingProcessLine(
                 lineDto,
                 productionOrder.ItemCode,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
-                productionOrder?.DateOfNeedBlowing,
+                productionOrder?.DateOfNeedPrinting,
                 item.ProductType,
                 item.Thickness,
                 item.SemiProductWidth);
@@ -119,7 +120,7 @@ public class BlowingProcessService
             lines.Add(line);
         }
 
-        var blowingProcess = new BlowingProcess
+        var printingProcess = new PrintingProcess
         {
             ShiftLeaderId = dto.ShiftLeaderId,
             ProductionDate = dto.ProductionDate,
@@ -129,30 +130,30 @@ public class BlowingProcessService
         };
 
         // Tính toán tổng
-        CalculateTotals(blowingProcess);
+        CalculateTotals(printingProcess);
 
-        _dbContext.BlowingProcesses.Add(blowingProcess);
+        _dbContext.PrintingProcesses.Add(printingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã tạo công đoạn thổi với ID: {Id}", blowingProcess.Id);
+        _logger.LogInformation("Đã tạo công đoạn in với ID: {Id}", printingProcess.Id);
 
-        return await GetByIdAsync(blowingProcess.Id);
+        return await GetByIdAsync(printingProcess.Id);
     }
 
     /// <summary>
-    /// Cập nhật công đoạn thổi
+    /// Cập nhật công đoạn in
     /// </summary>
-    public async Task<BlowingProcess> UpdateAsync(int id, UpdateBlowingProcessDto dto)
+    public async Task<PrintingProcess> UpdateAsync(int id, UpdatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn thổi với ID: {Id}", id);
+        _logger.LogInformation("Cập nhật công đoạn in với ID: {Id}", id);
 
-        var blowingProcess = await _dbContext.BlowingProcesses
-            .Include(bp => bp.Lines)
-            .FirstOrDefaultAsync(bp => bp.Id == id);
+        var printingProcess = await _dbContext.PrintingProcesses
+            .Include(pp => pp.Lines)
+            .FirstOrDefaultAsync(pp => pp.Id == id);
 
-        if (blowingProcess == null)
+        if (printingProcess == null)
         {
-            throw new NotFoundException($"Không tìm thấy công đoạn thổi với ID: {id}");
+            throw new NotFoundException($"Không tìm thấy công đoạn in với ID: {id}");
         }
 
         // Kiểm tra trưởng ca tồn tại
@@ -184,51 +185,50 @@ public class BlowingProcessService
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
-
         // Cập nhật thông tin cơ bản
-        blowingProcess.ShiftLeaderId = dto.ShiftLeaderId;
-        blowingProcess.ProductionDate = dto.ProductionDate;
-        blowingProcess.ProductionShift = dto.ProductionShift;
+        printingProcess.ShiftLeaderId = dto.ShiftLeaderId;
+        printingProcess.ProductionDate = dto.ProductionDate;
+        printingProcess.ProductionShift = dto.ProductionShift;
 
         // Cập nhật lines
-        UpdateLines(blowingProcess, dto.Lines, existingProductionOrders);
+        UpdateLines(printingProcess, dto.Lines, existingProductionOrders);
 
         // Tính toán lại tổng
-        CalculateTotals(blowingProcess);
+        CalculateTotals(printingProcess);
 
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã cập nhật công đoạn thổi với ID: {Id}", id);
+        _logger.LogInformation("Đã cập nhật công đoạn in với ID: {Id}", id);
 
         return await GetByIdAsync(id);
     }
 
     /// <summary>
-    /// Xóa công đoạn thổi
+    /// Xóa công đoạn in
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        _logger.LogInformation("Xóa công đoạn thổi với ID: {Id}", id);
+        _logger.LogInformation("Xóa công đoạn in với ID: {Id}", id);
 
-        var blowingProcess = await _dbContext.BlowingProcesses
-            .Include(bp => bp.Lines)
-            .FirstOrDefaultAsync(bp => bp.Id == id);
+        var printingProcess = await _dbContext.PrintingProcesses
+            .Include(pp => pp.Lines)
+            .FirstOrDefaultAsync(pp => pp.Id == id);
 
-        if (blowingProcess == null)
+        if (printingProcess == null)
         {
-            throw new NotFoundException($"Không tìm thấy công đoạn thổi với ID: {id}");
+            throw new NotFoundException($"Không tìm thấy công đoạn in với ID: {id}");
         }
 
-        _dbContext.BlowingProcesses.Remove(blowingProcess);
+        _dbContext.PrintingProcesses.Remove(printingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã xóa công đoạn thổi với ID: {Id}", id);
+        _logger.LogInformation("Đã xóa công đoạn in với ID: {Id}", id);
     }
 
     #region Private Methods
 
-    private static BlowingProcessLine MapCreateToBlowingProcessLine(
-        CreateBlowingProcessLineDto dto,
+    private static PrintingProcessLine MapCreateToPrintingProcessLine(
+        CreatePrintingProcessLineDto dto,
         string itemCode,
         string? cardCode,
         string? productionBatch,
@@ -238,58 +238,56 @@ public class BlowingProcessService
         string? semiProductWidth
     )
     {
-        var line = new BlowingProcessLine
+        var line = new PrintingProcessLine
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
             CardCode = cardCode,
-            ProductType = productType,
             ProductionBatch = productionBatch,
+            ProductType = productType,
             Thickness = thickness,
             SemiProductWidth = semiProductWidth,
-            BlowingMachine = dto.BlowingMachine,
+            PrintPatternName = dto.PrintPatternName,
+            ColorCount = dto.ColorCount,
+            PrintingMachine = dto.PrintingMachine,
             WorkerId = dto.WorkerId,
-            BlowingSpeed = dto.BlowingSpeed,
+            PrintingSpeed = dto.PrintingSpeed,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
-            StopDurationMinutes = dto.StopDurationMinutes,
+            MachineStopMinutes = dto.MachineStopMinutes,
             StopReason = dto.StopReason,
-            QuantityRolls = dto.QuantityRolls,
-            QuantityKg = dto.QuantityKg,
-            RewindOrSplitWeight = dto.RewindOrSplitWeight,
-            ReservedWeight = dto.ReservedWeight,
+            RollCount = dto.RollCount,
+            PieceCount = dto.PieceCount,
+            WeightKg = dto.WeightKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
-            WidthChange = dto.WidthChange,
-            InnerCoating = dto.InnerCoating,
-            TrimmedEdge = dto.TrimmedEdge,
-            ElectricalIssue = dto.ElectricalIssue,
-            MaterialLossKg = dto.MaterialLossKg,
-            MaterialLossReason = dto.MaterialLossReason,
-            HumanErrorKg = dto.HumanErrorKg,
-            HumanErrorReason = dto.HumanErrorReason,
-            MachineErrorKg = dto.MachineErrorKg,
-            MachineErrorReason = dto.MachineErrorReason,
-            OtherErrorKg = dto.OtherErrorKg,
-            OtherErrorReason = dto.OtherErrorReason,
-            ExcessPO = dto.ExcessPO,
-            SemiProductWarehouseConfirmed = dto.SemiProductWarehouseConfirmed,
-            Note = dto.Note,
-            BlowingStageInventory = dto.BlowingStageInventory
+            ProcessingLossKg = dto.ProcessingLossKg,
+            ProcessingLossReason = dto.ProcessingLossReason,
+            BlowingLossKg = dto.BlowingLossKg,
+            BlowingLossReason = dto.BlowingLossReason,
+            OppRollHeadKg = dto.OppRollHeadKg,
+            OppRollHeadReason = dto.OppRollHeadReason,
+            HumanLossKg = dto.HumanLossKg,
+            HumanLossReason = dto.HumanLossReason,
+            MachineLossKg = dto.MachineLossKg,
+            MachineLossReason = dto.MachineLossReason,
+            PoSurplus = dto.PoSurplus,
+            BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
+            PrintingStageInventoryKg = dto.PrintingStageInventoryKg
         };
 
         // Tính toán tổng DC cho line
-        line.TotalLoss = line.WidthChange + line.InnerCoating + line.TrimmedEdge +
-                        line.ElectricalIssue + line.MaterialLossKg +
-                        line.HumanErrorKg + line.MachineErrorKg + line.OtherErrorKg;
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
+                          line.OppRollHeadKg + line.HumanLossKg + 
+                          line.MachineLossKg;
 
         return line;
     }
 
-    private static BlowingProcessLine MapUpdateToBlowingProcessLine(
-        UpdateBlowingProcessLineDto dto,
+    private static PrintingProcessLine MapUpdateToPrintingProcessLine(
+        UpdatePrintingProcessLineDto dto,
         string itemCode,
         string? cardCode,
         string? productionBatch,
@@ -300,7 +298,7 @@ public class BlowingProcessService
         int? existingId = null
     )
     {
-        var line = new BlowingProcessLine
+        var line = new PrintingProcessLine
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
@@ -309,37 +307,35 @@ public class BlowingProcessService
             ProductType = productType,
             Thickness = thickness,
             SemiProductWidth = semiProductWidth,
-            BlowingMachine = dto.BlowingMachine,
+            PrintPatternName = dto.PrintPatternName,
+            ColorCount = dto.ColorCount,
+            PrintingMachine = dto.PrintingMachine,
             WorkerId = dto.WorkerId,
-            BlowingSpeed = dto.BlowingSpeed,
+            PrintingSpeed = dto.PrintingSpeed,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
-            StopDurationMinutes = dto.StopDurationMinutes,
+            MachineStopMinutes = dto.MachineStopMinutes,
             StopReason = dto.StopReason,
-            QuantityRolls = dto.QuantityRolls,
-            QuantityKg = dto.QuantityKg,
-            RewindOrSplitWeight = dto.RewindOrSplitWeight,
-            ReservedWeight = dto.ReservedWeight,
+            RollCount = dto.RollCount,
+            PieceCount = dto.PieceCount,
+            WeightKg = dto.WeightKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
-            WidthChange = dto.WidthChange,
-            InnerCoating = dto.InnerCoating,
-            TrimmedEdge = dto.TrimmedEdge,
-            ElectricalIssue = dto.ElectricalIssue,
-            MaterialLossKg = dto.MaterialLossKg,
-            MaterialLossReason = dto.MaterialLossReason,
-            HumanErrorKg = dto.HumanErrorKg,
-            HumanErrorReason = dto.HumanErrorReason,
-            MachineErrorKg = dto.MachineErrorKg,
-            MachineErrorReason = dto.MachineErrorReason,
-            OtherErrorKg = dto.OtherErrorKg,
-            OtherErrorReason = dto.OtherErrorReason,
-            ExcessPO = dto.ExcessPO,
-            SemiProductWarehouseConfirmed = dto.SemiProductWarehouseConfirmed,
-            Note = dto.Note,
-            BlowingStageInventory = dto.BlowingStageInventory
+            ProcessingLossKg = dto.ProcessingLossKg,
+            ProcessingLossReason = dto.ProcessingLossReason,
+            BlowingLossKg = dto.BlowingLossKg,
+            BlowingLossReason = dto.BlowingLossReason,
+            OppRollHeadKg = dto.OppRollHeadKg,
+            OppRollHeadReason = dto.OppRollHeadReason,
+            HumanLossKg = dto.HumanLossKg,
+            HumanLossReason = dto.HumanLossReason,
+            MachineLossKg = dto.MachineLossKg,
+            MachineLossReason = dto.MachineLossReason,
+            PoSurplus = dto.PoSurplus,
+            BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
+            PrintingStageInventoryKg = dto.PrintingStageInventoryKg
         };
 
         if (existingId.HasValue)
@@ -348,16 +344,16 @@ public class BlowingProcessService
         }
 
         // Tính toán tổng DC cho line
-        line.TotalLoss = line.WidthChange + line.InnerCoating + line.TrimmedEdge +
-                        line.ElectricalIssue + line.MaterialLossKg +
-                        line.HumanErrorKg + line.MachineErrorKg + line.OtherErrorKg;
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
+                          line.OppRollHeadKg + line.HumanLossKg + 
+                          line.MachineLossKg;
 
         return line;
     }
 
     private void UpdateLines(
-        BlowingProcess blowingProcess,
-        List<UpdateBlowingProcessLineDto> lineDtos,
+        PrintingProcess printingProcess,
+        List<UpdatePrintingProcessLineDto> lineDtos,
         Dictionary<int, ProductionOrder> existingProductionOrders
     )
     {
@@ -367,14 +363,14 @@ public class BlowingProcessService
             .Select(dto => dto.Id!.Value)
             .ToHashSet();
 
-        var linesToRemove = blowingProcess.Lines
+        var linesToRemove = printingProcess.Lines
             .Where(line => !dtoLineIds.Contains(line.Id))
             .ToList();
 
         foreach (var line in linesToRemove)
         {
-            blowingProcess.Lines.Remove(line);
-            _dbContext.BlowingProcessLines.Remove(line);
+            printingProcess.Lines.Remove(line);
+            _dbContext.PrintingProcessLines.Remove(line);
         }
 
         // Cập nhật hoặc thêm mới các line
@@ -382,31 +378,32 @@ public class BlowingProcessService
         {
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
+            
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
-                var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
+                var existingLine = printingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                    var updatedLine = MapUpdateToPrintingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedPrinting, item.ProductType, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.Thickness, item.SemiProductWidth);
-                blowingProcess.Lines.Add(newLine);
+                var newLine = MapUpdateToPrintingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedPrinting, item.ProductType, item.Thickness, item.SemiProductWidth);
+                printingProcess.Lines.Add(newLine);
             }
         }
     }
 
-    private static void CalculateTotals(BlowingProcess blowingProcess)
+    private static void CalculateTotals(PrintingProcess printingProcess)
     {
-        blowingProcess.TotalBlowingOutput = blowingProcess.Lines.Sum(l => l.QuantityKg);
-        blowingProcess.TotalRewindingOutput = blowingProcess.Lines.Sum(l => l.RewindOrSplitWeight);
-        blowingProcess.TotalReservedOutput = blowingProcess.Lines.Sum(l => l.ReservedWeight);
-        blowingProcess.TotalBlowingLoss = blowingProcess.Lines.Sum(l => l.TotalLoss);
+        printingProcess.TotalPrintingOutput = printingProcess.Lines.Sum(l => l.WeightKg ?? 0);
+        printingProcess.TotalProcessingMold = printingProcess.Lines.Sum(l => l.ProcessingLossKg);
+        printingProcess.TotalBlowingStageMold = printingProcess.Lines.Sum(l => l.BlowingLossKg);
+        printingProcess.TotalPrintingStageMold = printingProcess.Lines.Sum(l => l.OppRollHeadKg + l.HumanLossKg + l.MachineLossKg);
     }
 
     #endregion

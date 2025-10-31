@@ -21,6 +21,9 @@ public class AppDbContext : DbContext
     public DbSet<BlowingProcessLine> BlowingProcessLines { get; set; }
     public DbSet<ProductionShift> ProductionShifts { get; set; }
 
+    public DbSet<PrintingProcess> PrintingProcesses { get; set; }
+    public DbSet<PrintingProcessLine> PrintingProcessLines { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

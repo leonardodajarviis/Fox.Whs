@@ -19,6 +19,18 @@ public class ProductionOrder
     [Column("ItemCode")]
     public string ItemCode { get; set; } = null!;
 
+    [Column("U_IN")]
+    public string? IsPrinting { get; set; }
+
+    [Column("U_INSTATUS")]
+    public string? PrintingStatus { get; set; }
+
+    [Column("U_THOI")]
+    public string? IsBlowing { get; set; }
+
+    [Column("U_THOISTATUS")]
+    public string? BlowingStatus { get; set; }
+
     /// <summary>
     /// Mã khách hàng
     /// </summary>
@@ -32,10 +44,16 @@ public class ProductionOrder
     public string? ProductionBatch { get; set; }
 
     /// <summary>
+    /// Ngày cần hàng (in)
+    /// </summary>
+    [Column("U_INNCH")]
+    public DateTime? DateOfNeedPrinting { get; set; }
+
+    /// <summary>
     /// Ngày cần hàng (thổi)
     /// </summary>
     [Column("U_THOINCH")]
-    public string? DateOfNeedBlowing { get; set; }
+    public DateTime? DateOfNeedBlowing { get; set; }
 
     [ForeignKey("ItemCode")]
     public Item? ItemDetail { get; set; }

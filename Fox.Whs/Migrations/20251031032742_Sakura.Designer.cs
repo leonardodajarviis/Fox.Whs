@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031032742_Sakura")]
+    partial class Sakura
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,8 +107,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("BlowingStageInventory")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CardCode")
                         .HasMaxLength(15)
@@ -115,26 +118,26 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ElectricalIssue")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("ExcessPO")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("HumanErrorKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("HumanErrorReason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("InnerCoating")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
@@ -144,15 +147,15 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MachineErrorKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("MachineErrorReason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MaterialLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("MaterialLossReason")
                         .HasColumnType("nvarchar(max)");
@@ -161,8 +164,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OtherErrorKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("OtherErrorReason")
                         .HasColumnType("nvarchar(max)");
@@ -177,23 +180,23 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("QuantityKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("QuantityRolls")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("RequiredDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("RequiredDate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ReservedWeight")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("RewindOrSplitWeight")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("SemiProductWarehouseConfirmed")
                         .HasColumnType("bit");
@@ -214,16 +217,16 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalLoss")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TrimmedEdge")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("WidthChange")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
@@ -261,20 +264,20 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalBlowingStageMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalPrintingOutput")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalPrintingStageMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalProcessingMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -295,8 +298,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("BlowingLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BlowingLossReason")
                         .HasColumnType("nvarchar(max)");
@@ -318,8 +321,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("HumanLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("HumanLossReason")
                         .HasColumnType("nvarchar(max)");
@@ -332,19 +335,19 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MachineLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("MachineLossReason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MachineStopMinutes")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("OppRollHeadKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("OppRollHeadReason")
                         .HasColumnType("nvarchar(max)");
@@ -368,12 +371,12 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PrintingStageInventoryKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ProcessingLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProcessingLossReason")
                         .HasColumnType("nvarchar(max)");
@@ -387,8 +390,8 @@ namespace Fox.Whs.Migrations
                     b.Property<int>("ProductionOrderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("RequiredDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("RequiredDate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RollCount")
                         .HasColumnType("int");
@@ -402,16 +405,16 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("StopReason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Thickness")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("Thickness")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("WeightKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
@@ -539,42 +542,22 @@ namespace Fox.Whs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocEntry"));
 
-                    b.Property<string>("BlowingStatus")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_THOISTATUS");
-
                     b.Property<string>("CardCode")
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("CardCode");
 
-                    b.Property<DateTime?>("DateOfNeedBlowing")
-                        .HasColumnType("datetime2")
+                    b.Property<string>("DateOfNeedBlowing")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_THOINCH");
-
-                    b.Property<DateTime?>("DateOfNeedPrinting")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("U_INNCH");
 
                     b.Property<int>("DocNum")
                         .HasColumnType("int")
                         .HasColumnName("DocNum");
 
-                    b.Property<string>("IsBlowing")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_THOI");
-
-                    b.Property<string>("IsPrinting")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_IN");
-
                     b.Property<string>("ItemCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("ItemCode");
-
-                    b.Property<string>("PrintingStatus")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_INSTATUS");
 
                     b.Property<string>("ProductionBatch")
                         .HasColumnType("nvarchar(max)")
@@ -684,7 +667,7 @@ namespace Fox.Whs.Migrations
                         .WithMany()
                         .HasForeignKey("CardCode");
 
-                    b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
+                    b.HasOne("Fox.Whs.SapModels.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("WorkerId");
 
@@ -692,7 +675,7 @@ namespace Fox.Whs.Migrations
 
                     b.Navigation("BusinessPartner");
 
-                    b.Navigation("Worker");
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Fox.Whs.Models.PrintingProcess", b =>

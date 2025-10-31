@@ -26,13 +26,18 @@ public class ProductionOrdersController : ControllerBase
     /// <summary>
     /// Lấy danh sách Production Orders với phân trang
     /// </summary>
+    /// <param name="type">Loại công đoạn</param>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <param name="itemCode">Lọc theo mã hàng hóa</param>
     /// <returns>Danh sách Production Orders</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<ProductionOrder>))]
-    public async Task<IActionResult> GetProductionOrders([FromQuery] string? itemCode, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetProductionOrders(
+        [FromQuery] string? type,
+        [FromQuery] string? itemCode,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
     {
         if (page < 1)
         {
@@ -53,6 +58,8 @@ public class ProductionOrdersController : ControllerBase
             query = query.Where(po => po.ItemCode == itemCode);
         }
 
+        query = ApplyFilterProductionOrderType(query, type);
+
         var totalRecords = await query.CountAsync();
 
         var productionOrders = await query
@@ -70,5 +77,29 @@ public class ProductionOrdersController : ControllerBase
             TotalCount = totalRecords,
             Results = productionOrders
         });
+    }
+
+    private static IQueryable<ProductionOrder> ApplyFilterProductionOrderType(
+        IQueryable<ProductionOrder> query,
+        string? type
+    )
+    {
+        if (!string.IsNullOrEmpty(type)) return query;
+
+        switch (type)
+        {
+            case "printing":
+                query = query
+                    .Where(po => po.PrintingStatus == "N" && po.IsPrinting == "Y");
+                break;
+            case "blowing":
+                query = query
+                    .Where(po => po.BlowingStatus == "N" && po.IsBlowing == "Y");
+                break;
+            default:
+                break;
+        }
+
+        return query;
     }
 }
