@@ -89,7 +89,7 @@ public class BlowingProcessLine
     /// <summary>
     /// Lô sản xuất
     /// </summary>
-    public string ProductionBatch { get; set; } = null!;
+    public string? ProductionBatch { get; set; }
 
     [MaxLength(15)]
     public string? CardCode { get; set; }

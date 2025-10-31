@@ -324,8 +324,8 @@ Tạo một công đoạn thổi mới.
 #### Thông tin Chi tiết (CreateBlowingProcessLineDto)
 
 | Trường                          | Kiểu     | Bắt buộc | Giới hạn       | Mô tả                               |
-| ------------------------------- | -------- | -------- | -------------- | ----------------------------------- | --- | -------------------------- |
-| `productionOrderId`             | int      |          | **Có**         | -                                   |     | DocEntry của lệch sản xuất |
+| ------------------------------- | -------- | -------- | -------------- | ----------------------------------- | 
+| `productionOrderId`             | int      |          | **Có**         | DocEntry của lệch sản xuất          | 
 | `blowingMachine`                | string   | Không    | Max 50 ký tự   | Máy thổi                            |
 | `workerId`                      | integer  | Không    | -              | ID công nhân thổi                   |
 | `blowingSpeed`                  | string   | Không    | Max 50 ký tự   | Tốc độ thổi (kg/giờ)                |
