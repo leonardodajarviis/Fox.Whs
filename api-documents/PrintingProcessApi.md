@@ -153,7 +153,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "stopReason": "Thay khuôn in",
       "rollCount": 15,
       "pieceCount": 500,
-      "weightKg": 800.0,
+      "QuantityKg": 800.0,
       "requiredDate": "2025-11-01",
       "isCompleted": true,
       "actualCompletionDate": "2025-10-31T15:00:00",
@@ -221,7 +221,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `stopReason`               | string   | Nguyên nhân dừng máy               |
 | `rollCount`                | integer  | Số cuộn                            |
 | `pieceCount`               | integer  | Số chiếc                           |
-| `weightKg`                 | decimal  | Số kg                              |
+| `QuantityKg`                 | decimal  | Số kg                              |
 | `requiredDate`             | string   | Ngày cần hàng                      |
 | `isCompleted`              | boolean  | Xác nhận hoàn thành                |
 | `actualCompletionDate`     | datetime | Ngày hoàn thành thực tế            |
@@ -286,7 +286,7 @@ Tạo một công đoạn in mới.
       "stopReason": "Thay khuôn in",
       "rollCount": 15,
       "pieceCount": 500,
-      "weightKg": 800.0,
+      "QuantityKg": 800.0,
       "isCompleted": true,
       "actualCompletionDate": "2025-10-31T15:00:00",
       "delayReason": null,
@@ -336,7 +336,7 @@ Tạo một công đoạn in mới.
 | `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy               |
 | `rollCount`                | integer  | Không    | >= 0          | Số cuộn                            |
 | `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                           |
-| `weightKg`                 | decimal  | Không    | >= 0          | Số kg                              |
+| `QuantityKg`                 | decimal  | Không    | >= 0          | Số kg                              |
 | `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                |
 | `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế            |
 | `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ           |
@@ -368,7 +368,7 @@ Content-Type: application/json
   "lines": [
     {
       "productionOrderId": 1,
-      "weightKg": 800.0
+      "QuantityKg": 800.0
     }
   ]
 }
@@ -451,7 +451,7 @@ Cập nhật thông tin công đoạn in theo ID.
       "stopReason": "Thay khuôn in",
       "rollCount": 15,
       "pieceCount": 500,
-      "weightKg": 850.0,
+      "QuantityKg": 850.0,
       "isCompleted": true,
       "actualCompletionDate": "2025-10-31T15:00:00",
       "delayReason": null,
@@ -472,7 +472,7 @@ Cập nhật thông tin công đoạn in theo ID.
     {
       "id": null,
       "productionOrderId": 2,
-      "weightKg": 600.0
+      "QuantityKg": 600.0
     }
   ]
 }
@@ -510,7 +510,7 @@ Cập nhật thông tin công đoạn in theo ID.
 | `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
 | `rollCount`                | integer  | Không    | >= 0          | Số cuộn                                      |
 | `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                                     |
-| `weightKg`                 | decimal  | Không    | >= 0          | Số kg                                        |
+| `QuantityKg`                 | decimal  | Không    | >= 0          | Số kg                                        |
 | `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                          |
 | `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế                      |
 | `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ                     |
@@ -549,7 +549,7 @@ Content-Type: application/json
     {
       "id": 1,
       "productionOrderId": 1,
-      "weightKg": 850.0
+      "QuantityKg": 850.0
     }
   ]
 }
@@ -673,7 +673,7 @@ curl -X POST "http://localhost:5000/api/printing-processes" \
     "lines": [
       {
         "productionOrderId": 1,
-        "weightKg": 800.0
+        "QuantityKg": 800.0
       }
     ]
   }'
@@ -693,7 +693,7 @@ curl -X PUT "http://localhost:5000/api/printing-processes/1" \
       {
         "id": 1,
         "productionOrderId": 1,
-        "weightKg": 850.0
+        "QuantityKg": 850.0
       }
     ]
   }'
@@ -737,7 +737,7 @@ const data = {
   lines: [
     {
       productionOrderId: 1,
-      weightKg: 800.0,
+      QuantityKg: 800.0,
     },
   ],
 };
@@ -767,7 +767,7 @@ const data = {
     {
       id: 1,
       productionOrderId: 1,
-      weightKg: 850.0,
+      QuantityKg: 850.0,
     },
   ],
 };

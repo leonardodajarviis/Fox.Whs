@@ -167,7 +167,7 @@ public class RewindingProcessLine
     /// Số kg
     /// </summary>
     [Precision(18, 4)]
-    public decimal WeightKg { get; set; }
+    public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Số thùng

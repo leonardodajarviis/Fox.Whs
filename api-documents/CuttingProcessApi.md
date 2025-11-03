@@ -149,7 +149,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "machineStopMinutes": 30.0,
       "stopReason": "Thay dao cắt",
       "pieceCount": 5000.0,
-      "weightKg": 1200.0,
+      "QuantityKg": 1200.0,
       "bagCount": 100.0,
       "foldedCount": 500.0,
       "requiredDate": "2025-11-04T00:00:00",
@@ -221,7 +221,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineStopMinutes`    | decimal  | Thời gian dừng máy (phút)          |
 | `stopReason`            | string   | Nguyên nhân dừng máy               |
 | `pieceCount`            | decimal  | Số chiếc (sản lượng cắt)           |
-| `weightKg`              | decimal  | Số kg (sản lượng cắt)              |
+| `QuantityKg`              | decimal  | Số kg (sản lượng cắt)              |
 | `bagCount`              | decimal  | Số bao (sản lượng cắt)             |
 | `foldedCount`           | decimal  | Số lượng gấp xúc                   |
 | `requiredDate`          | datetime | Ngày cần hàng                      |
@@ -291,7 +291,7 @@ Tạo một công đoạn cắt mới.
       "machineStopMinutes": 30.0,
       "stopReason": "Thay dao cắt",
       "pieceCount": 5000.0,
-      "weightKg": 1200.0,
+      "QuantityKg": 1200.0,
       "bagCount": 100.0,
       "foldedCount": 500.0,
       "requiredDate": "2025-11-04T00:00:00",
@@ -347,7 +347,7 @@ Tạo một công đoạn cắt mới.
 | `machineStopMinutes`    | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)          |
 | `stopReason`            | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy               |
 | `pieceCount`            | decimal  | Không    | >= 0          | Số chiếc (sản lượng cắt)           |
-| `weightKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)              |
+| `QuantityKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)              |
 | `bagCount`              | decimal  | Không    | >= 0          | Số bao (sản lượng cắt)             |
 | `foldedCount`           | decimal  | Không    | >= 0          | Số lượng gấp xúc                   |
 | `requiredDate`          | datetime | Không    | -             | Ngày cần hàng                      |
@@ -386,7 +386,7 @@ Content-Type: application/json
   "lines": [
     {
       "productionOrderId": 1,
-      "weightKg": 1200.0
+      "QuantityKg": 1200.0
     }
   ]
 }
@@ -468,7 +468,7 @@ Cập nhật thông tin công đoạn cắt theo ID.
       "machineStopMinutes": 30.0,
       "stopReason": "Thay dao cắt",
       "pieceCount": 5000.0,
-      "weightKg": 1250.0,
+      "QuantityKg": 1250.0,
       "bagCount": 105.0,
       "foldedCount": 520.0,
       "requiredDate": "2025-11-04T00:00:00",
@@ -496,7 +496,7 @@ Cập nhật thông tin công đoạn cắt theo ID.
     {
       "id": null,
       "productionOrderId": 2,
-      "weightKg": 800.0
+      "QuantityKg": 800.0
     }
   ]
 }
@@ -533,7 +533,7 @@ Cập nhật thông tin công đoạn cắt theo ID.
 | `machineStopMinutes`    | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)                    |
 | `stopReason`            | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
 | `pieceCount`            | decimal  | Không    | >= 0          | Số chiếc (sản lượng cắt)                     |
-| `weightKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)                        |
+| `QuantityKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)                        |
 | `bagCount`              | decimal  | Không    | >= 0          | Số bao (sản lượng cắt)                       |
 | `foldedCount`           | decimal  | Không    | >= 0          | Số lượng gấp xúc                             |
 | `requiredDate`          | datetime | Không    | -             | Ngày cần hàng                                |
@@ -579,7 +579,7 @@ Content-Type: application/json
     {
       "id": 1,
       "productionOrderId": 1,
-      "weightKg": 1250.0
+      "QuantityKg": 1250.0
     }
   ]
 }
@@ -703,7 +703,7 @@ curl -X POST "http://localhost:5000/api/cutting-processes" \
     "lines": [
       {
         "productionOrderId": 1,
-        "weightKg": 1200.0
+        "QuantityKg": 1200.0
       }
     ]
   }'
@@ -723,7 +723,7 @@ curl -X PUT "http://localhost:5000/api/cutting-processes/1" \
       {
         "id": 1,
         "productionOrderId": 1,
-        "weightKg": 1250.0
+        "QuantityKg": 1250.0
       }
     ]
   }'
@@ -767,7 +767,7 @@ const data = {
   lines: [
     {
       productionOrderId: 1,
-      weightKg: 1200.0,
+      QuantityKg: 1200.0,
     },
   ],
 };
@@ -797,7 +797,7 @@ const data = {
     {
       id: 1,
       productionOrderId: 1,
-      weightKg: 1250.0,
+      QuantityKg: 1250.0,
     },
   ],
 };

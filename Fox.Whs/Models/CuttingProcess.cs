@@ -194,7 +194,7 @@ public class CuttingProcessLine
     /// Số kg (sản lượng cắt)
     /// </summary>
     [Precision(18, 4)]
-    public decimal WeightKg { get; set; }
+    public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Số bao (sản lượng cắt)

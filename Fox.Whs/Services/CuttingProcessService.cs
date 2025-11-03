@@ -261,7 +261,7 @@ public class CuttingProcessService
             MachineStopMinutes = dto.MachineStopMinutes,
             StopReason = dto.StopReason,
             PieceCount = dto.PieceCount,
-            WeightKg = dto.WeightKg,
+            QuantityKg = dto.QuantityKg,
             BagCount = dto.BagCount,
             FoldedCount = dto.FoldedCount,
             RequiredDate = requiredDate,
@@ -330,7 +330,7 @@ public class CuttingProcessService
             MachineStopMinutes = dto.MachineStopMinutes,
             StopReason = dto.StopReason,
             PieceCount = dto.PieceCount,
-            WeightKg = dto.WeightKg,
+            QuantityKg = dto.QuantityKg,
             BagCount = dto.BagCount,
             FoldedCount = dto.FoldedCount,
             RequiredDate = requiredDate,
@@ -418,7 +418,7 @@ public class CuttingProcessService
 
     private static void CalculateTotals(CuttingProcess cuttingProcess)
     {
-        cuttingProcess.TotalCuttingOutput = cuttingProcess.Lines.Sum(l => l.WeightKg);
+        cuttingProcess.TotalCuttingOutput = cuttingProcess.Lines.Sum(l => l.QuantityKg);
         cuttingProcess.TotalFoldedCount = cuttingProcess.Lines.Sum(l => l.FoldedCount);
         cuttingProcess.TotalProcessingMold = cuttingProcess.Lines.Sum(l => l.ProcessingLossKg);
     }

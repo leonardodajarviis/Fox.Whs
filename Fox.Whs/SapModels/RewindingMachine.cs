@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fox.Whs.SapModels;
 
-public class Printer
+public class RewindingMachine
 {
     [Key, Column("Code")]
     public string Code { get; set; } = null!;

@@ -205,7 +205,7 @@ public class PrintingProcessLine
     /// Số kg
     /// </summary>
     [Precision(18, 4)]
-    public decimal? WeightKg { get; set; }
+    public decimal? QuantityKg { get; set; }
 
     /// <summary>
     /// Ngày cần hàng

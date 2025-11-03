@@ -260,7 +260,7 @@ public class PrintingProcessService
             StopReason = dto.StopReason,
             RollCount = dto.RollCount,
             PieceCount = dto.PieceCount,
-            WeightKg = dto.WeightKg,
+            QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             ActualCompletionDate = dto.ActualCompletionDate,
@@ -324,7 +324,7 @@ public class PrintingProcessService
             StopReason = dto.StopReason,
             RollCount = dto.RollCount,
             PieceCount = dto.PieceCount,
-            WeightKg = dto.WeightKg,
+            QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             ActualCompletionDate = dto.ActualCompletionDate,
@@ -429,7 +429,7 @@ public class PrintingProcessService
 
     private static void CalculateTotals(PrintingProcess printingProcess)
     {
-        printingProcess.TotalPrintingOutput = printingProcess.Lines.Sum(l => l.WeightKg ?? 0);
+        printingProcess.TotalPrintingOutput = printingProcess.Lines.Sum(l => l.QuantityKg ?? 0);
         printingProcess.TotalProcessingMold = printingProcess.Lines.Sum(l => l.ProcessingLossKg);
         printingProcess.TotalBlowingStageMold = printingProcess.Lines.Sum(l => l.BlowingLossKg);
         printingProcess.TotalPrintingStageMold = printingProcess.Lines.Sum(l => l.OppRollHeadKg + l.HumanLossKg + l.MachineLossKg);

@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fox.Whs.SapModels;
 
-public class Printer
+[Table("@MAYCAT")]
+public class SlittingMachine
 {
     [Key, Column("Code")]
     public string Code { get; set; } = null!;

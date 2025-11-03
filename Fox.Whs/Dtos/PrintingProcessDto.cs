@@ -122,7 +122,7 @@ public record CreatePrintingProcessLineDto
     /// Số kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal? WeightKg { get; set; }
+    public decimal? QuantityKg { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành
@@ -316,7 +316,7 @@ public record UpdatePrintingProcessLineDto
     /// Số kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal? WeightKg { get; set; }
+    public decimal? QuantityKg { get; set; }
 
     /// <summary>
     /// Xác nhận hoàn thành

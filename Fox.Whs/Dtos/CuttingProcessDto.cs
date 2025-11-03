@@ -128,7 +128,7 @@ public record CreateCuttingProcessLineDto
     /// Số kg (sản lượng cắt)
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal WeightKg { get; set; }
+    public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Số bao (sản lượng cắt)
@@ -347,7 +347,7 @@ public record UpdateCuttingProcessLineDto
     /// Số kg (sản lượng cắt)
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal WeightKg { get; set; }
+    public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Số bao (sản lượng cắt)

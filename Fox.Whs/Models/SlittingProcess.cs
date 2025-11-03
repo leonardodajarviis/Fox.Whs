@@ -169,7 +169,8 @@ public class SlittingProcessLine
     /// <summary>
     /// Tốc độ chia
     /// </summary>
-    public decimal? SlittingSpeed { get; set; }
+    [Precision(18, 4)]
+    public decimal SlittingSpeed { get; set; }
 
     /// <summary>
     /// Thời gian bắt đầu chia
@@ -209,7 +210,7 @@ public class SlittingProcessLine
     /// Số kg
     /// </summary>
     [Precision(18, 4)]
-    public decimal WeightKg { get; set; }
+    public decimal QuantityKg { get; set; }
 
     /// <summary>
     /// Số thùng

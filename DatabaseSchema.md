@@ -160,7 +160,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 | `StopReason`               | nvarchar(500) | YES  | Nguyên nhân dừng máy               |                                |
 | `RollCount`                | int           | NO   | Số cuộn                            |                                |
 | `PieceCount`               | int           | NO   | Số chiếc                           |                                |
-| `WeightKg`                 | decimal(18,4) | YES  | Số kg                              |                                |
+| `QuantityKg`                 | decimal(18,4) | YES  | Số kg                              |                                |
 | `RequiredDate`             | datetime      | YES  | Ngày cần hàng                      |                                |
 | `IsCompleted`              | bit           | NO   | Xác nhận hoàn thành                | Default: 0                     |
 | `ActualCompletionDate`     | datetime      | YES  | Ngày hoàn thành thực tế            |                                |
@@ -228,7 +228,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `MachineStopMinutes`    | decimal(18,4) | NO   | Thời gian dừng máy (phút)          |                               |
 | `StopReason`            | nvarchar(500) | YES  | Nguyên nhân dừng máy               |                               |
 | `PieceCount`            | decimal(18,4) | NO   | Số chiếc (sản lượng cắt)           |                               |
-| `WeightKg`              | decimal(18,4) | NO   | Số kg (sản lượng cắt)              |                               |
+| `QuantityKg`              | decimal(18,4) | NO   | Số kg (sản lượng cắt)              |                               |
 | `BagCount`              | decimal(18,4) | NO   | Số bao (sản lượng cắt)             |                               |
 | `FoldedCount`           | decimal(18,4) | NO   | Số lượng gấp xúc                   |                               |
 | `RequiredDate`          | datetime      | YES  | Ngày cần hàng                      |                               |
@@ -306,7 +306,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn chia.
 | `StopReason`            | nvarchar(500) | YES  | Nguyên nhân dừng máy                  |                              |
 | `RollCount`             | decimal(18,4) | NO   | Số cuộn                               |                              |
 | `PieceCount`            | decimal(18,4) | NO   | Số chiếc                              |                              |
-| `WeightKg`              | decimal(18,4) | NO   | Số kg                                 |                              |
+| `QuantityKg`              | decimal(18,4) | NO   | Số kg                                 |                              |
 | `BoxCount`              | decimal(18,4) | NO   | Số thùng                              |                              |
 | `RequiredDate`          | datetime      | YES  | Ngày cần hàng                         |                              |
 | `IsCompleted`           | bit           | NO   | Xác nhận hoàn thành                   | Default: 0                   |
@@ -370,7 +370,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn tua.
 | `MachineStopMinutes`   | decimal(18,4) | NO   | Thời gian dừng máy (phút)            |                               |
 | `StopReason`           | nvarchar(500) | YES  | Nguyên nhân dừng máy                 |                               |
 | `RollCount`            | decimal(18,4) | NO   | Số cuộn                              |                               |
-| `WeightKg`             | decimal(18,4) | NO   | Số kg                                |                               |
+| `QuantityKg`             | decimal(18,4) | NO   | Số kg                                |                               |
 | `RequiredDate`         | datetime      | YES  | Ngày cần hàng                        |                               |
 | `IsCompleted`          | bit           | NO   | Xác nhận hoàn thành                  | Default: 0                    |
 | `ActualCompletionDate` | datetime      | YES  | Ngày hoàn thành thực tế              |                               |
@@ -551,7 +551,7 @@ TotalBlowingLoss = SUM(Lines.TotalLoss)
 TotalLossKg = ProcessingLossKg + BlowingLossKg + OppRollHeadKg
             + HumanLossKg + MachineLossKg
 
-TotalPrintingOutput = SUM(Lines.WeightKg)
+TotalPrintingOutput = SUM(Lines.QuantityKg)
 TotalProcessingMold = SUM(Lines.ProcessingLossKg)
 TotalBlowingStageMold = SUM(Lines.BlowingLossKg)
 TotalPrintingStageMold = SUM(Lines.OppRollHeadKg + HumanLossKg + MachineLossKg)
@@ -563,7 +563,7 @@ TotalPrintingStageMold = SUM(Lines.OppRollHeadKg + HumanLossKg + MachineLossKg)
 TotalLossKg = ProcessingLossKg + BlowingLossKg + PrintingLossKg
             + HumanLossKg + MachineLossKg
 
-TotalCuttingOutput = SUM(Lines.WeightKg)
+TotalCuttingOutput = SUM(Lines.QuantityKg)
 TotalFoldedCount = SUM(Lines.FoldedCount)
 TotalProcessingMold = SUM(Lines.ProcessingLossKg)
 ```
@@ -585,7 +585,7 @@ TotalSlittingStageMold = SUM(Lines.HumanLossKg + MachineLossKg)
 ```
 TotalLossKg = BlowingLossKg + HumanLossKg + MachineLossKg
 
-TotalRewindingOutput = SUM(Lines.WeightKg)
+TotalRewindingOutput = SUM(Lines.QuantityKg)
 TotalBlowingStageMold = SUM(Lines.BlowingLossKg)
 TotalRewindingStageMold = SUM(Lines.HumanLossKg + MachineLossKg)
 ```

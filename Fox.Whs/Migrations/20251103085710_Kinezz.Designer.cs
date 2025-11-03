@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103085710_Kinezz")]
+    partial class Kinezz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1058,9 +1061,8 @@ namespace Fox.Whs.Migrations
                     b.Property<int>("SlittingProcessId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SlittingSpeed")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                    b.Property<decimal?>("SlittingSpeed")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
