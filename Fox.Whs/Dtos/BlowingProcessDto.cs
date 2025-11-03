@@ -8,12 +8,6 @@ namespace Fox.Whs.Dtos;
 public record CreateBlowingProcessDto
 {
     /// <summary>
-    /// ID trưởng ca
-    /// </summary>
-    [Required(ErrorMessage = "Trưởng ca là bắt buộc")]
-    public int ShiftLeaderId { get; set; }
-
-    /// <summary>
     /// Bản nháp
     /// </summary>
     public bool IsDraft { get; set; }
@@ -42,12 +36,6 @@ public record CreateBlowingProcessDto
 /// </summary>
 public record UpdateBlowingProcessDto
 {
-    /// <summary>
-    /// ID trưởng ca
-    /// </summary>
-    [Required(ErrorMessage = "Trưởng ca là bắt buộc")]
-    public int ShiftLeaderId { get; set; }
-
     /// <summary>
     /// Ngày sản xuất
     /// </summary>

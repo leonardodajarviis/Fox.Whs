@@ -38,6 +38,7 @@ public class PrintingProcessService
         var totalCount = await query.CountAsync();
 
         var result = await query
+            .Include(cp => cp.ShiftLeader)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(pp => pp.ProductionDate)
             .ToListAsync();
@@ -74,18 +75,10 @@ public class PrintingProcessService
     /// </summary>
     public async Task<PrintingProcess> CreateAsync(CreatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn in mới cho trưởng ca {LeaderId}", dto.ShiftLeaderId);
+        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
+        _logger.LogInformation("Tạo công đoạn in mới cho trưởng ca {LeaderId}", currentEmployeeId);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
-
-        // Kiểm tra trưởng ca tồn tại
-        var shiftLeaderExists = await _dbContext.Employees
-            .AnyAsync(e => e.Id == dto.ShiftLeaderId);
-
-        if (!shiftLeaderExists)
-        {
-            throw new NotFoundException($"Không tìm thấy trưởng ca với ID: {dto.ShiftLeaderId}");
-        }
 
         var workerIds = dto.Lines
             .Where(l => l.WorkerId.HasValue)
@@ -132,7 +125,6 @@ public class PrintingProcessService
 
         var printingProcess = new PrintingProcess
         {
-            ShiftLeaderId = dto.ShiftLeaderId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
@@ -169,15 +161,6 @@ public class PrintingProcessService
             throw new NotFoundException($"Không tìm thấy công đoạn in với ID: {id}");
         }
 
-        // Kiểm tra trưởng ca tồn tại
-        var shiftLeaderExists = await _dbContext.Employees
-            .AnyAsync(e => e.Id == dto.ShiftLeaderId);
-
-        if (!shiftLeaderExists)
-        {
-            throw new NotFoundException($"Không tìm thấy trưởng ca với ID: {dto.ShiftLeaderId}");
-        }
-
         var workerIds = dto.Lines
             .Where(l => l.WorkerId.HasValue)
             .Select(l => l.WorkerId!.Value)
@@ -199,7 +182,6 @@ public class PrintingProcessService
             .ToDictionaryAsync(po => po.DocEntry);
 
         // Cập nhật thông tin cơ bản
-        printingProcess.ShiftLeaderId = dto.ShiftLeaderId;
         printingProcess.ProductionDate = dto.ProductionDate;
         printingProcess.ProductionShift = dto.ProductionShift;
         printingProcess.IsDraft = dto.IsDraft;

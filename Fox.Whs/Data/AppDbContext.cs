@@ -29,6 +29,11 @@ public class AppDbContext : DbContext
     public DbSet<CuttingProcessLine> CuttingProcessLines { get; set; }
     public DbSet<CuttingMachine> CuttingMachines { get; set; }
 
+    public DbSet<SlittingProcess> SlittingProcesses { get; set; }
+    public DbSet<SlittingProcessLine> SlittingProcessLines { get; set; }
+    public DbSet<RewindingProcess> RewindingProcesses { get; set; }
+    public DbSet<RewindingProcessLine> RewindingProcessLines { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Fox.Whs.Models;
 
 /// <summary>
-/// Công đoạn Thổi
+/// Công đoạn Chia
 /// </summary>
-[Table("FoxWms_BlowingProcess")]
-public class BlowingProcess
+[Table("FoxWms_SlittingProcess")]
+public class SlittingProcess
 {
+    [Key]
     public int Id { get; set; }
 
     public int ShiftLeaderId { get; set; }
@@ -40,32 +41,34 @@ public class BlowingProcess
     /// </summary>
     public string ProductionShift { get; set; } = null!;
 
-
     /// <summary>
-    /// Tổng sản lượng thổi
+    /// Tổng DC gia công
     /// </summary>
     [Precision(18, 4)]
-    public decimal TotalBlowingOutput { get; set; }
+    public decimal TotalProcessingMold { get; set; }
 
     /// <summary>
-    /// Tổng sản lượng tua/chia/tờ
+    /// Tổng DC công đoạn Thổi
     /// </summary>
     [Precision(18, 4)]
-    public decimal TotalRewindingOutput { get; set; }
+    public decimal TotalBlowingStageMold { get; set; }
 
     /// <summary>
-    /// Tổng sản lượng dự trữ
+    /// Tổng DC công đoạn In
     /// </summary>
     [Precision(18, 4)]
-    public decimal TotalReservedOutput { get; set; }
+    public decimal TotalPrintingStageMold { get; set; }
 
     /// <summary>
-    /// Tổng DC công đoạn thổi
+    /// Tổng DC công đoạn Chia
     /// </summary>
     [Precision(18, 4)]
-    public decimal TotalBlowingLoss { get; set; }
+    public decimal TotalSlittingStageMold { get; set; }
 
-    public List<BlowingProcessLine> Lines { get; set; } = [];
+    /// <summary>
+    /// Dòng chia
+    /// </summary>
+    public List<SlittingProcessLine> Lines { get; set; } = [];
 
     public short CreatorId { get; set; }
 
@@ -84,21 +87,17 @@ public class BlowingProcess
     public byte[] RowVersion { get; set; } = [];
 }
 
-/// <summary>
-/// Thông tin chi tiết công đoạn thổi sản phẩm
-/// </summary>
-[Table("FoxWms_BlowingProcessLine")]
-public class BlowingProcessLine
+[Table("FoxWms_SlittingProcessLine")]
+public class SlittingProcessLine
 {
     [Key]
     public int Id { get; set; }
-
-    public int BlowingProcessId { get; set; }
-
     public int ProductionOrderId { get; set; }
 
-    [ForeignKey("BlowingProcessId"), JsonIgnore]
-    public BlowingProcess? BlowingProcess { get; set; }
+    public int SlittingProcessId { get; set; }
+
+    [ForeignKey("SlittingProcessId"), JsonIgnore]
+    public SlittingProcess? SlittingProcess { get; set; }
 
     /// <summary>
     /// Mã hàng
@@ -143,70 +142,80 @@ public class BlowingProcessLine
     public string? SemiProductWidth { get; set; }
 
     /// <summary>
-    /// Máy thổi
+    /// Tên hình in
     /// </summary>
-    public string? BlowingMachine { get; set; }
+    public string? PrintPatternName { get; set; }
 
-    [JsonIgnore]
-    [ForeignKey("WorkerId")]
-    public Employee? Worker { get; set; }
+    /// <summary>
+    /// Số màu in
+    /// </summary>
+    public string? ColorCount { get; set; }
+
+    /// <summary>
+    /// Máy chia
+    /// </summary>
+    public string? SlittingMachine { get; set; } = null!;
 
     public int? WorkerId { get; set; }
 
+    [ForeignKey("WorkerId"), JsonIgnore]
+    public Employee? Worker { get; set; }
+
     /// <summary>
-    /// Tên công nhân thổi
+    /// Tên công nhân in
     /// </summary>
-    [NotMapped]
     public string? WorkerName => Worker?.FirstName;
 
     /// <summary>
-    /// Tốc độ thổi (kg/giờ)
+    /// Tốc độ chia
     /// </summary>
-    public string? BlowingSpeed { get; set; }
+    public decimal? SlittingSpeed { get; set; }
 
     /// <summary>
-    /// Thời gian bắt đầu thổi
+    /// Thời gian bắt đầu chia
     /// </summary>
     public DateTime? StartTime { get; set; }
 
     /// <summary>
-    /// Thời gian kết thúc thổi
+    /// Thời gian kết thúc chia
     /// </summary>
     public DateTime? EndTime { get; set; }
 
     /// <summary>
     /// Thời gian dừng máy (phút)
     /// </summary>
-    public int StopDurationMinutes { get; set; }
+    [Precision(18, 4)]
+    public decimal MachineStopMinutes { get; set; }
 
     /// <summary>
     /// Nguyên nhân dừng máy
     /// </summary>
     public string? StopReason { get; set; }
 
+    // --- Sản lượng chia ---
     /// <summary>
-    /// Sản lượng thổi (số cuộn)
+    /// Số cuộn
     /// </summary>
     [Precision(18, 4)]
-    public decimal QuantityRolls { get; set; }
+    public decimal RollCount { get; set; }
 
     /// <summary>
-    /// Sản lượng thổi (số kg)
+    /// Số chiếc
     /// </summary>
     [Precision(18, 4)]
-    public decimal QuantityKg { get; set; }
+    public decimal PieceCount { get; set; }
 
     /// <summary>
-    /// Sản lượng tua/chia/tờ (kg)
+    /// Số kg
     /// </summary>
     [Precision(18, 4)]
-    public decimal RewindOrSplitWeight { get; set; }
+    public decimal WeightKg { get; set; }
 
     /// <summary>
-    /// Sản lượng dự trữ (kg)
+    /// Số thùng
     /// </summary>
     [Precision(18, 4)]
-    public decimal ReservedWeight { get; set; }
+    public decimal BoxCount { get; set; }
 
     /// <summary>
     /// Ngày cần hàng
@@ -219,108 +228,107 @@ public class BlowingProcessLine
     public bool IsCompleted { get; set; }
 
     /// <summary>
-    /// Ngày hoàn thành thực tế
+    /// Ngày hoàn thành thực tế (QLSX)
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }
 
     /// <summary>
-    /// Nguyên nhân chậm tiến độ (QLSX ghi)
+    /// Nguyên nhân chậm tiến độ
     /// </summary>
     public string? DelayReason { get; set; }
 
+    // --- DC gia công ---
     /// <summary>
-    /// Đổi khổ
+    /// DC gia công (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal WidthChange { get; set; }
+    public decimal ProcessingLossKg { get; set; }
 
     /// <summary>
-    /// Tráng lòng
+    /// DC gia công - Nguyên nhân
+    /// </summary>
+    public string? ProcessingLossReason { get; set; }
+
+    // --- DC do công đoạn thổi ---
+    /// <summary>
+    /// DC do công đoạn thổi (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal InnerCoating { get; set; }
+    public decimal BlowingLossKg { get; set; }
 
     /// <summary>
-    /// Cắt via
+    /// DC do công đoạn thổi - Nguyên nhân
+    /// </summary>
+    public string? BlowingLossReason { get; set; }
+
+    // --- DC do công đoạn in ---
+    /// <summary>
+    /// DC do công đoạn in (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal TrimmedEdge { get; set; }
+    public decimal PrintingLossKg { get; set; }
 
     /// <summary>
-    /// Sự cố điện
+    /// DC do công đoạn in - Nguyên nhân
+    /// </summary>
+    public string? PrintingLossReason { get; set; }
+
+    /// <summary>
+    /// Số máy in
+    /// </summary>
+    public string? PrintingMachine { get; set; }
+
+    /// <summary>
+    /// Cắt via (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal ElectricalIssue { get; set; }
+    public decimal CutViaKg { get; set; }
 
+    // --- DC do công đoạn chia ---
     /// <summary>
-    /// DC nguyên liệu (kg)
+    /// DC do công đoạn chia - Con người (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal MaterialLossKg { get; set; }
+    public decimal HumanLossKg { get; set; }
 
     /// <summary>
-    /// Ghi rõ nguyên nhân DC nguyên liệu
+    /// DC do công đoạn chia - Nguyên nhân con người
     /// </summary>
-    public string? MaterialLossReason { get; set; }
+    public string? HumanLossReason { get; set; }
 
     /// <summary>
-    /// DC con người (kg)
-    /// </summary>
-    [Precision(18, 4)]
-    public decimal HumanErrorKg { get; set; }
-
-    /// <summary>
-    /// Ghi rõ nguyên nhân DC con người
-    /// </summary>
-    public string? HumanErrorReason { get; set; }
-
-    /// <summary>
-    /// DC lỗi máy (kg)
+    /// DC do công đoạn chia - Lỗi máy (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal MachineErrorKg { get; set; }
+    public decimal MachineLossKg { get; set; }
 
     /// <summary>
-    /// Ghi rõ nguyên nhân DC lỗi máy
+    /// DC do công đoạn chia - Nguyên nhân lỗi máy
     /// </summary>
-    public string? MachineErrorReason { get; set; }
+    public string? MachineLossReason { get; set; }
 
     /// <summary>
-    /// DC lỗi khác (kg)
-    /// </summary>
-    [Precision(18, 4)]
-    public decimal OtherErrorKg { get; set; }
-
-    /// <summary>
-    /// Ghi rõ nguyên nhân DC lỗi khác
-    /// </summary>
-    public string? OtherErrorReason { get; set; }
-
-    /// <summary>
-    /// Tổng DC
+    /// Tổng DC (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal TotalLoss { get; set; }
+    public decimal TotalLossKg { get; set; }
 
+    // --- Thừa PO ---
     /// <summary>
-    /// Thừa PO
+    /// Thừa PO - BTP In (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal ExcessPO { get; set; }
+    public decimal PoSurplusBtpInKg { get; set; }
+
+    /// <summary>
+    /// Thừa PO - TP Chia (Kg)
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal PoSurplusTpSlittingKg { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP
     /// </summary>
-    public bool SemiProductWarehouseConfirmed { get; set; }
-
-    /// <summary>
-    /// Ghi chú
-    /// </summary>
-    public string? Note { get; set; }
-
-    /// <summary>
-    /// Tồn kho công đoạn Thổi
-    /// </summary>
     [Precision(18, 4)]
-    public decimal BlowingStageInventory { get; set; }
+    public bool BtpWarehouseConfirmed { get; set; }
 }

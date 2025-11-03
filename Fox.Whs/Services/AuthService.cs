@@ -61,12 +61,17 @@ public class AuthService
         var user = await _dbContext.Users.AsNoTracking()
             .Include(x => x.Permissions)
             .FirstOrDefaultAsync(u => u.Username == username);
-        
+
         if (user == null)
         {
             _logger.LogWarning("User không tồn tại trong SAP DB: {Username}", username);
             throw new NotFoundException("Người dùng không tồn tại");
         }
+
+        var employee = await _dbContext.Employees.AsNoTracking()
+            .FirstOrDefaultAsync(e => e.UserId == user.Id);
+        
+        user.EmployeeInfo = employee;
 
         var token = GenerateJwtToken(user);
 
@@ -89,9 +94,10 @@ public class AuthService
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Username ?? string.Empty),
+            // new Claim(JwtRegisteredClaimNames.Sub, user.Username ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim("employeeId", user.EmployeeInfo?.Id.ToString() ?? "no-employee-info"),
             new Claim(ClaimTypes.Name, user.Username ?? string.Empty),
         };
 

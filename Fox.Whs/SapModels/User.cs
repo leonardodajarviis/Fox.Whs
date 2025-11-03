@@ -17,6 +17,9 @@ public class User
     [Column("U_NAME")]
     public string FullName { get; set; } = null!;
 
+    [NotMapped]
+    public Employee? EmployeeInfo { get; set; }
+
     public ICollection<UserPermission> Permissions { get; set; } = [];
 }
 

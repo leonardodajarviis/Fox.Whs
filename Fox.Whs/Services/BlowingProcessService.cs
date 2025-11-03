@@ -38,6 +38,7 @@ public class BlowingProcessService
         var totalCount = await query.CountAsync();
 
         var result = await query
+            .Include(bp => bp.ShiftLeader)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(bp => bp.ProductionDate)
             .ToListAsync();
@@ -72,18 +73,11 @@ public class BlowingProcessService
     /// </summary>
     public async Task<BlowingProcess> CreateAsync(CreateBlowingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn thổi mới cho trưởng ca {LeaderId}", dto.ShiftLeaderId);
+        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
+
+        _logger.LogInformation("Tạo công đoạn thổi mới cho trưởng ca {LeaderId}", currentEmployeeId);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
-
-        // Kiểm tra trưởng ca tồn tại
-        var shiftLeaderExists = await _dbContext.Employees
-            .AnyAsync(e => e.Id == dto.ShiftLeaderId);
-
-        if (!shiftLeaderExists)
-        {
-            throw new NotFoundException($"Không tìm thấy trưởng ca với ID: {dto.ShiftLeaderId}");
-        }
 
         var workerIds = dto.Lines
             .Where(l => l.WorkerId.HasValue)
@@ -128,7 +122,7 @@ public class BlowingProcessService
 
         var blowingProcess = new BlowingProcess
         {
-            ShiftLeaderId = dto.ShiftLeaderId,
+            ShiftLeaderId = currentEmployeeId,
             CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
@@ -164,15 +158,6 @@ public class BlowingProcessService
             throw new NotFoundException($"Không tìm thấy công đoạn thổi với ID: {id}");
         }
 
-        // Kiểm tra trưởng ca tồn tại
-        var shiftLeaderExists = await _dbContext.Employees
-            .AnyAsync(e => e.Id == dto.ShiftLeaderId);
-
-        if (!shiftLeaderExists)
-        {
-            throw new NotFoundException($"Không tìm thấy trưởng ca với ID: {dto.ShiftLeaderId}");
-        }
-
         var workerIds = dto.Lines
             .Where(l => l.WorkerId.HasValue)
             .Select(l => l.WorkerId!.Value)
@@ -196,7 +181,6 @@ public class BlowingProcessService
 
 
         // Cập nhật thông tin cơ bản
-        blowingProcess.ShiftLeaderId = dto.ShiftLeaderId;
         blowingProcess.ProductionDate = dto.ProductionDate;
         blowingProcess.ProductionShift = dto.ProductionShift;
         blowingProcess.IsDraft = dto.IsDraft;

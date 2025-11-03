@@ -6,7 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fox.Whs.Models;
 
-[Table("FoxWms_CuttingProcesses")]
+/// <summary>
+/// Công đoạn Cắt
+/// </summary>
+[Table("FoxWms_CuttingProcess")]
 public class CuttingProcess
 {
     [Key]
@@ -45,7 +48,7 @@ public class CuttingProcess
     public decimal TotalCuttingOutput { get; set; }
 
     /// <summary>
-    /// Số lượng gấp xúc
+    /// Tổng sản lượng gấp xúp
     /// </summary>
     [Precision(18, 4)]
     public decimal TotalFoldedCount { get; set; }
@@ -74,7 +77,7 @@ public class CuttingProcess
     public byte[] RowVersion { get; set; } = [];
 }
 
-[Table("FoxWms_CuttingProcessesLine")]
+[Table("FoxWms_CuttingProcessLine")]
 public class CuttingProcessLine
 {
     [Key]
