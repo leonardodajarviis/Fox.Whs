@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class ProductionOrdersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<ProductionOrdersController> _logger;
 
-    public ProductionOrdersController(AppDbContext sapDbContext, ILogger<ProductionOrdersController> logger)
+    public ProductionOrdersController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -51,7 +49,6 @@ public class ProductionOrdersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Production Orders - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var query = _dbContext.ProductionOrders.AsNoTracking().AsQueryable();
 

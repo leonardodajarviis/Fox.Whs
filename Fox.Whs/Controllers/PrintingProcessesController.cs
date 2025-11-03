@@ -15,14 +15,11 @@ namespace Fox.Whs.Controllers;
 public class PrintingProcessesController : ControllerBase
 {
     private readonly PrintingProcessService _printingProcessService;
-    private readonly ILogger<PrintingProcessesController> _logger;
 
     public PrintingProcessesController(
-        PrintingProcessService printingProcessService,
-        ILogger<PrintingProcessesController> logger)
+        PrintingProcessService printingProcessService)
     {
         _printingProcessService = printingProcessService;
-        _logger = logger;
     }
 
     /// <summary>
@@ -32,7 +29,6 @@ public class PrintingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<PrintingProcess>))]
     public async Task<IActionResult> GetAll([FromQuery] QueryParam qp)
     {
-        _logger.LogInformation("Lấy danh sách tất cả công đoạn in");
         var printingProcesses = await _printingProcessService.GetAllAsync(qp);
         return Ok(printingProcesses);
     }
@@ -44,7 +40,6 @@ public class PrintingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PrintingProcess))]
     public async Task<IActionResult> GetById(int id)
     {
-        _logger.LogInformation("Lấy công đoạn in theo ID: {Id}", id);
         var printingProcess = await _printingProcessService.GetByIdAsync(id);
         return Ok(printingProcess);
     }
@@ -55,7 +50,6 @@ public class PrintingProcessesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn in mới");
         var printingProcess = await _printingProcessService.CreateAsync(dto);
         return Ok(printingProcess);
     }
@@ -66,7 +60,6 @@ public class PrintingProcessesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn in với ID: {Id}", id);
         var printingProcess = await _printingProcessService.UpdateAsync(id, dto);
         return Ok(printingProcess);
     }
@@ -77,7 +70,6 @@ public class PrintingProcessesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        _logger.LogInformation("Xóa công đoạn in với ID: {Id}", id);
         await _printingProcessService.DeleteAsync(id);
         return NoContent();
     }

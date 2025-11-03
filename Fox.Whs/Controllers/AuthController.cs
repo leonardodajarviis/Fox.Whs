@@ -11,14 +11,11 @@ namespace Fox.Whs.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
-    private readonly ILogger<AuthController> _logger;
 
     public AuthController(
-        AuthService authService,
-        ILogger<AuthController> logger)
+        AuthService authService)
     {
         _authService = authService;
-        _logger = logger;
     }
 
     /// <summary>
@@ -27,14 +24,12 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLogin loginDto)
     {
-        _logger.LogInformation("Đang xử lý login cho user: {Username}", loginDto.Username);
 
         // Xác thực qua AuthService (sẽ gọi SAP bên trong)
         var result = await _authService.AuthenticateAsync(
             loginDto.Username,
             loginDto.Password);
 
-        _logger.LogInformation("Login thành công cho user: {Username}", loginDto.Username);
 
         return Ok(result);
     }
@@ -48,7 +43,6 @@ public class AuthController : ControllerBase
     {
         // JWT token sẽ tự động hết hạn theo thời gian cấu hình
         // Client cần xóa token ở phía mình
-        _logger.LogInformation("User đã logout");
 
         return Ok(new
         {

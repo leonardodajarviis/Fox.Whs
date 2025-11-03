@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class BlowersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<BlowersController> _logger;
 
-    public BlowersController(AppDbContext sapDbContext, ILogger<BlowersController> logger)
+    public BlowersController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -45,7 +43,6 @@ public class BlowersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Máy thổi - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var totalRecords = await _dbContext.Blowers.AsNoTracking().CountAsync();
 

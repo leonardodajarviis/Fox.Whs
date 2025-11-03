@@ -14,14 +14,11 @@ namespace Fox.Whs.Controllers;
 public class CuttingProcessesController : ControllerBase
 {
     private readonly CuttingProcessService _cuttingProcessService;
-    private readonly ILogger<CuttingProcessesController> _logger;
 
     public CuttingProcessesController(
-        CuttingProcessService cuttingProcessService,
-        ILogger<CuttingProcessesController> logger)
+        CuttingProcessService cuttingProcessService)
     {
         _cuttingProcessService = cuttingProcessService;
-        _logger = logger;
     }
 
     /// <summary>
@@ -31,7 +28,6 @@ public class CuttingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<CuttingProcess>))]
     public async Task<IActionResult> GetAll([FromQuery] QueryParam qp)
     {
-        _logger.LogInformation("Lấy danh sách tất cả công đoạn cắt");
         var cuttingProcesses = await _cuttingProcessService.GetAllAsync(qp);
         return Ok(cuttingProcesses);
     }
@@ -43,7 +39,6 @@ public class CuttingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CuttingProcess))]
     public async Task<IActionResult> GetById(int id)
     {
-        _logger.LogInformation("Lấy công đoạn cắt theo ID: {Id}", id);
         var cuttingProcess = await _cuttingProcessService.GetByIdAsync(id);
         return Ok(cuttingProcess);
     }
@@ -54,7 +49,6 @@ public class CuttingProcessesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCuttingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn cắt mới");
         var cuttingProcess = await _cuttingProcessService.CreateAsync(dto);
         return Ok(cuttingProcess);
     }
@@ -65,7 +59,6 @@ public class CuttingProcessesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCuttingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn cắt với ID: {Id}", id);
         var cuttingProcess = await _cuttingProcessService.UpdateAsync(id, dto);
         return Ok(cuttingProcess);
     }
@@ -76,7 +69,6 @@ public class CuttingProcessesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        _logger.LogInformation("Xóa công đoạn cắt với ID: {Id}", id);
         await _cuttingProcessService.DeleteAsync(id);
         return NoContent();
     }

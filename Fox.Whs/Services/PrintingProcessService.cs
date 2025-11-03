@@ -14,17 +14,14 @@ namespace Fox.Whs.Services;
 public class PrintingProcessService
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<PrintingProcessService> _logger;
 
     private readonly UserContextService _userContextService;
 
     public PrintingProcessService(
         AppDbContext dbContext,
-        ILogger<PrintingProcessService> logger,
         UserContextService userContextService)
     {
         _dbContext = dbContext;
-        _logger = logger;
         _userContextService = userContextService;
     }
 
@@ -76,7 +73,6 @@ public class PrintingProcessService
     public async Task<PrintingProcess> CreateAsync(CreatePrintingProcessDto dto)
     {
         var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
-        _logger.LogInformation("Tạo công đoạn in mới cho trưởng ca {LeaderId}", currentEmployeeId);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -138,7 +134,6 @@ public class PrintingProcessService
         _dbContext.PrintingProcesses.Add(printingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã tạo công đoạn in với ID: {Id}", printingProcess.Id);
 
         return await GetByIdAsync(printingProcess.Id);
     }
@@ -148,7 +143,6 @@ public class PrintingProcessService
     /// </summary>
     public async Task<PrintingProcess> UpdateAsync(int id, UpdatePrintingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn in với ID: {Id}", id);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -196,7 +190,6 @@ public class PrintingProcessService
 
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã cập nhật công đoạn in với ID: {Id}", id);
 
         return await GetByIdAsync(id);
     }
@@ -206,7 +199,6 @@ public class PrintingProcessService
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        _logger.LogInformation("Xóa công đoạn in với ID: {Id}", id);
 
         var printingProcess = await _dbContext.PrintingProcesses
             .Include(pp => pp.Lines)
@@ -220,7 +212,6 @@ public class PrintingProcessService
         _dbContext.PrintingProcesses.Remove(printingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã xóa công đoạn in với ID: {Id}", id);
     }
 
     #region Private Methods

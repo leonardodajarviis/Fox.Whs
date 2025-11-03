@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class ItemsController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<ItemsController> _logger;
 
-    public ItemsController(AppDbContext sapDbContext, ILogger<ItemsController> logger)
+    public ItemsController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -46,7 +44,6 @@ public class ItemsController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Items - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var query = _dbContext.Items.AsNoTracking().AsQueryable();
 

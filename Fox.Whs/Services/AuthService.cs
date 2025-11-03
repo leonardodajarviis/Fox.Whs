@@ -16,18 +16,15 @@ public class AuthService
     private readonly SapServiceLayerAuthService _sapAuthService;
     private readonly AppDbContext _dbContext;
     private readonly JwtOptions _jwtOptions;
-    private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         SapServiceLayerAuthService sapAuthService,
         AppDbContext sapDbContext,
-        IOptions<JwtOptions> jwtOptions,
-        ILogger<AuthService> logger)
+        IOptions<JwtOptions> jwtOptions)
     {
         _sapAuthService = sapAuthService;
         _dbContext = sapDbContext;
         _jwtOptions = jwtOptions.Value;
-        _logger = logger;
     }
 
     /// <summary>
@@ -35,8 +32,6 @@ public class AuthService
     /// </summary>
     public async Task<AuthResponse> AuthenticateAsync(string username, string password)
     {
-        _logger.LogInformation("Bắt đầu xác thực user: {Username}", username);
-
         // Validate input
         if (string.IsNullOrWhiteSpace(username))
         {
@@ -52,11 +47,8 @@ public class AuthService
 
         // if (string.IsNullOrEmpty(sessionId))
         // {
-        //     _logger.LogWarning("Xác thực SAP thất bại cho user: {Username}", username);
         //     throw new UnauthorizedException("Tên đăng nhập hoặc mật khẩu không đúng");
         // }
-
-        _logger.LogInformation("Xác thực SAP thành công cho user: {Username}", username);
 
         var user = await _dbContext.Users.AsNoTracking()
             .Include(x => x.Permissions)
@@ -64,7 +56,6 @@ public class AuthService
 
         if (user == null)
         {
-            _logger.LogWarning("User không tồn tại trong SAP DB: {Username}", username);
             throw new NotFoundException("Người dùng không tồn tại");
         }
 
@@ -74,8 +65,6 @@ public class AuthService
         user.EmployeeInfo = employee;
 
         var token = GenerateJwtToken(user);
-
-        _logger.LogInformation("Tạo JWT token thành công cho user: {Username}", username);
 
         return new AuthResponse
         {
@@ -146,9 +135,8 @@ public class AuthService
         {
             throw new UnauthorizedException("Token không hợp lệ hoặc đã hết hạn");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogWarning(ex, "Token validation thất bại");
             throw new UnauthorizedException("Token không hợp lệ");
         }
     }

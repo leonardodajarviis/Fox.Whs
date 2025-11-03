@@ -14,16 +14,13 @@ namespace Fox.Whs.Services;
 public class BlowingProcessService
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<BlowingProcessService> _logger;
     private readonly UserContextService _userContextService;
 
     public BlowingProcessService(
         AppDbContext dbContext,
-        ILogger<BlowingProcessService> logger,
         UserContextService userContextService)
     {
         _dbContext = dbContext;
-        _logger = logger;
         _userContextService = userContextService;
     }
 
@@ -75,7 +72,6 @@ public class BlowingProcessService
     {
         var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
-        _logger.LogInformation("Tạo công đoạn thổi mới cho trưởng ca {LeaderId}", currentEmployeeId);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -136,7 +132,6 @@ public class BlowingProcessService
         _dbContext.BlowingProcesses.Add(blowingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã tạo công đoạn thổi với ID: {Id}", blowingProcess.Id);
 
         return await GetByIdAsync(blowingProcess.Id);
     }
@@ -146,7 +141,6 @@ public class BlowingProcessService
     /// </summary>
     public async Task<BlowingProcess> UpdateAsync(int id, UpdateBlowingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn thổi với ID: {Id}", id);
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var blowingProcess = await _dbContext.BlowingProcesses
@@ -195,7 +189,6 @@ public class BlowingProcessService
 
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã cập nhật công đoạn thổi với ID: {Id}", id);
 
         return await GetByIdAsync(id);
     }
@@ -205,7 +198,6 @@ public class BlowingProcessService
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        _logger.LogInformation("Xóa công đoạn thổi với ID: {Id}", id);
 
         var blowingProcess = await _dbContext.BlowingProcesses
             .Include(bp => bp.Lines)
@@ -219,7 +211,6 @@ public class BlowingProcessService
         _dbContext.BlowingProcesses.Remove(blowingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã xóa công đoạn thổi với ID: {Id}", id);
     }
 
     #region Private Methods

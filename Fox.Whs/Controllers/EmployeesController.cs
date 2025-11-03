@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<EmployeesController> _logger;
 
-    public EmployeesController(AppDbContext sapDbContext, ILogger<EmployeesController> logger)
+    public EmployeesController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -45,7 +43,6 @@ public class EmployeesController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Employees - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var totalRecords = await _dbContext.Employees.AsNoTracking().CountAsync();
 

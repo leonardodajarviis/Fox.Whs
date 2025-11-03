@@ -14,17 +14,14 @@ namespace Fox.Whs.Services;
 public class CuttingProcessService
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<CuttingProcessService> _logger;
 
     private readonly UserContextService _userContextService;
 
     public CuttingProcessService(
         AppDbContext dbContext,
-        ILogger<CuttingProcessService> logger,
         UserContextService userContextService)
     {
         _dbContext = dbContext;
-        _logger = logger;
         _userContextService = userContextService;
     }
 
@@ -76,7 +73,6 @@ public class CuttingProcessService
     public async Task<CuttingProcess> CreateAsync(CreateCuttingProcessDto dto)
     {
         var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
-        _logger.LogInformation("Tạo công đoạn cắt mới cho trưởng ca {LeaderId}", currentEmployeeId);
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var workerIds = dto.Lines
@@ -139,7 +135,6 @@ public class CuttingProcessService
         _dbContext.CuttingProcesses.Add(cuttingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã tạo công đoạn cắt với ID: {Id}", cuttingProcess.Id);
 
         return await GetByIdAsync(cuttingProcess.Id);
     }
@@ -149,7 +144,6 @@ public class CuttingProcessService
     /// </summary>
     public async Task<CuttingProcess> UpdateAsync(int id, UpdateCuttingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn cắt với ID: {Id}", id);
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -198,7 +192,6 @@ public class CuttingProcessService
 
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã cập nhật công đoạn cắt với ID: {Id}", id);
 
         return await GetByIdAsync(id);
     }
@@ -208,7 +201,6 @@ public class CuttingProcessService
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        _logger.LogInformation("Xóa công đoạn cắt với ID: {Id}", id);
 
         var cuttingProcess = await _dbContext.CuttingProcesses
             .Include(cp => cp.Lines)
@@ -222,7 +214,6 @@ public class CuttingProcessService
         _dbContext.CuttingProcesses.Remove(cuttingProcess);
         await _dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Đã xóa công đoạn cắt với ID: {Id}", id);
     }
 
     #region Private Methods

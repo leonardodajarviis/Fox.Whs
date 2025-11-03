@@ -9,18 +9,15 @@ public class SapServiceLayerAuthService
 {
     private readonly HttpClient _httpClient;
     private readonly SapServiceLayerOptions _options;
-    private readonly ILogger<SapServiceLayerAuthService> _logger;
     private string? _sessionId;
     private DateTime? _sessionExpiry;
 
     public SapServiceLayerAuthService(
         HttpClient httpClient, 
-        IOptions<SapServiceLayerOptions> options,
-        ILogger<SapServiceLayerAuthService> logger)
+        IOptions<SapServiceLayerOptions> options)
     {
         _httpClient = httpClient;
         _options = options.Value;
-        _logger = logger;
     }
 
     /// <summary>
@@ -81,7 +78,6 @@ public class SapServiceLayerAuthService
                     _sessionId = sessionIdElement.GetString();
                     _sessionExpiry = DateTime.Now.AddMinutes(_options.SessionTimeoutMinutes);
                     
-                    _logger.LogInformation("Login SAP Service Layer thành công. SessionId: {SessionId}", _sessionId);
                     return _sessionId;
                 }
 
@@ -95,7 +91,6 @@ public class SapServiceLayerAuthService
                             _sessionId = cookie.Split(';')[0].Replace("B1SESSION=", "");
                             _sessionExpiry = DateTime.Now.AddMinutes(_options.SessionTimeoutMinutes);
                             
-                            _logger.LogInformation("Login SAP Service Layer thành công. SessionId từ Cookie: {SessionId}", _sessionId);
                             return _sessionId;
                         }
                     }
@@ -104,15 +99,13 @@ public class SapServiceLayerAuthService
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                _logger.LogError("Login SAP thất bại. Status: {StatusCode}, Error: {Error}", 
-                    response.StatusCode, errorContent);
+                throw new InvalidOperationException($"Login SAP thất bại. Status: {response.StatusCode}, Error: {errorContent}");
             }
 
             return null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex, "Lỗi khi login vào SAP Service Layer");
             throw;
         }
     }
@@ -125,7 +118,6 @@ public class SapServiceLayerAuthService
     {
         if (string.IsNullOrEmpty(_sessionId) || _sessionExpiry == null || DateTime.Now >= _sessionExpiry)
         {
-            _logger.LogWarning("Session đã hết hạn hoặc chưa login");
             return null;
         }
 
@@ -151,7 +143,6 @@ public class SapServiceLayerAuthService
         {
             if (string.IsNullOrEmpty(_sessionId))
             {
-                _logger.LogWarning("Không có session để logout");
                 return false;
             }
 
@@ -164,20 +155,17 @@ public class SapServiceLayerAuthService
 
             if (response.IsSuccessStatusCode)
             {
-                _logger.LogInformation("Logout SAP Service Layer thành công");
                 _sessionId = null;
                 _sessionExpiry = null;
                 return true;
             }
             else
             {
-                _logger.LogError("Logout SAP thất bại. Status: {StatusCode}", response.StatusCode);
                 return false;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex, "Lỗi khi logout khỏi SAP Service Layer");
             return false;
         }
     }
@@ -209,14 +197,11 @@ public class SapServiceLayerAuthService
             else
             {
                 var error = await response.Content.ReadAsStringAsync();
-                _logger.LogError("GET request thất bại. Endpoint: {Endpoint}, Status: {StatusCode}, Error: {Error}", 
-                    endpoint, response.StatusCode, error);
-                return null;
+                throw new InvalidOperationException($"GET request thất bại. Endpoint: {endpoint}, Status: {response.StatusCode}, Error: {error}");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex, "Lỗi khi thực hiện GET request: {Endpoint}", endpoint);
             throw;
         }
     }

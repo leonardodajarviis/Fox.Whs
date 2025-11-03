@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<UsersController> _logger;
 
-    public UsersController(AppDbContext sapDbContext, ILogger<UsersController> logger)
+    public UsersController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -45,7 +43,6 @@ public class UsersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Users - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var totalRecords = await _dbContext.Users.AsNoTracking().CountAsync();
 

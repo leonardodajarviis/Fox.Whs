@@ -17,12 +17,10 @@ namespace Fox.Whs.Controllers;
 public class PrintersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<PrintersController> _logger;
 
-    public PrintersController(AppDbContext sapDbContext, ILogger<PrintersController> logger)
+    public PrintersController(AppDbContext sapDbContext)
     {
         _dbContext = sapDbContext;
-        _logger = logger;
     }
 
     /// <summary>
@@ -45,7 +43,6 @@ public class PrintersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Máy in - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var totalRecords = await _dbContext.Printers.AsNoTracking().CountAsync();
 

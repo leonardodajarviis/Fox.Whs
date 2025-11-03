@@ -15,14 +15,11 @@ namespace Fox.Whs.Controllers;
 public class BlowingProcessesController : ControllerBase
 {
     private readonly BlowingProcessService _blowingProcessService;
-    private readonly ILogger<BlowingProcessesController> _logger;
 
     public BlowingProcessesController(
-        BlowingProcessService blowingProcessService,
-        ILogger<BlowingProcessesController> logger)
+        BlowingProcessService blowingProcessService)
     {
         _blowingProcessService = blowingProcessService;
-        _logger = logger;
     }
 
     /// <summary>
@@ -32,7 +29,6 @@ public class BlowingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<BlowingProcess>))]
     public async Task<IActionResult> GetAll([FromQuery] QueryParam qp)
     {
-        _logger.LogInformation("Lấy danh sách tất cả công đoạn thổi");
         var blowingProcesses = await _blowingProcessService
             .GetAllAsync(qp);
         return Ok(blowingProcesses);
@@ -46,7 +42,6 @@ public class BlowingProcessesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BlowingProcess))]
     public async Task<IActionResult> GetById(int id)
     {
-        _logger.LogInformation("Lấy công đoạn thổi theo ID: {Id}", id);
         var blowingProcesses = await _blowingProcessService.GetByIdAsync(id);
         return Ok(blowingProcesses);
     }
@@ -57,7 +52,6 @@ public class BlowingProcessesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBlowingProcessDto dto)
     {
-        _logger.LogInformation("Tạo công đoạn thổi mới");
         var blowingProcess = await _blowingProcessService.CreateAsync(dto);
         return Ok(blowingProcess);
     }
@@ -68,7 +62,6 @@ public class BlowingProcessesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateBlowingProcessDto dto)
     {
-        _logger.LogInformation("Cập nhật công đoạn thổi với ID: {Id}", id);
         var blowingProcess = await _blowingProcessService.UpdateAsync(id, dto);
         return Ok(blowingProcess);
     }
@@ -79,7 +72,6 @@ public class BlowingProcessesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        _logger.LogInformation("Xóa công đoạn thổi với ID: {Id}", id);
         await _blowingProcessService.DeleteAsync(id);
         return NoContent();
     }
