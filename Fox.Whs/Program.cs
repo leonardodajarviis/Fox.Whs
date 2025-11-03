@@ -19,6 +19,7 @@ builder.Services.AddAuthServices(builder.Configuration);
 // builder.Services.AddOverrideApiBehaviorOptions();
 
 // Đăng ký các service khác
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BlowingProcessService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

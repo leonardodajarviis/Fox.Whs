@@ -11,6 +11,7 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/printing-processes")]
+[Authorize]
 public class PrintingProcessesController : ControllerBase
 {
     private readonly PrintingProcessService _printingProcessService;

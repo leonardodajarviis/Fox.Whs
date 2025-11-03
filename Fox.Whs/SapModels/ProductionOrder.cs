@@ -50,6 +50,12 @@ public class ProductionOrder
     public DateTime? DateOfNeedPrinting { get; set; }
 
     /// <summary>
+    /// Ngày cần hàng (cắt)
+    /// </summary>
+    [Column("U_CATNCH")]
+    public DateTime? DateOfNeedCutting { get; set; }
+
+    /// <summary>
     /// Ngày cần hàng (thổi)
     /// </summary>
     [Column("U_THOINCH")]

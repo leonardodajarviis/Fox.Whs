@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Dtos;
 using Fox.Whs.SapModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -12,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/production-orders")]
+[Authorize]
 public class ProductionOrdersController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<ProductionOrdersController> _logger;
 
     public ProductionOrdersController(AppDbContext sapDbContext, ILogger<ProductionOrdersController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -51,7 +53,7 @@ public class ProductionOrdersController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Production Orders - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var query = _sapDbContext.ProductionOrders.AsNoTracking().AsQueryable();
+        var query = _dbContext.ProductionOrders.AsNoTracking().AsQueryable();
 
         if (itemCode is not null)
         {
@@ -64,6 +66,7 @@ public class ProductionOrdersController : ControllerBase
 
         var productionOrders = await query
             .Include(po => po.ItemDetail)
+            .ThenInclude(po => po!.ProductTypeInfo)
             .Include(po => po.BusinessPartnerDetail)
             .OrderBy(po => po.DocEntry)
             .Skip((page - 1) * pageSize)
@@ -84,17 +87,17 @@ public class ProductionOrdersController : ControllerBase
         string? type
     )
     {
-        if (!string.IsNullOrEmpty(type)) return query;
+        if (string.IsNullOrEmpty(type)) return query;
 
         switch (type)
         {
             case "printing":
                 query = query
-                    .Where(po => po.PrintingStatus == "N" && po.IsPrinting == "Y");
+                    .Where(po => (po.PrintingStatus == "N" || po.PrintingStatus == null) && po.IsPrinting == "Y");
                 break;
             case "blowing":
                 query = query
-                    .Where(po => po.BlowingStatus == "N" && po.IsBlowing == "Y");
+                    .Where(po => (po.BlowingStatus == "N" || po.BlowingStatus == null) && po.IsBlowing == "Y");
                 break;
             default:
                 break;

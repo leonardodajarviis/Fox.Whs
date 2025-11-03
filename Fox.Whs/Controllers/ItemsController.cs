@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Dtos;
 using Fox.Whs.SapModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -12,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/items")]
+[Authorize]
 public class ItemsController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<ItemsController> _logger;
 
     public ItemsController(AppDbContext sapDbContext, ILogger<ItemsController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -46,7 +48,7 @@ public class ItemsController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Items - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var query = _sapDbContext.Items.AsNoTracking().AsQueryable();
+        var query = _dbContext.Items.AsNoTracking().AsQueryable();
 
         if (search is not null)
         {
@@ -56,6 +58,7 @@ public class ItemsController : ControllerBase
         var totalRecords = await query.CountAsync();
 
         var items = await query
+            .Include(i => i.ProductTypeInfo)
             .OrderBy(i => i.ItemCode)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

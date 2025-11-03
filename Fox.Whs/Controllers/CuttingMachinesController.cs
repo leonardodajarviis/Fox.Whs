@@ -12,28 +12,28 @@ namespace Fox.Whs.Controllers;
 /// API quản lý danh sách Máy thổi từ SAP
 /// </summary>
 [ApiController]
-[Route("api/blowers")]
+[Route("api/cutting-machines")]
 [Authorize]
-public class BlowersController : ControllerBase
+public class CuttingMachinesController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly ILogger<BlowersController> _logger;
 
-    public BlowersController(AppDbContext sapDbContext, ILogger<BlowersController> logger)
+    public CuttingMachinesController(AppDbContext sapDbContext, ILogger<BlowersController> logger)
     {
         _dbContext = sapDbContext;
         _logger = logger;
     }
 
     /// <summary>
-    /// Lấy danh sách Máy thổi với phân trang
+    /// Lấy danh sách Máy cắt với phân trang
     /// </summary>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Máy thổi</returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Blower>))]
-    public async Task<IActionResult> GetBlowers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<CuttingMachine>))]
+    public async Task<IActionResult> GetCuttingMachines([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
         {
@@ -45,22 +45,22 @@ public class BlowersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Máy thổi - Page: {Page}, PageSize: {PageSize}", page, pageSize);
+        _logger.LogInformation("Lấy danh sách Máy cắt - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
         var totalRecords = await _dbContext.Blowers.AsNoTracking().CountAsync();
 
-        var blowers = await _dbContext.Blowers.AsNoTracking()
+        var cuttingMachines = await _dbContext.CuttingMachines
             .OrderBy(b => b.Code)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return Ok(new PaginationResponse<Blower>
+        return Ok(new PaginationResponse<CuttingMachine>
         {
             Page = page,
             PageSize = pageSize,
             TotalCount = totalRecords,
-            Results = blowers
+            Results = cuttingMachines
         });
     }
 }

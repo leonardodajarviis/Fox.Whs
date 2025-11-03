@@ -4,10 +4,12 @@ using Fox.Whs.Data;
 
 namespace Fox.Whs.SapModels;
 
-[Table("@CASX"), ReadOnlyEntity]
-public class ProductionShift
+[Table("@MAYCAT"), ReadOnlyEntity]
+public class CuttingMachine
 {
-    [Key]
+    [Column("Code"), Key]
     public string Code { get; set; } = null!;
-    public string Name { get; set; } = null!;
+
+    [Column("Name")]
+    public string? Name { get; set; }
 }

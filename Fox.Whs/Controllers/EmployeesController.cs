@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Dtos;
 using Fox.Whs.SapModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -12,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/employees")]
+[Authorize]
 public class EmployeesController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<EmployeesController> _logger;
 
     public EmployeesController(AppDbContext sapDbContext, ILogger<EmployeesController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -45,9 +47,9 @@ public class EmployeesController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Employees - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _sapDbContext.Employees.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.Employees.AsNoTracking().CountAsync();
 
-        var employees = await _sapDbContext.Employees.AsNoTracking()
+        var employees = await _dbContext.Employees.AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

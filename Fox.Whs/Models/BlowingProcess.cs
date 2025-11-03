@@ -63,6 +63,22 @@ public class BlowingProcess
     public decimal TotalBlowingLoss { get; set; }
 
     public List<BlowingProcessLine> Lines { get; set; } = [];
+
+    public short CreatorId { get; set; }
+
+    [ForeignKey("CreatorId"), JsonIgnore]
+    public User? Creator { get; set; }
+
+    public short? ModifierId { get; set; }
+
+    [ForeignKey("ModifierId"), JsonIgnore]
+    public User? Modifier { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? ModifiedAt { get; set; }
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = [];
 }
 
 /// <summary>
@@ -107,6 +123,11 @@ public class BlowingProcessLine
     /// Chủng loại
     /// </summary>
     public string? ProductType { get; set; }
+
+    /// <summary>
+    /// Tên chủng loại
+    /// </summary>
+    public string? ProductTypeName { get; set; }
 
     /// <summary>
     /// Độ dày / 1 lá

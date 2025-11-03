@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Fox.Whs.Data;
 
 namespace Fox.Whs.SapModels;
@@ -8,7 +9,7 @@ namespace Fox.Whs.SapModels;
 public class User
 {
     [Column("USERID"), Key]
-    public Int16 Id { get; set; }
+    public short Id { get; set; }
 
     [Column("USER_CODE")]
     public string Username { get; set; } = null!;
@@ -16,31 +17,27 @@ public class User
     [Column("U_NAME")]
     public string FullName { get; set; } = null!;
 
-    public ICollection<UserGroupAssignment> GroupAssignments { get; set; } = [];
+    public ICollection<UserPermission> Permissions { get; set; } = [];
 }
 
-[Table("OUGR"), ReadOnlyEntity]
-public class UserGroup
+[Table("@PHANQUYENWMS_L"), ReadOnlyEntity]
+public class UserPermission
 {
-    [Column("GroupId"), Key]
-    public Int16 Id { get; set; }
+    [Column("Code")]
+    public string Code { get; set; } = null!;
 
-    [Column("GroupName")]
-    public string GroupName { get; set; } = null!;
-}
+    [Column("LineId")]
+    public int LineId { get; set; }
 
-[Table("USR7"), ReadOnlyEntity]
-public class UserGroupAssignment
-{
-    [Column("UserId")]
-    public Int16 UserId { get; set; }
+    [Column("U_MUSER")]
+    public short UserId { get; set; }
 
-    [Column("GroupId")]
-    public Int16 GroupId { get; set; }
+    [ForeignKey("UserId"), JsonIgnore]
+    public User? UserDetail { get; set; }
 
-    [ForeignKey("GroupId")]
-    public UserGroup? Group { get; set; }
+    [Column("U_MBC")]
+    public string? Module { get; set; }
 
-    [NotMapped]
-    public string? GroupName => Group?.GroupName;
+    [Column("U_VT")]
+    public string? Permission { get; set; }
 }

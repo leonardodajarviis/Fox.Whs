@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Fox.Whs.Data;
 
 namespace Fox.Whs.SapModels;
@@ -18,4 +19,7 @@ public class Employee
 
     [Column("middleName")]
     public string? MiddleName { get; set; }
+
+    [Column("userId")]
+    public int? UserId { get; set; }
 }

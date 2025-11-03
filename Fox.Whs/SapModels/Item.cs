@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Fox.Whs.Data;
 
 namespace Fox.Whs.SapModels;
@@ -25,6 +26,15 @@ public class Item
     [Column("U_CHL")]
     public string? ProductType { get; set; }
 
+    [ForeignKey("ProductType"), JsonIgnore]
+    public ProductType? ProductTypeInfo { get; set; }
+
+    /// <summary>
+    /// Tên chủng loại
+    /// </summary>
+    [NotMapped]
+    public string? ProductTypeName => ProductTypeInfo?.Name;
+
     /// <summary>
     /// Độ dày / 1 lá
     /// </summary>
@@ -36,4 +46,22 @@ public class Item
     /// </summary>
     [Column("U_KMBTP")]
     public string? SemiProductWidth { get; set; }
+
+    /// <summary>
+    /// Kích thước
+    /// </summary>
+    [Column("U_KTTPC")]
+    public string? Size { get; set; }
+
+    /// <summary>
+    /// Tên hình in
+    /// </summary>
+    [Column("U_THI")]
+    public string? PrintPatternName { get; set; }
+
+    /// <summary>
+    /// Số màu in
+    /// </summary>
+    [Column("U_SMI")]
+    public string? ColorCount { get; set; }
 }

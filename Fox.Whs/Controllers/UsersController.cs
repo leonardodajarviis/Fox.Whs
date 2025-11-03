@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Exceptions;
 using Fox.Whs.SapModels;
 using Fox.Whs.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -12,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/users")]
+[Authorize]
 public class UsersController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<UsersController> _logger;
 
     public UsersController(AppDbContext sapDbContext, ILogger<UsersController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -45,11 +47,9 @@ public class UsersController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Users - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _sapDbContext.Users.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.Users.AsNoTracking().CountAsync();
 
-        var users = await _sapDbContext.Users.AsNoTracking()
-            .Include(u => u.GroupAssignments)
-            .ThenInclude(ga => ga.Group)
+        var users = await _dbContext.Users.AsNoTracking()
             .OrderBy(u => u.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

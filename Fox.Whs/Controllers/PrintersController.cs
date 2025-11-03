@@ -9,30 +9,30 @@ using Microsoft.AspNetCore.Authorization;
 namespace Fox.Whs.Controllers;
 
 /// <summary>
-/// API quản lý danh sách Máy thổi từ SAP
+/// API quản lý danh sách Máy in từ SAP
 /// </summary>
 [ApiController]
-[Route("api/blowers")]
+[Route("api/printers")]
 [Authorize]
-public class BlowersController : ControllerBase
+public class PrintersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<BlowersController> _logger;
+    private readonly ILogger<PrintersController> _logger;
 
-    public BlowersController(AppDbContext sapDbContext, ILogger<BlowersController> logger)
+    public PrintersController(AppDbContext sapDbContext, ILogger<PrintersController> logger)
     {
         _dbContext = sapDbContext;
         _logger = logger;
     }
 
     /// <summary>
-    /// Lấy danh sách Máy thổi với phân trang
+    /// Lấy danh sách Máy in với phân trang
     /// </summary>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Máy thổi</returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Blower>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Printer>))]
     public async Task<IActionResult> GetBlowers([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
@@ -45,22 +45,22 @@ public class BlowersController : ControllerBase
             throw new BadRequestException("PageSize phải từ 1 đến 100");
         }
 
-        _logger.LogInformation("Lấy danh sách Máy thổi - Page: {Page}, PageSize: {PageSize}", page, pageSize);
+        _logger.LogInformation("Lấy danh sách Máy in - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _dbContext.Blowers.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.Printers.AsNoTracking().CountAsync();
 
-        var blowers = await _dbContext.Blowers.AsNoTracking()
+        var printers = await _dbContext.Printers.AsNoTracking()
             .OrderBy(b => b.Code)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return Ok(new PaginationResponse<Blower>
+        return Ok(new PaginationResponse<Printer>
         {
             Page = page,
             PageSize = pageSize,
             TotalCount = totalRecords,
-            Results = blowers
+            Results = printers
         });
     }
 }

@@ -1,4 +1,3 @@
-using BackEnd_LHC.SapModels;
 using Fox.Whs.Models;
 using Fox.Whs.SapModels;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ public class AppDbContext : DbContext
     {
     }
 
+    public DbSet<UserPermission> UserPermissions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<BusinessPartner> BusinessPartners { get; set; }
     public DbSet<Blower> Blowers { get; set; }
@@ -23,6 +23,12 @@ public class AppDbContext : DbContext
 
     public DbSet<PrintingProcess> PrintingProcesses { get; set; }
     public DbSet<PrintingProcessLine> PrintingProcessLines { get; set; }
+    public DbSet<Printer> Printers { get; set; }
+
+    public DbSet<CuttingProcess> CuttingProcesses { get; set; }
+    public DbSet<CuttingProcessLine> CuttingProcessLines { get; set; }
+    public DbSet<CuttingMachine> CuttingMachines { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,9 +43,9 @@ public class AppDbContext : DbContext
             }
         }
 
-        modelBuilder.Entity<UserGroupAssignment>(u =>
+        modelBuilder.Entity<UserPermission>(up =>
         {
-            u.HasKey(uga => new { uga.UserId, uga.GroupId });
+            up.HasKey(perm => new { perm.Code, perm.LineId });
         });
 
         // Áp dụng các configuration

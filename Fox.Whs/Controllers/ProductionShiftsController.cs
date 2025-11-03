@@ -4,7 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Dtos;
 using Fox.Whs.SapModels;
-using BackEnd_LHC.SapModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -13,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/production-shifts")]
+[Authorize]
 public class ProductionShiftsController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<ProductionShiftsController> _logger;
 
     public ProductionShiftsController(AppDbContext sapDbContext, ILogger<ProductionShiftsController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -46,9 +47,9 @@ public class ProductionShiftsController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Items - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _sapDbContext.Items.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.Items.AsNoTracking().CountAsync();
 
-        var items = await _sapDbContext.ProductionShifts.AsNoTracking()
+        var items = await _dbContext.ProductionShifts.AsNoTracking()
             .OrderBy(i => i.Code)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

@@ -11,6 +11,7 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/blowing-processes")]
+[Authorize]
 public class BlowingProcessesController : ControllerBase
 {
     private readonly BlowingProcessService _blowingProcessService;

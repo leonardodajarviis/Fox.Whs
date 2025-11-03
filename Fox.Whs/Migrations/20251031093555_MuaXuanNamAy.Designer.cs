@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031093555_MuaXuanNamAy")]
+    partial class MuaXuanNamAy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,12 +54,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionShift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
@@ -244,235 +241,6 @@ namespace Fox.Whs.Migrations
                     b.ToTable("FoxWms_BlowingProcessLines");
                 });
 
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcess", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short>("CreatorId")
-                        .HasColumnType("smallint");
-
-                    b.Property<bool>("IsDraft")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short?>("ModifierId")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("ProductionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductionShift")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("ShiftLeaderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalCuttingOutput")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("TotalFoldedCount")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("TotalProcessingMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ModifierId");
-
-                    b.HasIndex("ShiftLeaderId");
-
-                    b.ToTable("FoxWms_CuttingProcesses");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcessLine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("ActualCompletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("BagCount")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("BlowingLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("BlowingLossReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("BtpWarehouseConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("CardCode")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("ColorCount")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CuttingMachine")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CuttingProcessId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("CuttingSpeed")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("DelayReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FoldedCount")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("HumanLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("HumanLossReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ItemCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MachineLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("MachineLossReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MachineStopMinutes")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("PieceCount")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("PoSurplusCutKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("PoSurplusLess5Kg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("PoSurplusOver5Kg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("PrintingLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("PrintingLossReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrintingMachine")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProcessingLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("ProcessingLossReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductionBatch")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductionOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("RemainingInventoryKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime?>("RequiredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SemiProductWidth")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StopReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Thickness")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalLossKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("TransferKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("WeightKg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<int?>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CardCode");
-
-                    b.HasIndex("CuttingProcessId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("FoxWms_CuttingProcessesLine");
-                });
-
             modelBuilder.Entity("Fox.Whs.Models.PrintingProcess", b =>
                 {
                     b.Property<int>("Id")
@@ -481,20 +249,8 @@ namespace Fox.Whs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short>("CreatorId")
-                        .HasColumnType("smallint");
-
                     b.Property<bool>("IsDraft")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short?>("ModifierId")
-                        .HasColumnType("smallint");
 
                     b.Property<DateTime>("ProductionDate")
                         .HasColumnType("datetime2");
@@ -502,12 +258,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionShift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
@@ -529,10 +279,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ModifierId");
 
                     b.HasIndex("ShiftLeaderId");
 
@@ -740,10 +486,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("middleName");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
-
                     b.HasKey("Id");
 
                     b.ToTable("OHEM", t =>
@@ -785,10 +527,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("SemiProductWidth")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_KMBTP");
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_KTTPC");
 
                     b.Property<string>("Thickness")
                         .HasColumnType("nvarchar(max)")
@@ -835,10 +573,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("DateOfNeedBlowing")
                         .HasColumnType("datetime2")
                         .HasColumnName("U_THOINCH");
-
-                    b.Property<DateTime?>("DateOfNeedCutting")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("U_CATNCH");
 
                     b.Property<DateTime?>("DateOfNeedPrinting")
                         .HasColumnType("datetime2")
@@ -1005,75 +739,13 @@ namespace Fox.Whs.Migrations
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcess", b =>
-                {
-                    b.HasOne("Fox.Whs.SapModels.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.User", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifierId");
-
-                    b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
-                        .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Modifier");
-
-                    b.Navigation("ShiftLeader");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcessLine", b =>
-                {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
-                    b.HasOne("Fox.Whs.Models.CuttingProcess", "CuttingProcess")
-                        .WithMany("Lines")
-                        .HasForeignKey("CuttingProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
-                        .WithMany()
-                        .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
-
-                    b.Navigation("CuttingProcess");
-
-                    b.Navigation("Worker");
-                });
-
             modelBuilder.Entity("Fox.Whs.Models.PrintingProcess", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.User", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifierId");
-
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
                         .HasForeignKey("ShiftLeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Modifier");
 
                     b.Navigation("ShiftLeader");
                 });
@@ -1130,11 +802,6 @@ namespace Fox.Whs.Migrations
                 });
 
             modelBuilder.Entity("Fox.Whs.Models.BlowingProcess", b =>
-                {
-                    b.Navigation("Lines");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcess", b =>
                 {
                     b.Navigation("Lines");
                 });

@@ -137,6 +137,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "productionBatch": "LOT-2025-001",
       "customerName": "Công ty ABC",
       "productType": "PE",
+      "productTypeName": "PE Cắt",
       "thickness": "50 micron",
       "semiProductWidth": "1200mm",
       "blowingMachine": "Máy 01",
@@ -205,6 +206,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `productionBatch`               | string   | Lô sản xuất                         |
 | `customerName`                  | string   | Khách hàng                          |
 | `productType`                   | string   | Chủng loại                          |
+| `productTypeName`               | string   | Tên chủng loại                      |
 | `thickness`                     | string   | Độ dày / 1 lá                       |
 | `semiProductWidth`              | string   | Khổ màng BTP                        |
 | `blowingMachine`                | string   | Máy thổi                            |
@@ -324,8 +326,8 @@ Tạo một công đoạn thổi mới.
 #### Thông tin Chi tiết (CreateBlowingProcessLineDto)
 
 | Trường                          | Kiểu     | Bắt buộc | Giới hạn       | Mô tả                               |
-| ------------------------------- | -------- | -------- | -------------- | ----------------------------------- | 
-| `productionOrderId`             | int      |          | **Có**         | DocEntry của lệch sản xuất          | 
+| ------------------------------- | -------- | -------- | -------------- | ----------------------------------- |
+| `productionOrderId`             | int      |          | **Có**         | DocEntry của lệch sản xuất          |
 | `blowingMachine`                | string   | Không    | Max 50 ký tự   | Máy thổi                            |
 | `workerId`                      | integer  | Không    | -              | ID công nhân thổi                   |
 | `blowingSpeed`                  | string   | Không    | Max 50 ký tự   | Tốc độ thổi (kg/giờ)                |

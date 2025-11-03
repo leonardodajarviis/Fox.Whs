@@ -75,18 +75,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (PrintingProcess)
 
-| Trường                   | Kiểu     | Mô tả                        |
-| ------------------------ | -------- | ---------------------------- |
-| `id`                     | integer  | ID công đoạn in              |
-| `shiftLeaderId`          | integer  | ID trưởng ca                 |
-| `shiftLeaderName`        | string   | Tên trưởng ca                |
-| `isDraft`                | bool     | Có phải bản nháp không       |
-| `productionDate`         | datetime | Ngày sản xuất                |
-| `productionShift`        | string   | Ca sản xuất                  |
-| `totalPrintingOutput`    | decimal  | Tổng sản lượng in (kg)       |
-| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)        |
-| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg)  |
-| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)    |
+| Trường                   | Kiểu     | Mô tả                       |
+| ------------------------ | -------- | --------------------------- |
+| `id`                     | integer  | ID công đoạn in             |
+| `shiftLeaderId`          | integer  | ID trưởng ca                |
+| `shiftLeaderName`        | string   | Tên trưởng ca               |
+| `isDraft`                | bool     | Có phải bản nháp không      |
+| `productionDate`         | datetime | Ngày sản xuất               |
+| `productionShift`        | string   | Ca sản xuất                 |
+| `totalPrintingOutput`    | decimal  | Tổng sản lượng in (kg)      |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)       |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg) |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)   |
 
 ---
 
@@ -104,9 +104,9 @@ Lấy thông tin chi tiết một công đoạn in theo ID.
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả            |
-| ---- | ------- | -------- | ---------------- |
-| `id` | integer | Có       | ID công đoạn in  |
+| Tên  | Kiểu    | Bắt buộc | Mô tả           |
+| ---- | ------- | -------- | --------------- |
+| `id` | integer | Có       | ID công đoạn in |
 
 ### Ví dụ Request
 
@@ -138,6 +138,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "cardCode": "C00001",
       "customerName": "Công ty ABC",
       "productType": "PE",
+      "productTypeName": "PE Name",
       "thickness": "50",
       "semiProductWidth": "1200mm",
       "printPatternName": "Hình in ABC",
@@ -180,64 +181,65 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (PrintingProcess)
 
-| Trường                   | Kiểu     | Mô tả                        |
-| ------------------------ | -------- | ---------------------------- |
-| `id`                     | integer  | ID công đoạn in              |
-| `shiftLeaderId`          | integer  | ID trưởng ca                 |
-| `shiftLeaderName`        | string   | Tên trưởng ca                |
-| `isDraft`                | bool     | Có phải bản nháp không       |
-| `productionDate`         | datetime | Ngày sản xuất                |
-| `productionShift`        | string   | Ca sản xuất                  |
-| `totalPrintingOutput`    | decimal  | Tổng sản lượng in (kg)       |
-| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)        |
-| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg)  |
-| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)    |
+| Trường                   | Kiểu     | Mô tả                           |
+| ------------------------ | -------- | ------------------------------- |
+| `id`                     | integer  | ID công đoạn in                 |
+| `shiftLeaderId`          | integer  | ID trưởng ca                    |
+| `shiftLeaderName`        | string   | Tên trưởng ca                   |
+| `isDraft`                | bool     | Có phải bản nháp không          |
+| `productionDate`         | datetime | Ngày sản xuất                   |
+| `productionShift`        | string   | Ca sản xuất                     |
+| `totalPrintingOutput`    | decimal  | Tổng sản lượng in (kg)          |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)           |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg)     |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)       |
 | `lines`                  | array    | Danh sách chi tiết công đoạn in |
 
 #### Thông tin Chi tiết (PrintingProcessLine)
 
-| Trường                      | Kiểu     | Mô tả                             |
-| --------------------------- | -------- | --------------------------------- |
-| `id`                        | integer  | ID chi tiết công đoạn             |
-| `productionOrderId`         | integer  | ID lệnh sản xuất SAP              |
-| `itemCode`                  | string   | Mã hàng                           |
-| `productionBatch`           | string   | Lô sản xuất                       |
-| `cardCode`                  | string   | Mã khách hàng                     |
-| `customerName`              | string   | Tên khách hàng                    |
-| `productType`               | string   | Chủng loại                        |
-| `thickness`                 | string   | Độ dày / 1 lá                     |
-| `semiProductWidth`          | string   | Khổ màng BTP                      |
-| `printPatternName`          | string   | Tên hình in                       |
-| `colorCount`                | string   | Số màu in                         |
-| `printingMachine`           | string   | Máy in                            |
-| `workerId`                  | integer  | ID công nhân in                   |
-| `workerName`                | string   | Tên công nhân in                  |
-| `printingSpeed`             | string   | Tốc độ in                         |
-| `startTime`                 | datetime | Thời gian bắt đầu in              |
-| `endTime`                   | datetime | Thời gian kết thúc in             |
-| `machineStopMinutes`        | decimal  | Thời gian dừng máy (phút)         |
-| `stopReason`                | string   | Nguyên nhân dừng máy              |
-| `rollCount`                 | integer  | Số cuộn                           |
-| `pieceCount`                | integer  | Số chiếc                          |
-| `weightKg`                  | decimal  | Số kg                             |
-| `requiredDate`              | string   | Ngày cần hàng                     |
-| `isCompleted`               | boolean  | Xác nhận hoàn thành               |
-| `actualCompletionDate`      | datetime | Ngày hoàn thành thực tế           |
-| `delayReason`               | string   | Nguyên nhân chậm tiến độ          |
-| `processingLossKg`          | decimal  | DC gia công (kg)                  |
-| `processingLossReason`      | string   | DC gia công - nguyên nhân         |
-| `blowingLossKg`             | decimal  | DC do công đoạn thổi (kg)         |
-| `blowingLossReason`         | string   | DC do công đoạn thổi - nguyên nhân |
-| `oppRollHeadKg`             | decimal  | Đầu cuộn OPP (kg)                 |
-| `oppRollHeadReason`         | string   | Đầu cuộn OPP - nguyên nhân        |
-| `humanLossKg`               | decimal  | Con người (kg)                    |
-| `humanLossReason`           | string   | Con người - nguyên nhân           |
-| `machineLossKg`             | decimal  | Lỗi máy (kg)                      |
-| `machineLossReason`         | string   | Lỗi máy - nguyên nhân             |
-| `totalLossKg`               | decimal  | Tổng DC (kg)                      |
-| `poSurplus`                 | boolean  | Thừa PO                           |
-| `btpWarehouseConfirmation`  | boolean  | Xác nhận của kho BTP              |
-| `printingStageInventoryKg`  | decimal  | Tồn kho ở công đoạn In (kg)       |
+| Trường                     | Kiểu     | Mô tả                              |
+| -------------------------- | -------- | ---------------------------------- |
+| `id`                       | integer  | ID chi tiết công đoạn              |
+| `productionOrderId`        | integer  | ID lệnh sản xuất SAP               |
+| `itemCode`                 | string   | Mã hàng                            |
+| `productionBatch`          | string   | Lô sản xuất                        |
+| `cardCode`                 | string   | Mã khách hàng                      |
+| `customerName`             | string   | Tên khách hàng                     |
+| `productType`              | string   | Chủng loại                         |
+| `productTypeName`          | string   | Tên chủng loại                     |
+| `thickness`                | string   | Độ dày / 1 lá                      |
+| `semiProductWidth`         | string   | Khổ màng BTP                       |
+| `printPatternName`         | string   | Tên hình in                        |
+| `colorCount`               | string   | Số màu in                          |
+| `printingMachine`          | string   | Máy in                             |
+| `workerId`                 | integer  | ID công nhân in                    |
+| `workerName`               | string   | Tên công nhân in                   |
+| `printingSpeed`            | string   | Tốc độ in                          |
+| `startTime`                | datetime | Thời gian bắt đầu in               |
+| `endTime`                  | datetime | Thời gian kết thúc in              |
+| `machineStopMinutes`       | decimal  | Thời gian dừng máy (phút)          |
+| `stopReason`               | string   | Nguyên nhân dừng máy               |
+| `rollCount`                | integer  | Số cuộn                            |
+| `pieceCount`               | integer  | Số chiếc                           |
+| `weightKg`                 | decimal  | Số kg                              |
+| `requiredDate`             | string   | Ngày cần hàng                      |
+| `isCompleted`              | boolean  | Xác nhận hoàn thành                |
+| `actualCompletionDate`     | datetime | Ngày hoàn thành thực tế            |
+| `delayReason`              | string   | Nguyên nhân chậm tiến độ           |
+| `processingLossKg`         | decimal  | DC gia công (kg)                   |
+| `processingLossReason`     | string   | DC gia công - nguyên nhân          |
+| `blowingLossKg`            | decimal  | DC do công đoạn thổi (kg)          |
+| `blowingLossReason`        | string   | DC do công đoạn thổi - nguyên nhân |
+| `oppRollHeadKg`            | decimal  | Đầu cuộn OPP (kg)                  |
+| `oppRollHeadReason`        | string   | Đầu cuộn OPP - nguyên nhân         |
+| `humanLossKg`              | decimal  | Con người (kg)                     |
+| `humanLossReason`          | string   | Con người - nguyên nhân            |
+| `machineLossKg`            | decimal  | Lỗi máy (kg)                       |
+| `machineLossReason`        | string   | Lỗi máy - nguyên nhân              |
+| `totalLossKg`              | decimal  | Tổng DC (kg)                       |
+| `poSurplus`                | boolean  | Thừa PO                            |
+| `btpWarehouseConfirmation` | boolean  | Xác nhận của kho BTP               |
+| `printingStageInventoryKg` | decimal  | Tồn kho ở công đoạn In (kg)        |
 
 ### Response Error (404 Not Found)
 
@@ -310,47 +312,47 @@ Tạo một công đoạn in mới.
 
 #### Thông tin Header
 
-| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                            |
-| ----------------- | -------- | -------- | ------------ | -------------------------------- |
-| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                     |
-| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không           |
-| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                    |
-| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                      |
-| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn in  |
+| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                           |
+| ----------------- | -------- | -------- | ------------ | ------------------------------- |
+| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                    |
+| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không          |
+| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                   |
+| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                     |
+| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn in |
 
 #### Thông tin Chi tiết (CreatePrintingProcessLineDto)
 
-| Trường                      | Kiểu     | Bắt buộc | Giới hạn       | Mô tả                                 |
-| --------------------------- | -------- | -------- | -------------- | ------------------------------------- |
-| `productionOrderId`         | integer  | **Có**   | -              | DocEntry của lệnh sản xuất            |
-| `printPatternName`          | string   | Không    | Max 200 ký tự  | Tên hình in                           |
-| `colorCount`                | string   | Không    | Max 50 ký tự   | Số màu in                             |
-| `printingMachine`           | string   | Không    | Max 50 ký tự   | Máy in                                |
-| `workerId`                  | integer  | Không    | -              | ID công nhân in                       |
-| `printingSpeed`             | string   | Không    | Max 50 ký tự   | Tốc độ in                             |
-| `startTime`                 | datetime | Không    | -              | Thời gian bắt đầu in                  |
-| `endTime`                   | datetime | Không    | -              | Thời gian kết thúc in                 |
-| `machineStopMinutes`        | decimal  | Không    | >= 0           | Thời gian dừng máy (phút)             |
-| `stopReason`                | string   | Không    | Max 500 ký tự  | Nguyên nhân dừng máy                  |
-| `rollCount`                 | integer  | Không    | >= 0           | Số cuộn                               |
-| `pieceCount`                | integer  | Không    | >= 0           | Số chiếc                              |
-| `weightKg`                  | decimal  | Không    | >= 0           | Số kg                                 |
-| `isCompleted`               | boolean  | Không    | -              | Xác nhận hoàn thành                   |
-| `actualCompletionDate`      | datetime | Không    | -              | Ngày hoàn thành thực tế               |
-| `delayReason`               | string   | Không    | Max 500 ký tự  | Nguyên nhân chậm tiến độ              |
-| `processingLossKg`          | decimal  | Không    | >= 0           | DC gia công (kg)                      |
-| `processingLossReason`      | string   | Không    | Max 500 ký tự  | DC gia công - nguyên nhân             |
-| `blowingLossKg`             | decimal  | Không    | >= 0           | DC do công đoạn thổi (kg)             |
-| `blowingLossReason`         | string   | Không    | Max 500 ký tự  | DC do công đoạn thổi - nguyên nhân    |
-| `oppRollHeadKg`             | decimal  | Không    | >= 0           | Đầu cuộn OPP (kg)                     |
-| `oppRollHeadReason`         | string   | Không    | Max 500 ký tự  | Đầu cuộn OPP - nguyên nhân            |
-| `humanLossKg`               | decimal  | Không    | >= 0           | Con người (kg)                        |
-| `humanLossReason`           | string   | Không    | Max 500 ký tự  | Con người - nguyên nhân               |
-| `machineLossKg`             | decimal  | Không    | >= 0           | Lỗi máy (kg)                          |
-| `machineLossReason`         | string   | Không    | Max 500 ký tự  | Lỗi máy - nguyên nhân                 |
-| `poSurplus`                 | boolean  | Không    | -              | Thừa PO                               |
-| `btpWarehouseConfirmation`  | boolean  | Không    | -              | Xác nhận của kho BTP                  |
-| `printingStageInventoryKg`  | decimal  | Không    | >= 0           | Tồn kho ở công đoạn In (kg)           |
+| Trường                     | Kiểu     | Bắt buộc | Giới hạn      | Mô tả                              |
+| -------------------------- | -------- | -------- | ------------- | ---------------------------------- |
+| `productionOrderId`        | integer  | **Có**   | -             | DocEntry của lệnh sản xuất         |
+| `printPatternName`         | string   | Không    | Max 200 ký tự | Tên hình in                        |
+| `colorCount`               | string   | Không    | Max 50 ký tự  | Số màu in                          |
+| `printingMachine`          | string   | Không    | Max 50 ký tự  | Máy in                             |
+| `workerId`                 | integer  | Không    | -             | ID công nhân in                    |
+| `printingSpeed`            | string   | Không    | Max 50 ký tự  | Tốc độ in                          |
+| `startTime`                | datetime | Không    | -             | Thời gian bắt đầu in               |
+| `endTime`                  | datetime | Không    | -             | Thời gian kết thúc in              |
+| `machineStopMinutes`       | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)          |
+| `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy               |
+| `rollCount`                | integer  | Không    | >= 0          | Số cuộn                            |
+| `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                           |
+| `weightKg`                 | decimal  | Không    | >= 0          | Số kg                              |
+| `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                |
+| `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế            |
+| `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ           |
+| `processingLossKg`         | decimal  | Không    | >= 0          | DC gia công (kg)                   |
+| `processingLossReason`     | string   | Không    | Max 500 ký tự | DC gia công - nguyên nhân          |
+| `blowingLossKg`            | decimal  | Không    | >= 0          | DC do công đoạn thổi (kg)          |
+| `blowingLossReason`        | string   | Không    | Max 500 ký tự | DC do công đoạn thổi - nguyên nhân |
+| `oppRollHeadKg`            | decimal  | Không    | >= 0          | Đầu cuộn OPP (kg)                  |
+| `oppRollHeadReason`        | string   | Không    | Max 500 ký tự | Đầu cuộn OPP - nguyên nhân         |
+| `humanLossKg`              | decimal  | Không    | >= 0          | Con người (kg)                     |
+| `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân            |
+| `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                       |
+| `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân              |
+| `poSurplus`                | boolean  | Không    | -             | Thừa PO                            |
+| `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP               |
+| `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)        |
 
 ### Ví dụ Request
 
@@ -419,9 +421,9 @@ Cập nhật thông tin công đoạn in theo ID.
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả                         |
-| ---- | ------- | -------- | ----------------------------- |
-| `id` | integer | Có       | ID công đoạn in cần cập nhật  |
+| Tên  | Kiểu    | Bắt buộc | Mô tả                        |
+| ---- | ------- | -------- | ---------------------------- |
+| `id` | integer | Có       | ID công đoạn in cần cập nhật |
 
 ### Request Body
 
@@ -480,51 +482,51 @@ Cập nhật thông tin công đoạn in theo ID.
 
 #### Thông tin Header
 
-| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                            |
-| ----------------- | -------- | -------- | ------------ | -------------------------------- |
-| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                     |
-| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không           |
-| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                    |
-| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                      |
-| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn in  |
+| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                           |
+| ----------------- | -------- | -------- | ------------ | ------------------------------- |
+| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                    |
+| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không          |
+| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                   |
+| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                     |
+| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn in |
 
 #### Thông tin Chi tiết (UpdatePrintingProcessLineDto)
 
-| Trường                      | Kiểu     | Bắt buộc | Giới hạn       | Mô tả                                        |
-| --------------------------- | -------- | -------- | -------------- | -------------------------------------------- |
-| `id`                        | integer  | Không    | -              | ID chi tiết công đoạn (null nếu là dòng mới) |
-| `productionOrderId`         | integer  | **Có**   | -              | ID lệnh sản xuất SAP                         |
-| `productType`               | string   | Không    | Max 100 ký tự  | Chủng loại                                   |
-| `thickness`                 | decimal  | Không    | -              | Độ dày / 1 lá                                |
-| `semiProductWidth`          | string   | Không    | Max 50 ký tự   | Khổ màng BTP                                 |
-| `printPatternName`          | string   | Không    | Max 200 ký tự  | Tên hình in                                  |
-| `colorCount`                | string   | Không    | Max 50 ký tự   | Số màu in                                    |
-| `printingMachine`           | string   | Không    | Max 50 ký tự   | Máy in                                       |
-| `workerId`                  | integer  | Không    | -              | ID công nhân in                              |
-| `printingSpeed`             | string   | Không    | Max 50 ký tự   | Tốc độ in                                    |
-| `startTime`                 | datetime | Không    | -              | Thời gian bắt đầu in                         |
-| `endTime`                   | datetime | Không    | -              | Thời gian kết thúc in                        |
-| `machineStopMinutes`        | decimal  | Không    | >= 0           | Thời gian dừng máy (phút)                    |
-| `stopReason`                | string   | Không    | Max 500 ký tự  | Nguyên nhân dừng máy                         |
-| `rollCount`                 | integer  | Không    | >= 0           | Số cuộn                                      |
-| `pieceCount`                | integer  | Không    | >= 0           | Số chiếc                                     |
-| `weightKg`                  | decimal  | Không    | >= 0           | Số kg                                        |
-| `isCompleted`               | boolean  | Không    | -              | Xác nhận hoàn thành                          |
-| `actualCompletionDate`      | datetime | Không    | -              | Ngày hoàn thành thực tế                      |
-| `delayReason`               | string   | Không    | Max 500 ký tự  | Nguyên nhân chậm tiến độ                     |
-| `processingLossKg`          | decimal  | Không    | >= 0           | DC gia công (kg)                             |
-| `processingLossReason`      | string   | Không    | Max 500 ký tự  | DC gia công - nguyên nhân                    |
-| `blowingLossKg`             | decimal  | Không    | >= 0           | DC do công đoạn thổi (kg)                    |
-| `blowingLossReason`         | string   | Không    | Max 500 ký tự  | DC do công đoạn thổi - nguyên nhân           |
-| `oppRollHeadKg`             | decimal  | Không    | >= 0           | Đầu cuộn OPP (kg)                            |
-| `oppRollHeadReason`         | string   | Không    | Max 500 ký tú  | Đầu cuộn OPP - nguyên nhân                   |
-| `humanLossKg`               | decimal  | Không    | >= 0           | Con người (kg)                               |
-| `humanLossReason`           | string   | Không    | Max 500 ký tự  | Con người - nguyên nhân                      |
-| `machineLossKg`             | decimal  | Không    | >= 0           | Lỗi máy (kg)                                 |
-| `machineLossReason`         | string   | Không    | Max 500 ký tự  | Lỗi máy - nguyên nhân                        |
-| `poSurplus`                 | boolean  | Không    | -              | Thừa PO                                      |
-| `btpWarehouseConfirmation`  | boolean  | Không    | -              | Xác nhận của kho BTP                         |
-| `printingStageInventoryKg`  | decimal  | Không    | >= 0           | Tồn kho ở công đoạn In (kg)                  |
+| Trường                     | Kiểu     | Bắt buộc | Giới hạn      | Mô tả                                        |
+| -------------------------- | -------- | -------- | ------------- | -------------------------------------------- |
+| `id`                       | integer  | Không    | -             | ID chi tiết công đoạn (null nếu là dòng mới) |
+| `productionOrderId`        | integer  | **Có**   | -             | ID lệnh sản xuất SAP                         |
+| `productType`              | string   | Không    | Max 100 ký tự | Chủng loại                                   |
+| `thickness`                | decimal  | Không    | -             | Độ dày / 1 lá                                |
+| `semiProductWidth`         | string   | Không    | Max 50 ký tự  | Khổ màng BTP                                 |
+| `printPatternName`         | string   | Không    | Max 200 ký tự | Tên hình in                                  |
+| `colorCount`               | string   | Không    | Max 50 ký tự  | Số màu in                                    |
+| `printingMachine`          | string   | Không    | Max 50 ký tự  | Máy in                                       |
+| `workerId`                 | integer  | Không    | -             | ID công nhân in                              |
+| `printingSpeed`            | string   | Không    | Max 50 ký tự  | Tốc độ in                                    |
+| `startTime`                | datetime | Không    | -             | Thời gian bắt đầu in                         |
+| `endTime`                  | datetime | Không    | -             | Thời gian kết thúc in                        |
+| `machineStopMinutes`       | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)                    |
+| `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
+| `rollCount`                | integer  | Không    | >= 0          | Số cuộn                                      |
+| `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                                     |
+| `weightKg`                 | decimal  | Không    | >= 0          | Số kg                                        |
+| `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                          |
+| `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế                      |
+| `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ                     |
+| `processingLossKg`         | decimal  | Không    | >= 0          | DC gia công (kg)                             |
+| `processingLossReason`     | string   | Không    | Max 500 ký tự | DC gia công - nguyên nhân                    |
+| `blowingLossKg`            | decimal  | Không    | >= 0          | DC do công đoạn thổi (kg)                    |
+| `blowingLossReason`        | string   | Không    | Max 500 ký tự | DC do công đoạn thổi - nguyên nhân           |
+| `oppRollHeadKg`            | decimal  | Không    | >= 0          | Đầu cuộn OPP (kg)                            |
+| `oppRollHeadReason`        | string   | Không    | Max 500 ký tú | Đầu cuộn OPP - nguyên nhân                   |
+| `humanLossKg`              | decimal  | Không    | >= 0          | Con người (kg)                               |
+| `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân                      |
+| `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                                 |
+| `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân                        |
+| `poSurplus`                | boolean  | Không    | -             | Thừa PO                                      |
+| `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
+| `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)                  |
 
 **Lưu ý:**
 
@@ -599,9 +601,9 @@ Xóa một công đoạn in theo ID. Tất cả các chi tiết công đoạn in
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả                    |
-| ---- | ------- | -------- | ------------------------ |
-| `id` | integer | Có       | ID công đoạn in cần xóa  |
+| Tên  | Kiểu    | Bắt buộc | Mô tả                   |
+| ---- | ------- | -------- | ----------------------- |
+| `id` | integer | Có       | ID công đoạn in cần xóa |
 
 ### Ví dụ Request
 

@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Fox.Whs.SapModels;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fox.Whs.Controllers;
 
@@ -12,14 +13,15 @@ namespace Fox.Whs.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/business-partners")]
+[Authorize]
 public class BusinessPartnersController : ControllerBase
 {
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly ILogger<BusinessPartnersController> _logger;
 
     public BusinessPartnersController(AppDbContext sapDbContext, ILogger<BusinessPartnersController> logger)
     {
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _logger = logger;
     }
 
@@ -45,9 +47,9 @@ public class BusinessPartnersController : ControllerBase
 
         _logger.LogInformation("Lấy danh sách Business Partners - Page: {Page}, PageSize: {PageSize}", page, pageSize);
 
-        var totalRecords = await _sapDbContext.BusinessPartners.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.BusinessPartners.AsNoTracking().CountAsync();
 
-        var businessPartners = await _sapDbContext.BusinessPartners.AsNoTracking()
+        var businessPartners = await _dbContext.BusinessPartners.AsNoTracking()
             .OrderBy(bp => bp.CardCode)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

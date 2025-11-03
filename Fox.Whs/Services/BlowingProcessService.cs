@@ -15,13 +15,16 @@ public class BlowingProcessService
 {
     private readonly AppDbContext _dbContext;
     private readonly ILogger<BlowingProcessService> _logger;
+    private readonly UserContextService _userContextService;
 
     public BlowingProcessService(
         AppDbContext dbContext,
-        ILogger<BlowingProcessService> logger)
+        ILogger<BlowingProcessService> logger,
+        UserContextService userContextService)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _userContextService = userContextService;
     }
 
     /// <summary>
@@ -71,6 +74,8 @@ public class BlowingProcessService
     {
         _logger.LogInformation("Tạo công đoạn thổi mới cho trưởng ca {LeaderId}", dto.ShiftLeaderId);
 
+        var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
+
         // Kiểm tra trưởng ca tồn tại
         var shiftLeaderExists = await _dbContext.Employees
             .AnyAsync(e => e.Id == dto.ShiftLeaderId);
@@ -97,6 +102,7 @@ public class BlowingProcessService
 
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
+            .ThenInclude(po => po!.ProductTypeInfo)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -113,6 +119,7 @@ public class BlowingProcessService
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedBlowing,
                 item.ProductType,
+                item.ProductTypeName,
                 item.Thickness,
                 item.SemiProductWidth);
 
@@ -122,6 +129,7 @@ public class BlowingProcessService
         var blowingProcess = new BlowingProcess
         {
             ShiftLeaderId = dto.ShiftLeaderId,
+            CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
@@ -145,6 +153,7 @@ public class BlowingProcessService
     public async Task<BlowingProcess> UpdateAsync(int id, UpdateBlowingProcessDto dto)
     {
         _logger.LogInformation("Cập nhật công đoạn thổi với ID: {Id}", id);
+        var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var blowingProcess = await _dbContext.BlowingProcesses
             .Include(bp => bp.Lines)
@@ -181,6 +190,7 @@ public class BlowingProcessService
 
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
+            .ThenInclude(po => po!.ProductTypeInfo)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -189,6 +199,9 @@ public class BlowingProcessService
         blowingProcess.ShiftLeaderId = dto.ShiftLeaderId;
         blowingProcess.ProductionDate = dto.ProductionDate;
         blowingProcess.ProductionShift = dto.ProductionShift;
+        blowingProcess.IsDraft = dto.IsDraft;
+        blowingProcess.ModifierId = currentUserId;
+        blowingProcess.ModifiedAt = DateTime.Now;
 
         // Cập nhật lines
         UpdateLines(blowingProcess, dto.Lines, existingProductionOrders);
@@ -234,6 +247,7 @@ public class BlowingProcessService
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
+        string? productTypeName,
         string? thickness,
         string? semiProductWidth
     )
@@ -244,6 +258,7 @@ public class BlowingProcessService
             ItemCode = itemCode,
             CardCode = cardCode,
             ProductType = productType,
+            ProductTypeName = productTypeName,
             ProductionBatch = productionBatch,
             Thickness = thickness,
             SemiProductWidth = semiProductWidth,
@@ -295,6 +310,7 @@ public class BlowingProcessService
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
+        string? productTypeName,
         string? thickness,
         string? semiProductWidth,
         int? existingId = null
@@ -307,6 +323,7 @@ public class BlowingProcessService
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
+            ProductTypeName = productTypeName,
             Thickness = thickness,
             SemiProductWidth = semiProductWidth,
             BlowingMachine = dto.BlowingMachine,
@@ -388,14 +405,14 @@ public class BlowingProcessService
                 var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.Thickness, item.SemiProductWidth);
+                var newLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth);
                 blowingProcess.Lines.Add(newLine);
             }
         }

@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103031346_Hiruka")]
+    partial class Hiruka
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,12 +54,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionShift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
@@ -273,12 +270,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionShift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
@@ -502,12 +493,6 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionShift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
@@ -786,10 +771,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_KMBTP");
 
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("U_KTTPC");
-
                     b.Property<string>("Thickness")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_DD1L");
@@ -835,10 +816,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("DateOfNeedBlowing")
                         .HasColumnType("datetime2")
                         .HasColumnName("U_THOINCH");
-
-                    b.Property<DateTime?>("DateOfNeedCutting")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("U_CATNCH");
 
                     b.Property<DateTime?>("DateOfNeedPrinting")
                         .HasColumnType("datetime2")
@@ -1037,7 +1014,7 @@ namespace Fox.Whs.Migrations
                         .HasForeignKey("CardCode");
 
                     b.HasOne("Fox.Whs.Models.CuttingProcess", "CuttingProcess")
-                        .WithMany("Lines")
+                        .WithMany()
                         .HasForeignKey("CuttingProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1130,11 +1107,6 @@ namespace Fox.Whs.Migrations
                 });
 
             modelBuilder.Entity("Fox.Whs.Models.BlowingProcess", b =>
-                {
-                    b.Navigation("Lines");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.CuttingProcess", b =>
                 {
                     b.Navigation("Lines");
                 });

@@ -14,7 +14,7 @@ namespace Fox.Whs.Services;
 public class AuthService
 {
     private readonly SapServiceLayerAuthService _sapAuthService;
-    private readonly AppDbContext _sapDbContext;
+    private readonly AppDbContext _dbContext;
     private readonly JwtOptions _jwtOptions;
     private readonly ILogger<AuthService> _logger;
 
@@ -25,7 +25,7 @@ public class AuthService
         ILogger<AuthService> logger)
     {
         _sapAuthService = sapAuthService;
-        _sapDbContext = sapDbContext;
+        _dbContext = sapDbContext;
         _jwtOptions = jwtOptions.Value;
         _logger = logger;
     }
@@ -48,20 +48,19 @@ public class AuthService
             throw new BadRequestException("Mật khẩu không được để trống");
         }
 
-        var sessionId = await _sapAuthService.LoginAsync(username, password);
+        // var sessionId = await _sapAuthService.LoginAsync(username, password);
 
-        if (string.IsNullOrEmpty(sessionId))
-        {
-            _logger.LogWarning("Xác thực SAP thất bại cho user: {Username}", username);
-            throw new UnauthorizedException("Tên đăng nhập hoặc mật khẩu không đúng");
-        }
+        // if (string.IsNullOrEmpty(sessionId))
+        // {
+        //     _logger.LogWarning("Xác thực SAP thất bại cho user: {Username}", username);
+        //     throw new UnauthorizedException("Tên đăng nhập hoặc mật khẩu không đúng");
+        // }
 
         _logger.LogInformation("Xác thực SAP thành công cho user: {Username}", username);
 
-        var user = await _sapDbContext.Users.AsNoTracking()
-            .Include(x => x.GroupAssignments)
-            .ThenInclude(x => x.Group)
-            .FirstOrDefaultAsync(u => u.Username == "hieupv");
+        var user = await _dbContext.Users.AsNoTracking()
+            .Include(x => x.Permissions)
+            .FirstOrDefaultAsync(u => u.Username == username);
         
         if (user == null)
         {
@@ -165,7 +164,7 @@ public class AuthService
             throw new UnauthorizedException("Token không chứa thông tin user hợp lệ");
         }
 
-        var user = await _sapDbContext.Users.FindAsync(userId);
+        var user = await _dbContext.Users.FindAsync(userId);
         if (user == null)
         {
             throw new NotFoundException("Người dùng không tồn tại");

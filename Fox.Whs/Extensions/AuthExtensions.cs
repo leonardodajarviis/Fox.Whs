@@ -30,6 +30,7 @@ public static class AuthExtensions
 
         // Đăng ký AuthService
         services.AddScoped<AuthService>();
+        services.AddScoped<UserContextService>();
 
         // Cấu hình JWT Authentication
         services.AddAuthentication(options =>
@@ -40,8 +41,6 @@ public static class AuthExtensions
         })
         .AddJwtBearer(options =>
         {
-            options.SaveToken = true;
-            options.RequireHttpsMetadata = false; // Set true trong production
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = false,
