@@ -240,7 +240,7 @@ public class RewindingProcessLine
     /// Thừa PO (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusKg { get; set; }
+    public decimal ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

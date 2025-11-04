@@ -22,6 +22,7 @@ public class AuthController : ControllerBase
     /// Login người dùng - Xác thực qua SAP và trả về JWT token
     /// </summary>
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] UserLogin loginDto)
     {
 
@@ -39,16 +40,30 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost("logout")]
     [Authorize]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout([FromBody] RefreshTokenRequest? request)
     {
-        // JWT token sẽ tự động hết hạn theo thời gian cấu hình
-        // Client cần xóa token ở phía mình
+        // Thu hồi refresh token nếu có
+        if (request?.RefreshToken != null)
+        {
+            await _authService.RevokeRefreshTokenAsync(request.RefreshToken);
+        }
 
         return Ok(new
         {
             success = true,
             message = "Đăng xuất thành công. Vui lòng xóa token ở phía client."
         });
+    }
+
+    /// <summary>
+    /// Làm mới access token bằng refresh token
+    /// </summary>
+    [HttpPost("refresh-token")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        var result = await _authService.RefreshTokenAsync(request.RefreshToken);
+        return Ok(result);
     }
 
     /// <summary>

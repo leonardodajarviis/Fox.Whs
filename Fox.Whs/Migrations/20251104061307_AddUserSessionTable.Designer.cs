@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104061307_AddUserSessionTable")]
+    partial class AddUserSessionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,18 +360,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ExcessPOCut")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("ExcessPOLess5Kg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("ExcessPOOver5Kg")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<decimal>("FoldedCount")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -399,6 +390,18 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("PieceCount")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusCutKg")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusLess5Kg")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusOver5Kg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
@@ -579,9 +582,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("ExcessPO")
-                        .HasColumnType("bit");
-
                     b.Property<decimal>("HumanLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -616,6 +616,9 @@ namespace Fox.Whs.Migrations
 
                     b.Property<int>("PieceCount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("PoSurplus")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PrintPatternName")
                         .HasColumnType("nvarchar(max)");
@@ -768,10 +771,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ExcessPO")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<decimal>("HumanLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -794,6 +793,10 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MachineStopMinutes")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
@@ -969,14 +972,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ExcessPOPrinting")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("ExcessPOSlitting")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<decimal>("HumanLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1003,6 +998,14 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("PieceCount")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusBtpInKg")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("PoSurplusTpSlittingKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
@@ -1105,12 +1108,12 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("IpAddress")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("RefreshExpiresAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()

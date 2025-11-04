@@ -304,19 +304,19 @@ public class CuttingProcessLine
     /// Thừa PO - Cuộn
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusLess5Kg { get; set; }
+    public decimal ExcessPOLess5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Cuộn
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusOver5Kg { get; set; }
+    public decimal ExcessPOOver5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng cắt (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusCutKg { get; set; }
+    public decimal ExcessPOCut { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

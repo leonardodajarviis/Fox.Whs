@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Fox.Whs.Data;
 using Fox.Whs.Extensions;
 using Fox.Whs.Services;
+using Fox.Whs.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,12 +43,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Thêm Controllers nếu bạn cần
-// builder.Services.AddControllers(opt =>
-// {
-//     opt.Filters.Add<ValidateModelFilter>();
-// });
-builder.Services.AddControllers();
+// Thêm Controllers với Filter
+builder.Services.AddControllers(options =>
+{
+    // Thêm filter để kiểm tra Access Token JTI
+    options.Filters.Add<ValidateAccessTokenJtiFilter>();
+});
 
 var app = builder.Build();
 

@@ -169,7 +169,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
       "totalLossKg": 65.5,
-      "poSurplus": false,
+      "ExcessPO": false,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     }
@@ -221,7 +221,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `stopReason`               | string   | Nguyên nhân dừng máy               |
 | `rollCount`                | integer  | Số cuộn                            |
 | `pieceCount`               | integer  | Số chiếc                           |
-| `QuantityKg`                 | decimal  | Số kg                              |
+| `QuantityKg`               | decimal  | Số kg                              |
 | `requiredDate`             | string   | Ngày cần hàng                      |
 | `isCompleted`              | boolean  | Xác nhận hoàn thành                |
 | `actualCompletionDate`     | datetime | Ngày hoàn thành thực tế            |
@@ -237,7 +237,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineLossKg`            | decimal  | Lỗi máy (kg)                       |
 | `machineLossReason`        | string   | Lỗi máy - nguyên nhân              |
 | `totalLossKg`              | decimal  | Tổng DC (kg)                       |
-| `poSurplus`                | boolean  | Thừa PO                            |
+| `excessPO`                 | boolean  | Thừa PO                            |
 | `btpWarehouseConfirmation` | boolean  | Xác nhận của kho BTP               |
 | `printingStageInventoryKg` | decimal  | Tồn kho ở công đoạn In (kg)        |
 
@@ -300,7 +300,7 @@ Tạo một công đoạn in mới.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
-      "poSurplus": false,
+      "ExcessPO": false,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     }
@@ -336,7 +336,7 @@ Tạo một công đoạn in mới.
 | `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy               |
 | `rollCount`                | integer  | Không    | >= 0          | Số cuộn                            |
 | `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                           |
-| `QuantityKg`                 | decimal  | Không    | >= 0          | Số kg                              |
+| `QuantityKg`               | decimal  | Không    | >= 0          | Số kg                              |
 | `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                |
 | `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế            |
 | `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ           |
@@ -350,7 +350,7 @@ Tạo một công đoạn in mới.
 | `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân            |
 | `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                       |
 | `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân              |
-| `poSurplus`                | boolean  | Không    | -             | Thừa PO                            |
+| `excessPO`                 | boolean  | Không    | -             | Thừa PO                            |
 | `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP               |
 | `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)        |
 
@@ -465,7 +465,7 @@ Cập nhật thông tin công đoạn in theo ID.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
-      "poSurplus": false,
+      "ExcessPO": false,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     },
@@ -510,7 +510,7 @@ Cập nhật thông tin công đoạn in theo ID.
 | `stopReason`               | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
 | `rollCount`                | integer  | Không    | >= 0          | Số cuộn                                      |
 | `pieceCount`               | integer  | Không    | >= 0          | Số chiếc                                     |
-| `QuantityKg`                 | decimal  | Không    | >= 0          | Số kg                                        |
+| `QuantityKg`               | decimal  | Không    | >= 0          | Số kg                                        |
 | `isCompleted`              | boolean  | Không    | -             | Xác nhận hoàn thành                          |
 | `actualCompletionDate`     | datetime | Không    | -             | Ngày hoàn thành thực tế                      |
 | `delayReason`              | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ                     |
@@ -524,7 +524,7 @@ Cập nhật thông tin công đoạn in theo ID.
 | `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân                      |
 | `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                                 |
 | `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân                        |
-| `poSurplus`                | boolean  | Không    | -             | Thừa PO                                      |
+| `excessPO`                 | boolean  | Không    | -             | Thừa PO                                      |
 | `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
 | `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)                  |
 

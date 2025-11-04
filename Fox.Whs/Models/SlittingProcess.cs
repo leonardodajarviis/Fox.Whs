@@ -319,13 +319,13 @@ public class SlittingProcessLine
     /// Thừa PO - BTP In (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusBtpInKg { get; set; }
+    public decimal ExcessPOPrinting { get; set; }
 
     /// <summary>
     /// Thừa PO - TP Chia (Kg)
     /// </summary>
     [Precision(18, 4)]
-    public decimal PoSurplusTpSlittingKg { get; set; }
+    public decimal ExcessPOSlitting { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

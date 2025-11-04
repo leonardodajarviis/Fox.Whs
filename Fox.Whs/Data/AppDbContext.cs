@@ -34,6 +34,8 @@ public class AppDbContext : DbContext
     public DbSet<RewindingProcess> RewindingProcesses { get; set; }
     public DbSet<RewindingProcessLine> RewindingProcessLines { get; set; }
 
+    public DbSet<UserSession> UserSessions { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

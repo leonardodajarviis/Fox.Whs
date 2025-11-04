@@ -160,7 +160,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 | `StopReason`               | nvarchar(500) | YES  | Nguyên nhân dừng máy               |                                |
 | `RollCount`                | int           | NO   | Số cuộn                            |                                |
 | `PieceCount`               | int           | NO   | Số chiếc                           |                                |
-| `QuantityKg`                 | decimal(18,4) | YES  | Số kg                              |                                |
+| `QuantityKg`               | decimal(18,4) | YES  | Số kg                              |                                |
 | `RequiredDate`             | datetime      | YES  | Ngày cần hàng                      |                                |
 | `IsCompleted`              | bit           | NO   | Xác nhận hoàn thành                | Default: 0                     |
 | `ActualCompletionDate`     | datetime      | YES  | Ngày hoàn thành thực tế            |                                |
@@ -176,7 +176,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 | `MachineLossKg`            | decimal(18,4) | NO   | Lỗi máy (kg)                       |                                |
 | `MachineLossReason`        | nvarchar(500) | YES  | Lỗi máy - nguyên nhân              |                                |
 | `TotalLossKg`              | decimal(18,4) | NO   | Tổng DC (kg)                       | Auto calculated                |
-| `PoSurplus`                | bit           | NO   | Thừa PO                            | Default: 0                     |
+| `ExcessPO`                 | bit           | NO   | Thừa PO                            | Default: 0                     |
 | `BtpWarehouseConfirmation` | bit           | NO   | Xác nhận của kho BTP               | Default: 0                     |
 | `PrintingStageInventoryKg` | decimal(18,4) | NO   | Tồn kho ở công đoạn In (kg)        |                                |
 
@@ -228,7 +228,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `MachineStopMinutes`    | decimal(18,4) | NO   | Thời gian dừng máy (phút)          |                               |
 | `StopReason`            | nvarchar(500) | YES  | Nguyên nhân dừng máy               |                               |
 | `PieceCount`            | decimal(18,4) | NO   | Số chiếc (sản lượng cắt)           |                               |
-| `QuantityKg`              | decimal(18,4) | NO   | Số kg (sản lượng cắt)              |                               |
+| `QuantityKg`            | decimal(18,4) | NO   | Số kg (sản lượng cắt)              |                               |
 | `BagCount`              | decimal(18,4) | NO   | Số bao (sản lượng cắt)             |                               |
 | `FoldedCount`           | decimal(18,4) | NO   | Số lượng gấp xúc                   |                               |
 | `RequiredDate`          | datetime      | YES  | Ngày cần hàng                      |                               |
@@ -248,9 +248,9 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `MachineLossKg`         | decimal(18,4) | NO   | DC do cắt dán - Lỗi máy (kg)       |                               |
 | `MachineLossReason`     | nvarchar(500) | YES  | DC - Nguyên nhân lỗi máy           |                               |
 | `TotalLossKg`           | decimal(18,4) | NO   | Tổng DC (kg)                       | Auto calculated               |
-| `PoSurplusLess5Kg`      | decimal(18,4) | NO   | Thừa PO - Cuộn dưới 5kg            |                               |
-| `PoSurplusOver5Kg`      | decimal(18,4) | NO   | Thừa PO - Cuộn trên 5kg            |                               |
-| `PoSurplusCutKg`        | decimal(18,4) | NO   | Thừa PO - Hàng cắt (kg)            |                               |
+| `ExcessPOLess5Kg`       | decimal(18,4) | NO   | Thừa PO - Cuộn dưới 5kg            |                               |
+| `ExcessPOOver5Kg`       | decimal(18,4) | NO   | Thừa PO - Cuộn trên 5kg            |                               |
+| `ExcessPOCut`           | decimal(18,4) | NO   | Thừa PO - Hàng cắt (kg)            |                               |
 | `BtpWarehouseConfirmed` | bit           | YES  | Xác nhận của kho BTP               | Default: NULL                 |
 | `RemainingInventoryKg`  | decimal(18,4) | NO   | Tồn (kg)                           |                               |
 
@@ -306,7 +306,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn chia.
 | `StopReason`            | nvarchar(500) | YES  | Nguyên nhân dừng máy                  |                              |
 | `RollCount`             | decimal(18,4) | NO   | Số cuộn                               |                              |
 | `PieceCount`            | decimal(18,4) | NO   | Số chiếc                              |                              |
-| `QuantityKg`              | decimal(18,4) | NO   | Số kg                                 |                              |
+| `QuantityKg`            | decimal(18,4) | NO   | Số kg                                 |                              |
 | `BoxCount`              | decimal(18,4) | NO   | Số thùng                              |                              |
 | `RequiredDate`          | datetime      | YES  | Ngày cần hàng                         |                              |
 | `IsCompleted`           | bit           | NO   | Xác nhận hoàn thành                   | Default: 0                   |
@@ -325,8 +325,8 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn chia.
 | `MachineLossKg`         | decimal(18,4) | NO   | DC do công đoạn chia - Lỗi máy (kg)   |                              |
 | `MachineLossReason`     | nvarchar(500) | YES  | DC - Nguyên nhân lỗi máy              |                              |
 | `TotalLossKg`           | decimal(18,4) | NO   | Tổng DC (kg)                          | Auto calculated              |
-| `PoSurplusBtpInKg`      | decimal(18,4) | NO   | Thừa PO - BTP In (kg)                 |                              |
-| `PoSurplusTpSlittingKg` | decimal(18,4) | NO   | Thừa PO - TP Chia (kg)                |                              |
+| `ExcessPOPrinting`      | decimal(18,4) | NO   | Thừa PO - BTP In (kg)                 |                              |
+| `ExcessPOSlitting`      | decimal(18,4) | NO   | Thừa PO - TP Chia (kg)                |                              |
 | `BtpWarehouseConfirmed` | bit           | NO   | Xác nhận của kho BTP                  | Default: 0                   |
 
 ---
@@ -370,7 +370,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn tua.
 | `MachineStopMinutes`   | decimal(18,4) | NO   | Thời gian dừng máy (phút)            |                               |
 | `StopReason`           | nvarchar(500) | YES  | Nguyên nhân dừng máy                 |                               |
 | `RollCount`            | decimal(18,4) | NO   | Số cuộn                              |                               |
-| `QuantityKg`             | decimal(18,4) | NO   | Số kg                                |                               |
+| `QuantityKg`           | decimal(18,4) | NO   | Số kg                                |                               |
 | `RequiredDate`         | datetime      | YES  | Ngày cần hàng                        |                               |
 | `IsCompleted`          | bit           | NO   | Xác nhận hoàn thành                  | Default: 0                    |
 | `ActualCompletionDate` | datetime      | YES  | Ngày hoàn thành thực tế              |                               |

@@ -271,9 +271,9 @@ public class CuttingProcessService
             HumanLossReason = dto.HumanLossReason,
             MachineLossKg = dto.MachineLossKg,
             MachineLossReason = dto.MachineLossReason,
-            PoSurplusLess5Kg = dto.PoSurplusLess5Kg,
-            PoSurplusOver5Kg = dto.PoSurplusOver5Kg,
-            PoSurplusCutKg = dto.PoSurplusCutKg,
+            ExcessPOLess5Kg = dto.ExcessPOLess5Kg,
+            ExcessPOOver5Kg = dto.ExcessPOOver5Kg,
+            ExcessPOCut = dto.ExcessPOCut,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
             RemainingInventoryKg = dto.RemainingInventoryKg
         };
@@ -340,9 +340,9 @@ public class CuttingProcessService
             HumanLossReason = dto.HumanLossReason,
             MachineLossKg = dto.MachineLossKg,
             MachineLossReason = dto.MachineLossReason,
-            PoSurplusLess5Kg = dto.PoSurplusLess5Kg,
-            PoSurplusOver5Kg = dto.PoSurplusOver5Kg,
-            PoSurplusCutKg = dto.PoSurplusCutKg,
+            ExcessPOLess5Kg = dto.ExcessPOLess5Kg,
+            ExcessPOOver5Kg = dto.ExcessPOOver5Kg,
+            ExcessPOCut = dto.ExcessPOCut,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
             RemainingInventoryKg = dto.RemainingInventoryKg
         };
@@ -395,6 +395,7 @@ public class CuttingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting, item.ProductType,item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size, item.ColorCount, lineDto.Id);
+                    updatedLine.CuttingProcessId = existingLine.CuttingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }

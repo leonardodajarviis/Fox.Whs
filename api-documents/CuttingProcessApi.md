@@ -169,9 +169,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "machineLossKg": 7.0,
       "machineLossReason": "Máy lỗi",
       "totalLossKg": 70.0,
-      "poSurplusLess5Kg": 5.0,
-      "poSurplusOver5Kg": 10.0,
-      "poSurplusCutKg": 8.0,
+      "ExcessPOLess5Kg": 5.0,
+      "ExcessPOOver5Kg": 10.0,
+      "ExcessPOCut": 8.0,
       "btpWarehouseConfirmed": true,
       "remainingInventoryKg": 100.0
     }
@@ -241,9 +241,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineLossKg`         | decimal  | DC do cắt dán - Lỗi máy (kg)       |
 | `machineLossReason`     | string   | DC - Nguyên nhân lỗi máy           |
 | `totalLossKg`           | decimal  | Tổng DC (kg)                       |
-| `poSurplusLess5Kg`      | decimal  | Thừa PO - Cuộn dưới 5kg            |
-| `poSurplusOver5Kg`      | decimal  | Thừa PO - Cuộn trên 5kg            |
-| `poSurplusCutKg`        | decimal  | Thừa PO - Hàng cắt (kg)            |
+| `excessPOLess5Kg`      | decimal  | Thừa PO - Cuộn dưới 5kg            |
+| `excessPOOver5Kg`      | decimal  | Thừa PO - Cuộn trên 5kg            |
+| `excessPOCut`        | decimal  | Thừa PO - Hàng cắt (kg)            |
 | `btpWarehouseConfirmed` | boolean  | Xác nhận của kho BTP               |
 | `remainingInventoryKg`  | decimal  | Tồn (kg)                           |
 
@@ -310,9 +310,9 @@ Tạo một công đoạn cắt mới.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.0,
       "machineLossReason": "Máy lỗi",
-      "poSurplusLess5Kg": 5.0,
-      "poSurplusOver5Kg": 10.0,
-      "poSurplusCutKg": 8.0,
+      "ExcessPOLess5Kg": 5.0,
+      "ExcessPOOver5Kg": 10.0,
+      "ExcessPOCut": 8.0,
       "btpWarehouseConfirmed": true,
       "remainingInventoryKg": 100.0
     }
@@ -366,9 +366,9 @@ Tạo một công đoạn cắt mới.
 | `humanLossReason`       | string   | Không    | Max 500 ký tự | DC - Nguyên nhân con người         |
 | `machineLossKg`         | decimal  | Không    | >= 0          | DC do cắt dán - Lỗi máy (kg)       |
 | `machineLossReason`     | string   | Không    | Max 500 ký tự | DC - Nguyên nhân lỗi máy           |
-| `poSurplusLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg            |
-| `poSurplusOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg            |
-| `poSurplusCutKg`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)            |
+| `excessPOLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg            |
+| `excessPOOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg            |
+| `excessPOCut`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)            |
 | `btpWarehouseConfirmed` | boolean  | Không    | -             | Xác nhận của kho BTP               |
 | `remainingInventoryKg`  | decimal  | Không    | >= 0          | Tồn (kg)                           |
 
@@ -487,9 +487,9 @@ Cập nhật thông tin công đoạn cắt theo ID.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.0,
       "machineLossReason": "Máy lỗi",
-      "poSurplusLess5Kg": 5.0,
-      "poSurplusOver5Kg": 10.0,
-      "poSurplusCutKg": 8.0,
+      "ExcessPOLess5Kg": 5.0,
+      "ExcessPOOver5Kg": 10.0,
+      "ExcessPOCut": 8.0,
       "btpWarehouseConfirmed": true,
       "remainingInventoryKg": 100.0
     },
@@ -552,9 +552,9 @@ Cập nhật thông tin công đoạn cắt theo ID.
 | `humanLossReason`       | string   | Không    | Max 500 ký tự | DC - Nguyên nhân con người                   |
 | `machineLossKg`         | decimal  | Không    | >= 0          | DC do cắt dán - Lỗi máy (kg)                 |
 | `machineLossReason`     | string   | Không    | Max 500 ký tự | DC - Nguyên nhân lỗi máy                     |
-| `poSurplusLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg                      |
-| `poSurplusOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg                      |
-| `poSurplusCutKg`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)                      |
+| `excessPOLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg                      |
+| `excessPOOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg                      |
+| `excessPOCut`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)                      |
 | `btpWarehouseConfirmed` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
 | `remainingInventoryKg`  | decimal  | Không    | >= 0          | Tồn (kg)                                     |
 

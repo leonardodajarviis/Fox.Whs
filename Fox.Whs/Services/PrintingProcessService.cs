@@ -266,7 +266,7 @@ public class PrintingProcessService
             HumanLossReason = dto.HumanLossReason,
             MachineLossKg = dto.MachineLossKg,
             MachineLossReason = dto.MachineLossReason,
-            PoSurplus = dto.PoSurplus,
+            ExcessPO = dto.ExcessPO,
             BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
             PrintingStageInventoryKg = dto.PrintingStageInventoryKg
         };
@@ -330,7 +330,7 @@ public class PrintingProcessService
             HumanLossReason = dto.HumanLossReason,
             MachineLossKg = dto.MachineLossKg,
             MachineLossReason = dto.MachineLossReason,
-            PoSurplus = dto.PoSurplus,
+            ExcessPO = dto.ExcessPO,
             BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
             PrintingStageInventoryKg = dto.PrintingStageInventoryKg
         };
@@ -395,6 +395,8 @@ public class PrintingProcessService
                         item.PrintPatternName,
                         item.ColorCount,
                         lineDto.Id);
+
+                    updatedLine.PrintingProcessId = existingLine.PrintingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }

@@ -381,6 +381,7 @@ public class BlowingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                    updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }

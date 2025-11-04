@@ -239,19 +239,19 @@ public record CreateCuttingProcessLineDto
     /// Thừa PO - Cuộn dưới 5kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusLess5Kg { get; set; }
+    public decimal ExcessPOLess5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Cuộn trên 5kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusOver5Kg { get; set; }
+    public decimal ExcessPOOver5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng cắt (Kg)
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusCutKg { get; set; }
+    public decimal ExcessPOCut { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP
@@ -458,19 +458,19 @@ public record UpdateCuttingProcessLineDto
     /// Thừa PO - Cuộn dưới 5kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusLess5Kg { get; set; }
+    public decimal ExcessPOLess5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Cuộn trên 5kg
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusOver5Kg { get; set; }
+    public decimal ExcessPOOver5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng cắt (Kg)
     /// </summary>
     [Range(0, double.MaxValue)]
-    public decimal PoSurplusCutKg { get; set; }
+    public decimal ExcessPOCut { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

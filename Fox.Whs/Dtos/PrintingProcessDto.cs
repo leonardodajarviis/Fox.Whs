@@ -203,7 +203,7 @@ public record CreatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    public bool PoSurplus { get; set; }
+    public bool ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP
@@ -397,7 +397,7 @@ public record UpdatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    public bool PoSurplus { get; set; }
+    public bool ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP
