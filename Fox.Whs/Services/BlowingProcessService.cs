@@ -123,6 +123,7 @@ public class BlowingProcessService
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
+            ListOfWorkersText = dto.ListOfWorkersText,
             Lines = lines
         };
 
@@ -180,6 +181,7 @@ public class BlowingProcessService
         blowingProcess.IsDraft = dto.IsDraft;
         blowingProcess.ModifierId = currentUserId;
         blowingProcess.ModifiedAt = DateTime.Now;
+        blowingProcess.ListOfWorkersText = dto.ListOfWorkersText;
 
         // Cập nhật lines
         UpdateLines(blowingProcess, dto.Lines, existingProductionOrders);

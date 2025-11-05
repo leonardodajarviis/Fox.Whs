@@ -61,7 +61,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "totalBlowingOutput": 1500.5,
       "totalRewindingOutput": 200.3,
       "totalReservedOutput": 100.0,
-      "totalBlowingLoss": 50.2
+      "totalBlowingLoss": 50.2,
+      "listOfWorkersText": "Tống Thị Thu Hương"
     }
   ],
   "totalCount": 50,
@@ -87,6 +88,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `totalRewindingOutput` | decimal  | Tổng sản lượng tua/chia/tờ (kg) |
 | `totalReservedOutput`  | decimal  | Tổng sản lượng dự trữ (kg)      |
 | `totalBlowingLoss`     | decimal  | Tổng DC công đoạn thổi (kg)     |
+| `listOfWorkersText`    | string   | Danh sách công nhân             |
 
 ---
 
@@ -129,6 +131,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "totalRewindingOutput": 200.3,
   "totalReservedOutput": 100.0,
   "totalBlowingLoss": 50.2,
+  "listOfWorkersText": "Tống Thị Thu Hương",
   "lines": [
     {
       "id": 1,
@@ -192,6 +195,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `productionShift`      | string   | Ca sản xuất                       |
 | `totalBlowingOutput`   | decimal  | Tổng sản lượng thổi (kg)          |
 | `totalRewindingOutput` | decimal  | Tổng sản lượng tua/chia/tờ (kg)   |
+| `listOfWorkersText`    | string   | Danh sách công nhân               |
 | `totalReservedOutput`  | decimal  | Tổng sản lượng dự trữ (kg)        |
 | `totalBlowingLoss`     | decimal  | Tổng DC công đoạn thổi (kg)       |
 | `lines`                | array    | Danh sách chi tiết công đoạn thổi |
@@ -273,6 +277,7 @@ Tạo một công đoạn thổi mới.
   "shiftLeaderId": 5,
   "productionDate": "2025-10-29T00:00:00",
   "productionShift": "Ca 1",
+  "listOfWorkersText": "Tống Thị Thu Hương",
   "lines": [
     {
       "productionOrderId": 1,
@@ -316,12 +321,13 @@ Tạo một công đoạn thổi mới.
 
 #### Thông tin Header
 
-| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                             |
-| ----------------- | -------- | -------- | ------------ | --------------------------------- |
-| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                      |
-| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                     |
-| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                       |
-| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn thổi |
+| Trường              | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                             |
+| ------------------- | -------- | -------- | ------------ | --------------------------------- |
+| `shiftLeaderId`     | integer  | **Có**   | -            | ID trưởng ca                      |
+| `productionDate`    | datetime | **Có**   | -            | Ngày sản xuất                     |
+| `productionShift`   | string   | **Có**   | Max 50 ký tự | Ca sản xuất                       |
+| `lines`             | array    | Không    | -            | Danh sách chi tiết công đoạn thổi |
+| `listOfWorkersText` | text     | Không    | -            | Danh sách công nhân               |
 
 #### Thông tin Chi tiết (CreateBlowingProcessLineDto)
 
@@ -371,6 +377,7 @@ Content-Type: application/json
   "shiftLeaderId": 5,
   "productionDate": "2025-10-29T00:00:00",
   "productionShift": "Ca 1",
+  "listOfWorkersText": "Tống",
   "lines": [
     {
       "productionOrderId": 1,
@@ -438,6 +445,7 @@ Cập nhật thông tin công đoạn thổi theo ID.
   "shiftLeaderId": 5,
   "productionDate": "2025-10-29T00:00:00",
   "productionShift": "Ca 1",
+  "listOfWorkersText": "Tống",
   "lines": [
     {
       "id": 1,
@@ -487,12 +495,13 @@ Cập nhật thông tin công đoạn thổi theo ID.
 
 #### Thông tin Header
 
-| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                             |
-| ----------------- | -------- | -------- | ------------ | --------------------------------- |
-| `shiftLeaderId`   | integer  | **Có**   | -            | ID trưởng ca                      |
-| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                     |
-| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                       |
-| `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn thổi |
+| Trường              | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                             |
+| ------------------- | -------- | -------- | ------------ | --------------------------------- |
+| `shiftLeaderId`     | integer  | **Có**   | -            | ID trưởng ca                      |
+| `productionDate`    | datetime | **Có**   | -            | Ngày sản xuất                     |
+| `productionShift`   | string   | **Có**   | Max 50 ký tự | Ca sản xuất                       |
+| `lines`             | array    | Không    | -            | Danh sách chi tiết công đoạn thổi |
+| `listOfWorkersText` | text     | Không    | -            | Danh sách công nhân               |
 
 #### Thông tin Chi tiết (UpdateBlowingProcessLineDto)
 

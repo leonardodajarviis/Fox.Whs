@@ -60,6 +60,7 @@ Lưu trữ thông tin header của công đoạn thổi.
 | `CreatedAt`            | datetime      | NO   | Ngày giờ tạo                    | Default: GETDATE()    |
 | `ModifiedAt`           | datetime      | YES  | Ngày giờ sửa                    |                       |
 | `RowVersion`           | rowversion    | NO   | Version cho concurrency control | Timestamp             |
+| `listOfWorkersText`    | nvarchar(max) | YES  | Danh sách công nhân             |                       |
 
 ### Bảng: `FoxWms_BlowingProcessLine`
 

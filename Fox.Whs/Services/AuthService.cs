@@ -66,32 +66,36 @@ public class AuthService
 
         var employee = await _dbContext.Employees.AsNoTracking()
             .FirstOrDefaultAsync(e => e.UserId == user.Id);
-        
+
         user.EmployeeInfo = employee;
 
-        // Thu hồi TẤT CẢ các phiên cũ của user (logout khỏi tất cả thiết bị khác)
-        var oldSessions = await _dbContext.UserSessions
-            .Where(s => s.UserId == user.Id && s.RevokedAt == null)
-            .ToListAsync();
 
-        foreach (var oldSession in oldSessions)
+        if (!_jwtOptions.IsMutiltiDeviceLoginAllowed)
         {
-            oldSession.RevokedAt = DateTime.UtcNow;
-            oldSession.RevokedReason = "Logged in from another device";
+            // Thu hồi TẤT CẢ các phiên cũ của user (logout khỏi tất cả thiết bị khác)
+            var oldSessions = await _dbContext.UserSessions
+                .Where(s => s.UserId == user.Id && s.RevokedAt == null)
+                .ToListAsync();
+
+            foreach (var oldSession in oldSessions)
+            {
+                oldSession.RevokedAt = DateTime.UtcNow;
+                oldSession.RevokedReason = "Logged in from another device";
+            }
         }
 
         // Tạo JTI cho access token và refresh token
         var accessTokenJti = Guid.NewGuid().ToString();
         var refreshTokenJti = Guid.NewGuid().ToString();
-        
+
         var token = GenerateJwtToken(user, accessTokenJti);
         var refreshToken = GenerateRefreshToken();
-        
+
         // Lấy thông tin client
         var httpContext = _httpContextAccessor.HttpContext;
         var ipAddress = httpContext?.Connection.RemoteIpAddress?.ToString();
         var userAgent = httpContext?.Request.Headers["User-Agent"].ToString();
-        
+
         // Lưu phiên đăng nhập MỚI vào database
         var userSession = new UserSession
         {
@@ -104,7 +108,7 @@ public class AuthService
             IpAddress = ipAddress,
             UserAgent = userAgent
         };
-        
+
         _dbContext.UserSessions.Add(userSession);
         await _dbContext.SaveChangesAsync();
 
@@ -200,7 +204,7 @@ public class AuthService
 
         var employee = await _dbContext.Employees.AsNoTracking()
             .FirstOrDefaultAsync(e => e.UserId == user.Id);
-        
+
         user.EmployeeInfo = employee;
 
         // Tạo JTI mới cho access token và refresh token
@@ -209,10 +213,10 @@ public class AuthService
 
         // Tạo access token mới
         var newAccessToken = GenerateJwtToken(user, newAccessTokenJti);
-        
+
         // Tạo refresh token mới
         var newRefreshToken = GenerateRefreshToken();
-        
+
         // Lấy thông tin client
         var httpContext = _httpContextAccessor.HttpContext;
         var ipAddress = httpContext?.Connection.RemoteIpAddress?.ToString();
@@ -221,7 +225,7 @@ public class AuthService
         // Thu hồi phiên cũ
         session.RevokedAt = DateTime.UtcNow;
         session.RevokedReason = "Replaced by new session";
-        
+
         // Tạo phiên mới
         var newSession = new UserSession
         {
@@ -234,7 +238,7 @@ public class AuthService
             IpAddress = ipAddress,
             UserAgent = userAgent
         };
-        
+
         _dbContext.UserSessions.Add(newSession);
         await _dbContext.SaveChangesAsync();
 
@@ -260,7 +264,7 @@ public class AuthService
 
         var session = await _dbContext.UserSessions
             .FirstOrDefaultAsync(s => s.RefreshToken == refreshToken && s.RevokedAt == null);
-        
+
         if (session != null)
         {
             session.RevokedAt = DateTime.UtcNow;
@@ -347,10 +351,10 @@ public class AuthService
 
             // Kiểm tra JTI có tồn tại trong session active của user không
             var sessionExists = await _dbContext.UserSessions
-                .AnyAsync(s => 
-                    s.UserId == userId && 
-                    s.AccessTokenJti == jti && 
-                    s.RevokedAt == null && 
+                .AnyAsync(s =>
+                    s.UserId == userId &&
+                    s.AccessTokenJti == jti &&
+                    s.RevokedAt == null &&
                     s.RefreshExpiresAt > DateTime.UtcNow);
 
             return sessionExists;

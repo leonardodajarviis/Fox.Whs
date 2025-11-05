@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Fox.Whs.Services;
 using Fox.Whs.Exceptions;
+using Fox.Whs.Options;
+using Microsoft.Extensions.Options;
 
 namespace Fox.Whs.Filters;
 
@@ -12,10 +14,13 @@ namespace Fox.Whs.Filters;
 public class ValidateAccessTokenJtiFilter : IAsyncActionFilter
 {
     private readonly AuthService _authService;
+    private readonly JwtOptions _jwtOptions;
 
-    public ValidateAccessTokenJtiFilter(AuthService authService)
+    public ValidateAccessTokenJtiFilter(AuthService authService, IOptions<JwtOptions> jwtOptions)
     {
+        
         _authService = authService;
+        _jwtOptions = jwtOptions.Value;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

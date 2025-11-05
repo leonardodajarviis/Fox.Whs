@@ -8,4 +8,5 @@ public class JwtOptions
     public string Audience { get; set; } = string.Empty;
     public int AccessExpiryInMinutes { get; set; } = 60;
     public int RefreshExpiryInDays { get; set; } = 7;
+    public bool IsMutiltiDeviceLoginAllowed { get; set; } = false;
 }

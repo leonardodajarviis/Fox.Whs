@@ -65,6 +65,11 @@ public class BlowingProcess
     [Precision(18, 4)]
     public decimal TotalBlowingLoss { get; set; }
 
+    /// <summary>
+    /// Danh sách công nhân thổi
+    /// </summary>
+    public string? ListOfWorkersText { get; set; }
+
     public List<BlowingProcessLine> Lines { get; set; } = [];
 
     public short CreatorId { get; set; }

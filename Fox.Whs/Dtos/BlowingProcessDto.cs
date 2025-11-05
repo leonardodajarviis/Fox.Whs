@@ -26,6 +26,12 @@ public record CreateBlowingProcessDto
     public string ProductionShift { get; set; } = null!;
 
     /// <summary>
+    /// Danh sách công nhân thổi
+    /// </summary>
+    [StringLength(1000)]
+    public string? ListOfWorkersText { get; set; }
+
+    /// <summary>
     /// Danh sách chi tiết công đoạn thổi
     /// </summary>
     public List<CreateBlowingProcessLineDto> Lines { get; set; } = [];
@@ -50,6 +56,12 @@ public record UpdateBlowingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+
+    /// <summary>
+    /// Danh sách công nhân thổi
+    /// </summary>
+    [StringLength(1000)]
+    public string? ListOfWorkersText { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn thổi
