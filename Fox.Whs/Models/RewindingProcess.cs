@@ -58,6 +58,11 @@ public class RewindingProcess
     /// </summary>
     [Precision(18, 4)]
     public decimal TotalRewindingStageMold { get; set; }
+
+    /// <summary>
+    /// Danh sách chi tiết công đoạn tua
+    /// </summary>
+    public List<RewindingProcessLine> Lines { get; set; } = [];
 }
 
 [Table("FoxWms_RewindingProcessLine")]

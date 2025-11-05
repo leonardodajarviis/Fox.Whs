@@ -22,6 +22,8 @@ builder.Services.AddAuthServices(builder.Configuration);
 // Đăng ký các service khác
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BlowingProcessService>();
+builder.Services.AddScoped<RewindingProcessService>();
+builder.Services.AddScoped<SlittingProcessService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
