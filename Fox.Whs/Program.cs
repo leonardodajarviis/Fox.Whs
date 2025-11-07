@@ -24,6 +24,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BlowingProcessService>();
 builder.Services.AddScoped<RewindingProcessService>();
 builder.Services.AddScoped<SlittingProcessService>();
+builder.Services.AddScoped<PrintingProcessService>();
+builder.Services.AddScoped<CuttingProcessService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

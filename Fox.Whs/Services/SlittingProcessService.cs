@@ -34,6 +34,8 @@ public class SlittingProcessService
         var totalCount = await query.CountAsync();
 
         var result = await query
+            .Include(sp => sp.Creator)
+            .Include(sp => sp.Modifier)
             .Include(sp => sp.ShiftLeader)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(sp => sp.ProductionDate)
@@ -51,6 +53,8 @@ public class SlittingProcessService
     public async Task<SlittingProcess> GetByIdAsync(int id)
     {
         var slittingProcess = await _dbContext.SlittingProcesses
+            .Include(sp => sp.Creator)
+            .Include(sp => sp.Modifier)
             .Include(sp => sp.ShiftLeader)
             .Include(sp => sp.Lines)
                 .ThenInclude(line => line.Worker)
@@ -172,6 +176,20 @@ public class SlittingProcessService
 
         // Tính toán lại tổng
         CalculateTotals(slittingProcess);
+
+        if (!slittingProcess.IsDraft)
+        {
+            var productOrderCompletedIds = slittingProcess.Lines
+                .Where(l => l.IsCompleted)
+                .Select(l => l.ProductionOrderId)
+                .Distinct()
+                .ToArray() ?? [];
+
+            if (productOrderCompletedIds.Length > 0)
+            {
+                await _dbContext.UpdateStatusProductionOrderSapAsync("U_CHIASTATUS", productOrderCompletedIds);
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

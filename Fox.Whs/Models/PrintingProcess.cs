@@ -80,6 +80,12 @@ public class PrintingProcess
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
 
+    [NotMapped]
+    public string? CreatorName => Creator?.FullName;
+
+    [NotMapped]
+    public string? ModifierName => Modifier?.FullName;
+
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];
 }
@@ -292,9 +298,10 @@ public class PrintingProcessLine
     public decimal TotalLossKg { get; set; }
 
     /// <summary>
-    /// Thừa PO
+    /// Thừa PO (Kg)
     /// </summary>
-    public bool ExcessPO { get; set; }
+    [Precision(18, 4)]
+    public decimal ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

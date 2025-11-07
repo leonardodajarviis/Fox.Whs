@@ -34,6 +34,8 @@ public class RewindingProcessService
         var totalCount = await query.CountAsync();
 
         var result = await query
+            .Include(rp => rp.Creator)
+            .Include(rp => rp.Modifier)
             .Include(rp => rp.ShiftLeader)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(rp => rp.ProductionDate)
@@ -51,6 +53,8 @@ public class RewindingProcessService
     public async Task<RewindingProcess> GetByIdAsync(int id)
     {
         var rewindingProcess = await _dbContext.RewindingProcesses
+            .Include(rp => rp.Creator)
+            .Include(rp => rp.Modifier)
             .Include(rp => rp.ShiftLeader)
             .Include(rp => rp.Lines)
                 .ThenInclude(line => line.Worker)
@@ -155,12 +159,28 @@ public class RewindingProcessService
         rewindingProcess.ProductionDate = dto.ProductionDate;
         rewindingProcess.ProductionShift = dto.ProductionShift;
         rewindingProcess.IsDraft = dto.IsDraft;
+        rewindingProcess.ModifiedAt = DateTime.Now;
+        rewindingProcess.ModifierId = _userContextService.GetCurrentUserId();
 
         // Cập nhật lines
         UpdateLines(rewindingProcess, dto.Lines, existingProductionOrders);
 
         // Tính toán lại tổng
         CalculateTotals(rewindingProcess);
+
+        if (!rewindingProcess.IsDraft)
+        {
+            var productOrderCompletedIds = rewindingProcess.Lines
+                .Where(l => l.IsCompleted)
+                .Select(l => l.ProductionOrderId)
+                .Distinct()
+                .ToArray() ?? [];
+
+            if (productOrderCompletedIds.Length > 0)
+            {
+                await _dbContext.UpdateStatusProductionOrderSapAsync("U_TUASTATUS", productOrderCompletedIds);
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

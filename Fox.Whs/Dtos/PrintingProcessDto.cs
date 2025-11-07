@@ -203,7 +203,8 @@ public record CreatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    public bool ExcessPO { get; set; }
+    [Range(0, double.MaxValue)]
+    public decimal ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP
@@ -237,11 +238,6 @@ public record UpdatePrintingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? ProductType { get; set; }
-
-    /// <summary>
-    /// Độ dày / 1 lá
-    /// </summary>
-    public decimal? Thickness { get; set; }
 
     /// <summary>
     /// Khổ màng BTP
@@ -397,7 +393,8 @@ public record UpdatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    public bool ExcessPO { get; set; }
+    [Range(0, double.MaxValue)]
+    public decimal ExcessPO { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

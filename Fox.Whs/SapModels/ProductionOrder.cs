@@ -61,6 +61,18 @@ public class ProductionOrder
     [Column("U_THOINCH")]
     public DateTime? DateOfNeedBlowing { get; set; }
 
+    /// <summary>
+    /// Ngày cần hàng (tua)
+    /// </summary>
+    [Column("U_TUANCH")]
+    public DateTime? DateOfNeedRewinding { get; set; }
+
+    /// <summary>
+    /// Ngày cần hàng (chia)
+    /// </summary>
+    [Column("U_CHIANCH")]
+    public DateTime? DateOfNeedSlitting { get; set; }
+
     [ForeignKey("ItemCode")]
     public Item? ItemDetail { get; set; }
 

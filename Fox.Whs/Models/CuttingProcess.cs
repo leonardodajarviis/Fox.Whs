@@ -59,6 +59,24 @@ public class CuttingProcess
     [Precision(18, 4)]
     public decimal TotalProcessingMold { get; set; }
 
+    /// <summary>
+    /// Tổng DC công đoạn Thổi
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalBlowingStageMold { get; set; }
+
+    /// <summary>
+    /// Tổng DC công đoạn In
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalPrintingStageMold { get; set; }
+
+    /// <summary>
+    /// Tổng DC công đoạn Cắt
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalCuttingStageMold { get; set; }
+
     public short CreatorId { get; set; }
 
     [ForeignKey("CreatorId"), JsonIgnore]
@@ -71,6 +89,11 @@ public class CuttingProcess
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
+
+    [NotMapped]
+    public string? CreatorName => Creator?.FullName;
+    [NotMapped]
+    public string? ModifierName => Modifier?.FullName;
     public List<CuttingProcessLine> Lines { get; set; } = [];
 
     [Timestamp]

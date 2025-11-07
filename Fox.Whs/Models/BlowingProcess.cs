@@ -77,13 +77,20 @@ public class BlowingProcess
     [ForeignKey("CreatorId"), JsonIgnore]
     public User? Creator { get; set; }
 
+
     public short? ModifierId { get; set; }
 
     [ForeignKey("ModifierId"), JsonIgnore]
     public User? Modifier { get; set; }
 
+
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
+
+    [NotMapped]
+    public string? CreatorName => Creator?.FullName;
+    [NotMapped]
+    public string? ModifierName => Modifier?.FullName;
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];

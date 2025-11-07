@@ -177,7 +177,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 | `MachineLossKg`            | decimal(18,4) | NO   | Lỗi máy (kg)                       |                                |
 | `MachineLossReason`        | nvarchar(500) | YES  | Lỗi máy - nguyên nhân              |                                |
 | `TotalLossKg`              | decimal(18,4) | NO   | Tổng DC (kg)                       | Auto calculated                |
-| `ExcessPO`                 | bit           | NO   | Thừa PO                            | Default: 0                     |
+| `ExcessPO`                 | decimal(18,4) | NO   | Thừa PO                            | Default: 0                     |
 | `BtpWarehouseConfirmation` | bit           | NO   | Xác nhận của kho BTP               | Default: 0                     |
 | `PrintingStageInventoryKg` | decimal(18,4) | NO   | Tồn kho ở công đoạn In (kg)        |                                |
 
@@ -189,20 +189,23 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 
 Lưu trữ thông tin header của công đoạn cắt.
 
-| Cột                   | Kiểu dữ liệu  | Null | Mô tả                   | Ghi chú               |
-| --------------------- | ------------- | ---- | ----------------------- | --------------------- |
-| `Id`                  | int           | NO   | ID công đoạn cắt        | Primary Key, Identity |
-| `ShiftLeaderId`       | int           | NO   | ID trưởng ca            | FK -> Employees       |
-| `IsDraft`             | bit           | NO   | Có phải bản nháp không  | Default: 0            |
-| `ProductionDate`      | datetime      | NO   | Ngày sản xuất           |                       |
-| `ProductionShift`     | nvarchar(50)  | NO   | Ca sản xuất             |                       |
-| `TotalCuttingOutput`  | decimal(18,4) | NO   | Tổng sản lượng cắt (kg) | Auto calculated       |
-| `TotalFoldedCount`    | decimal(18,4) | NO   | Tổng số lượng gấp xúc   | Auto calculated       |
-| `TotalProcessingMold` | decimal(18,4) | NO   | Tổng DC gia công (kg)   | Auto calculated       |
-| `CreatorId`           | smallint      | NO   | ID người tạo            | FK -> Users           |
-| `ModifierId`          | smallint      | YES  | ID người sửa            | FK -> Users           |
-| `CreatedAt`           | datetime      | NO   | Ngày giờ tạo            | Default: GETDATE()    |
-| `ModifiedAt`          | datetime      | YES  | Ngày giờ sửa            |                       |
+| Cột                      | Kiểu dữ liệu  | Null | Mô tả                       | Ghi chú               |
+| ------------------------ | ------------- | ---- | --------------------------- | --------------------- |
+| `Id`                     | int           | NO   | ID công đoạn cắt            | Primary Key, Identity |
+| `ShiftLeaderId`          | int           | NO   | ID trưởng ca                | FK -> Employees       |
+| `IsDraft`                | bit           | NO   | Có phải bản nháp không      | Default: 0            |
+| `ProductionDate`         | datetime      | NO   | Ngày sản xuất               |                       |
+| `ProductionShift`        | nvarchar(50)  | NO   | Ca sản xuất                 |                       |
+| `TotalCuttingOutput`     | decimal(18,4) | NO   | Tổng sản lượng cắt (kg)     | Auto calculated       |
+| `TotalFoldedCount`       | decimal(18,4) | NO   | Tổng số lượng gấp xúc       | Auto calculated       |
+| `TotalProcessingMold`    | decimal(18,4) | NO   | Tổng DC gia công (kg)       | Auto calculated       |
+| `TotalBlowingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
+| `TotalPrintingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |
+| `TotalCuttingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Cắt (kg)  | Auto calculated       |
+| `CreatorId`              | smallint      | NO   | ID người tạo                | FK -> Users           |
+| `ModifierId`             | smallint      | YES  | ID người sửa                | FK -> Users           |
+| `CreatedAt`              | datetime      | NO   | Ngày giờ tạo                | Default: GETDATE()    |
+| `ModifiedAt`             | datetime      | YES  | Ngày giờ sửa                |                       |
 
 ### Bảng: `FoxWms_CuttingProcessesLine`
 

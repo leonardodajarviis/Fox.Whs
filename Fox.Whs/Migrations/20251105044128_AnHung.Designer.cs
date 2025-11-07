@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251105044128_AnHung")]
+    partial class AnHung
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,23 +292,11 @@ namespace Fox.Whs.Migrations
                     b.Property<int>("ShiftLeaderId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalBlowingStageMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<decimal>("TotalCuttingOutput")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("TotalCuttingStageMold")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<decimal>("TotalFoldedCount")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("TotalPrintingStageMold")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
@@ -594,9 +585,8 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ExcessPO")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                    b.Property<bool>("ExcessPO")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("HumanLossKg")
                         .HasPrecision(18, 4)
@@ -716,20 +706,8 @@ namespace Fox.Whs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short>("CreatorId")
-                        .HasColumnType("smallint");
-
                     b.Property<bool>("IsDraft")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short?>("ModifierId")
-                        .HasColumnType("smallint");
 
                     b.Property<DateTime>("ProductionDate")
                         .HasColumnType("datetime2");
@@ -754,10 +732,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ModifierId");
 
                     b.HasIndex("ShiftLeaderId");
 
@@ -1314,24 +1288,6 @@ namespace Fox.Whs.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Fox.Whs.SapModels.Printer", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Code");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Code");
-
-                    b.ToTable("@MAYIN", t =>
-                        {
-                            t.ExcludeFromMigrations();
-                        });
-                });
-
             modelBuilder.Entity("Fox.Whs.SapModels.ProductType", b =>
                 {
                     b.Property<string>("Code")
@@ -1378,14 +1334,6 @@ namespace Fox.Whs.Migrations
                     b.Property<DateTime?>("DateOfNeedPrinting")
                         .HasColumnType("datetime2")
                         .HasColumnName("U_INNCH");
-
-                    b.Property<DateTime?>("DateOfNeedRewinding")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("U_TUANCH");
-
-                    b.Property<DateTime?>("DateOfNeedSlitting")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("U_CHIANCH");
 
                     b.Property<int>("DocNum")
                         .HasColumnType("int")
@@ -1436,24 +1384,6 @@ namespace Fox.Whs.Migrations
                     b.HasKey("Code");
 
                     b.ToTable("@CASX", t =>
-                        {
-                            t.ExcludeFromMigrations();
-                        });
-                });
-
-            modelBuilder.Entity("Fox.Whs.SapModels.RewindingMachine", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Code");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Code");
-
-                    b.ToTable("@MAYTUA", t =>
                         {
                             t.ExcludeFromMigrations();
                         });
@@ -1664,25 +1594,11 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.RewindingProcess", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.User", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifierId");
-
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
                         .HasForeignKey("ShiftLeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Modifier");
 
                     b.Navigation("ShiftLeader");
                 });

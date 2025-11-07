@@ -60,7 +60,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "productionShift": "Ca 1",
       "totalCuttingOutput": 2500.5,
       "totalFoldedCount": 1500.0,
-      "totalProcessingMold": 75.0
+      "totalProcessingMold": 75.0,
+      "totalBlowingStageMold": 10.2,
+      "totalPrintingStageMold": 8.3,
+      "totalCuttingStageMold": 5.0
     }
   ],
   "totalCount": 50,
@@ -74,17 +77,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (CuttingProcess)
 
-| Trường                | Kiểu     | Mô tả                   |
-| --------------------- | -------- | ----------------------- |
-| `id`                  | integer  | ID công đoạn cắt        |
-| `shiftLeaderId`       | integer  | ID trưởng ca            |
-| `shiftLeaderName`     | string   | Tên trưởng ca           |
-| `isDraft`             | bool     | Có phải bản nháp không  |
-| `productionDate`      | datetime | Ngày sản xuất           |
-| `productionShift`     | string   | Ca sản xuất             |
-| `totalCuttingOutput`  | decimal  | Tổng sản lượng cắt (kg) |
-| `totalFoldedCount`    | decimal  | Tổng số lượng gấp xúc   |
-| `totalProcessingMold` | decimal  | Tổng DC gia công (kg)   |
+| Trường                   | Kiểu     | Mô tả                       |
+| ------------------------ | -------- | --------------------------- |
+| `id`                     | integer  | ID công đoạn cắt            |
+| `shiftLeaderId`          | integer  | ID trưởng ca                |
+| `shiftLeaderName`        | string   | Tên trưởng ca               |
+| `isDraft`                | bool     | Có phải bản nháp không      |
+| `productionDate`         | datetime | Ngày sản xuất               |
+| `productionShift`        | string   | Ca sản xuất                 |
+| `totalCuttingOutput`     | decimal  | Tổng sản lượng cắt (kg)     |
+| `totalFoldedCount`       | decimal  | Tổng số lượng gấp xúc       |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)       |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg) |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)   |
+| `totalCuttingStageMold`  | decimal  | Tổng DC công đoạn Cắt (kg)  |
 
 ---
 
@@ -126,6 +132,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "totalCuttingOutput": 2500.5,
   "totalFoldedCount": 1500.0,
   "totalProcessingMold": 75.0,
+  "totalBlowingStageMold": 10.2,
+  "totalPrintingStageMold": 8.3,
+  "totalCuttingStageMold": 5.0
   "lines": [
     {
       "id": 1,
@@ -183,18 +192,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (CuttingProcess)
 
-| Trường                | Kiểu     | Mô tả                            |
-| --------------------- | -------- | -------------------------------- |
-| `id`                  | integer  | ID công đoạn cắt                 |
-| `shiftLeaderId`       | integer  | ID trưởng ca                     |
-| `shiftLeaderName`     | string   | Tên trưởng ca                    |
-| `isDraft`             | bool     | Có phải bản nháp không           |
-| `productionDate`      | datetime | Ngày sản xuất                    |
-| `productionShift`     | string   | Ca sản xuất                      |
-| `totalCuttingOutput`  | decimal  | Tổng sản lượng cắt (kg)          |
-| `totalFoldedCount`    | decimal  | Tổng số lượng gấp xúc            |
-| `totalProcessingMold` | decimal  | Tổng DC gia công (kg)            |
-| `lines`               | array    | Danh sách chi tiết công đoạn cắt |
+| Trường                   | Kiểu     | Mô tả                            |
+| ------------------------ | -------- | -------------------------------- |
+| `id`                     | integer  | ID công đoạn cắt                 |
+| `shiftLeaderId`          | integer  | ID trưởng ca                     |
+| `shiftLeaderName`        | string   | Tên trưởng ca                    |
+| `isDraft`                | bool     | Có phải bản nháp không           |
+| `productionDate`         | datetime | Ngày sản xuất                    |
+| `productionShift`        | string   | Ca sản xuất                      |
+| `totalCuttingOutput`     | decimal  | Tổng sản lượng cắt (kg)          |
+| `totalFoldedCount`       | decimal  | Tổng số lượng gấp xúc            |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)            |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg)      |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)        |
+| `totalCuttingStageMold`  | decimal  | Tổng DC công đoạn Cắt (kg)       |
+| `lines`                  | array    | Danh sách chi tiết công đoạn cắt |
 
 #### Thông tin Chi tiết (CuttingProcessLine)
 
@@ -221,7 +233,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineStopMinutes`    | decimal  | Thời gian dừng máy (phút)          |
 | `stopReason`            | string   | Nguyên nhân dừng máy               |
 | `pieceCount`            | decimal  | Số chiếc (sản lượng cắt)           |
-| `QuantityKg`              | decimal  | Số kg (sản lượng cắt)              |
+| `QuantityKg`            | decimal  | Số kg (sản lượng cắt)              |
 | `bagCount`              | decimal  | Số bao (sản lượng cắt)             |
 | `foldedCount`           | decimal  | Số lượng gấp xúc                   |
 | `requiredDate`          | datetime | Ngày cần hàng                      |
@@ -241,9 +253,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineLossKg`         | decimal  | DC do cắt dán - Lỗi máy (kg)       |
 | `machineLossReason`     | string   | DC - Nguyên nhân lỗi máy           |
 | `totalLossKg`           | decimal  | Tổng DC (kg)                       |
-| `excessPOLess5Kg`      | decimal  | Thừa PO - Cuộn dưới 5kg            |
-| `excessPOOver5Kg`      | decimal  | Thừa PO - Cuộn trên 5kg            |
-| `excessPOCut`        | decimal  | Thừa PO - Hàng cắt (kg)            |
+| `excessPOLess5Kg`       | decimal  | Thừa PO - Cuộn dưới 5kg            |
+| `excessPOOver5Kg`       | decimal  | Thừa PO - Cuộn trên 5kg            |
+| `excessPOCut`           | decimal  | Thừa PO - Hàng cắt (kg)            |
 | `btpWarehouseConfirmed` | boolean  | Xác nhận của kho BTP               |
 | `remainingInventoryKg`  | decimal  | Tồn (kg)                           |
 
@@ -347,7 +359,7 @@ Tạo một công đoạn cắt mới.
 | `machineStopMinutes`    | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)          |
 | `stopReason`            | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy               |
 | `pieceCount`            | decimal  | Không    | >= 0          | Số chiếc (sản lượng cắt)           |
-| `QuantityKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)              |
+| `QuantityKg`            | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)              |
 | `bagCount`              | decimal  | Không    | >= 0          | Số bao (sản lượng cắt)             |
 | `foldedCount`           | decimal  | Không    | >= 0          | Số lượng gấp xúc                   |
 | `requiredDate`          | datetime | Không    | -             | Ngày cần hàng                      |
@@ -366,9 +378,9 @@ Tạo một công đoạn cắt mới.
 | `humanLossReason`       | string   | Không    | Max 500 ký tự | DC - Nguyên nhân con người         |
 | `machineLossKg`         | decimal  | Không    | >= 0          | DC do cắt dán - Lỗi máy (kg)       |
 | `machineLossReason`     | string   | Không    | Max 500 ký tự | DC - Nguyên nhân lỗi máy           |
-| `excessPOLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg            |
-| `excessPOOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg            |
-| `excessPOCut`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)            |
+| `excessPOLess5Kg`       | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg            |
+| `excessPOOver5Kg`       | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg            |
+| `excessPOCut`           | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)            |
 | `btpWarehouseConfirmed` | boolean  | Không    | -             | Xác nhận của kho BTP               |
 | `remainingInventoryKg`  | decimal  | Không    | >= 0          | Tồn (kg)                           |
 
@@ -533,7 +545,7 @@ Cập nhật thông tin công đoạn cắt theo ID.
 | `machineStopMinutes`    | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)                    |
 | `stopReason`            | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
 | `pieceCount`            | decimal  | Không    | >= 0          | Số chiếc (sản lượng cắt)                     |
-| `QuantityKg`              | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)                        |
+| `QuantityKg`            | decimal  | Không    | >= 0          | Số kg (sản lượng cắt)                        |
 | `bagCount`              | decimal  | Không    | >= 0          | Số bao (sản lượng cắt)                       |
 | `foldedCount`           | decimal  | Không    | >= 0          | Số lượng gấp xúc                             |
 | `requiredDate`          | datetime | Không    | -             | Ngày cần hàng                                |
@@ -552,9 +564,9 @@ Cập nhật thông tin công đoạn cắt theo ID.
 | `humanLossReason`       | string   | Không    | Max 500 ký tự | DC - Nguyên nhân con người                   |
 | `machineLossKg`         | decimal  | Không    | >= 0          | DC do cắt dán - Lỗi máy (kg)                 |
 | `machineLossReason`     | string   | Không    | Max 500 ký tự | DC - Nguyên nhân lỗi máy                     |
-| `excessPOLess5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg                      |
-| `excessPOOver5Kg`      | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg                      |
-| `excessPOCut`        | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)                      |
+| `excessPOLess5Kg`       | decimal  | Không    | >= 0          | Thừa PO - Cuộn dưới 5kg                      |
+| `excessPOOver5Kg`       | decimal  | Không    | >= 0          | Thừa PO - Cuộn trên 5kg                      |
+| `excessPOCut`           | decimal  | Không    | >= 0          | Thừa PO - Hàng cắt (kg)                      |
 | `btpWarehouseConfirmed` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
 | `remainingInventoryKg`  | decimal  | Không    | >= 0          | Tồn (kg)                                     |
 

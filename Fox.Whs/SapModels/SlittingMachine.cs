@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fox.Whs.SapModels;
 
-[Table("@MAYCAT")]
+[Table("@MAYCHIA")]
 public class SlittingMachine
 {
     [Key, Column("Code")]

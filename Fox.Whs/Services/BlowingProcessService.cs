@@ -35,6 +35,8 @@ public class BlowingProcessService
         var totalCount = await query.CountAsync();
 
         var result = await query
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .Include(bp => bp.ShiftLeader)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(bp => bp.ProductionDate)
@@ -51,7 +53,9 @@ public class BlowingProcessService
 
     public async Task<BlowingProcess> GetByIdAsync(int id)
     {
-        var blowingProcess = await _dbContext.BlowingProcesses
+        var blowingProcess = await _dbContext.BlowingProcesses.AsNoTracking()
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .Include(bp => bp.ShiftLeader)
             .Include(bp => bp.Lines)
                 .ThenInclude(line => line.Worker)
@@ -188,6 +192,20 @@ public class BlowingProcessService
 
         // Tính toán lại tổng
         CalculateTotals(blowingProcess);
+
+        if (!blowingProcess.IsDraft)
+        {
+            var productOrderCompletedIds = blowingProcess.Lines
+                .Where(l => l.IsCompleted)
+                .Select(l => l.ProductionOrderId)
+                .Distinct()
+                .ToArray() ?? [];
+
+            if (productOrderCompletedIds.Length > 0)
+            {
+                await _dbContext.UpdateStatusProductionOrderSapAsync("U_THOISTATUS", productOrderCompletedIds);
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

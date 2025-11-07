@@ -36,6 +36,8 @@ public class PrintingProcessService
 
         var result = await query
             .Include(cp => cp.ShiftLeader)
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(pp => pp.ProductionDate)
             .ToListAsync();
@@ -53,6 +55,8 @@ public class PrintingProcessService
     {
         var printingProcess = await _dbContext.PrintingProcesses
             .Include(pp => pp.ShiftLeader)
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .Include(pp => pp.Lines)
                 .ThenInclude(line => line.Worker)
             .Include(pp => pp.Lines)
@@ -123,6 +127,7 @@ public class PrintingProcessService
         {
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
+            ShiftLeaderId = currentEmployeeId,
             ProductionShift = dto.ProductionShift,
             CreatorId = currentUserId,
             Lines = lines
@@ -187,6 +192,20 @@ public class PrintingProcessService
 
         // Tính toán lại tổng
         CalculateTotals(printingProcess);
+
+        if (!printingProcess.IsDraft)
+        {
+            var productOrderCompletedIds = printingProcess.Lines
+                .Where(l => l.IsCompleted)
+                .Select(l => l.ProductionOrderId)
+                .Distinct()
+                .ToArray() ?? [];
+
+            if (productOrderCompletedIds.Length > 0)
+            {
+                await _dbContext.UpdateStatusProductionOrderSapAsync("U_INSTATUS", productOrderCompletedIds);
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

@@ -36,6 +36,8 @@ public class CuttingProcessService
 
         var result = await query
             .Include(cp => cp.ShiftLeader)
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .ApplyOrderingAndPaging(pr)
             .OrderByDescending(cp => cp.ProductionDate)
             .ToListAsync();
@@ -53,6 +55,8 @@ public class CuttingProcessService
     {
         var cuttingProcess = await _dbContext.CuttingProcesses
             .Include(cp => cp.ShiftLeader)
+            .Include(pp => pp.Creator)
+            .Include(pp => pp.Modifier)
             .Include(cp => cp.Lines)
                 .ThenInclude(line => line.Worker)
             .Include(cp => cp.Lines)
@@ -189,6 +193,19 @@ public class CuttingProcessService
 
         // Tính toán lại tổng
         CalculateTotals(cuttingProcess);
+        if (!cuttingProcess.IsDraft)
+        {
+            var productOrderCompletedIds = cuttingProcess.Lines
+                .Where(l => l.IsCompleted)
+                .Select(l => l.ProductionOrderId)
+                .Distinct()
+                .ToArray() ?? [];
+
+            if (productOrderCompletedIds.Length > 0)
+            {
+                await _dbContext.UpdateStatusProductionOrderSapAsync("U_CATSTATUS", productOrderCompletedIds);
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

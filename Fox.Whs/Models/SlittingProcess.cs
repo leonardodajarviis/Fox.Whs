@@ -85,6 +85,12 @@ public class SlittingProcess
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];
+
+    [NotMapped]
+    public string? CreatorName => Creator?.FullName;
+
+    [NotMapped]
+    public string? ModifierName => Modifier?.FullName;
 }
 
 [Table("FoxWms_SlittingProcessLine")]

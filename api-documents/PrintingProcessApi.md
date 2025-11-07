@@ -169,7 +169,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
       "totalLossKg": 65.5,
-      "ExcessPO": false,
+      "excessPO": 10.2,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     }
@@ -237,7 +237,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `machineLossKg`            | decimal  | Lỗi máy (kg)                       |
 | `machineLossReason`        | string   | Lỗi máy - nguyên nhân              |
 | `totalLossKg`              | decimal  | Tổng DC (kg)                       |
-| `excessPO`                 | boolean  | Thừa PO                            |
+| `excessPO`                 | decimal  | Thừa PO                            |
 | `btpWarehouseConfirmation` | boolean  | Xác nhận của kho BTP               |
 | `printingStageInventoryKg` | decimal  | Tồn kho ở công đoạn In (kg)        |
 
@@ -300,7 +300,7 @@ Tạo một công đoạn in mới.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
-      "ExcessPO": false,
+      "excessPO": 10.2,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     }
@@ -350,7 +350,7 @@ Tạo một công đoạn in mới.
 | `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân            |
 | `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                       |
 | `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân              |
-| `excessPO`                 | boolean  | Không    | -             | Thừa PO                            |
+| `excessPO`                 | decimal  | Không    | -             | Thừa PO                            |
 | `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP               |
 | `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)        |
 
@@ -438,7 +438,6 @@ Cập nhật thông tin công đoạn in theo ID.
       "id": 1,
       "productionOrderId": 1,
       "productType": "PE",
-      "thickness": 50,
       "semiProductWidth": "1200mm",
       "printPatternName": "Hình in ABC",
       "colorCount": "4 màu",
@@ -465,7 +464,7 @@ Cập nhật thông tin công đoạn in theo ID.
       "humanLossReason": "Lỗi thao tác",
       "machineLossKg": 7.5,
       "machineLossReason": "Máy lỗi",
-      "ExcessPO": false,
+      "excessPO": 10.2,
       "btpWarehouseConfirmation": true,
       "printingStageInventoryKg": 350.0
     },
@@ -497,7 +496,6 @@ Cập nhật thông tin công đoạn in theo ID.
 | `id`                       | integer  | Không    | -             | ID chi tiết công đoạn (null nếu là dòng mới) |
 | `productionOrderId`        | integer  | **Có**   | -             | ID lệnh sản xuất SAP                         |
 | `productType`              | string   | Không    | Max 100 ký tự | Chủng loại                                   |
-| `thickness`                | decimal  | Không    | -             | Độ dày / 1 lá                                |
 | `semiProductWidth`         | string   | Không    | Max 50 ký tự  | Khổ màng BTP                                 |
 | `printPatternName`         | string   | Không    | Max 200 ký tự | Tên hình in                                  |
 | `colorCount`               | string   | Không    | Max 50 ký tự  | Số màu in                                    |
@@ -524,7 +522,7 @@ Cập nhật thông tin công đoạn in theo ID.
 | `humanLossReason`          | string   | Không    | Max 500 ký tự | Con người - nguyên nhân                      |
 | `machineLossKg`            | decimal  | Không    | >= 0          | Lỗi máy (kg)                                 |
 | `machineLossReason`        | string   | Không    | Max 500 ký tự | Lỗi máy - nguyên nhân                        |
-| `excessPO`                 | boolean  | Không    | -             | Thừa PO                                      |
+| `excessPO`                 | decimal  | Không    | -             | Thừa PO                                      |
 | `btpWarehouseConfirmation` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
 | `printingStageInventoryKg` | decimal  | Không    | >= 0          | Tồn kho ở công đoạn In (kg)                  |
 

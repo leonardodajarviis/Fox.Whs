@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fox.Whs.Data;
 
 namespace Fox.Whs.SapModels;
 
+[Table("@MAYTUA"), ReadOnlyEntity]
 public class RewindingMachine
 {
     [Key, Column("Code")]
