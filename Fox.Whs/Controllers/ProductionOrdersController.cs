@@ -96,6 +96,18 @@ public class ProductionOrdersController : ControllerBase
                 query = query
                     .Where(po => (po.BlowingStatus == "N" || po.BlowingStatus == null) && po.IsBlowing == "Y");
                 break;
+            case "rewinding":
+                query = query
+                    .Where(po => (po.RewindingStatus == "N" || po.RewindingStatus == null) && po.IsRewinding == "Y");
+                break;
+            case "cutting":
+                query = query
+                    .Where(po => (po.CuttingStatus == "N" || po.CuttingStatus == null) && po.IsCutting == "Y");
+                break;
+            case "slitting":
+                query = query
+                    .Where(po => (po.SlittingStatus == "N" || po.SlittingStatus == null) && po.IsSlitting == "Y");
+                break;
             default:
                 break;
         }

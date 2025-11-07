@@ -31,6 +31,24 @@ public class ProductionOrder
     [Column("U_THOISTATUS")]
     public string? BlowingStatus { get; set; }
 
+    [Column("U_TUA")]
+    public string? IsRewinding { get; set; }
+
+    [Column("U_TUASTATUS")]
+    public string? RewindingStatus { get; set; }
+
+    [Column("U_CAT")]
+    public string? IsCutting { get; set; }
+
+    [Column("U_CATSTATUS")]
+    public string? CuttingStatus { get; set; }
+
+    [Column("U_CHIA")]
+    public string? IsSlitting { get; set; }
+
+    [Column("U_CHIASTATUS")]
+    public string? SlittingStatus { get; set; }
+
     /// <summary>
     /// Mã khách hàng
     /// </summary>
