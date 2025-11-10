@@ -432,6 +432,7 @@ public class SlittingProcessService
 
     private static void CalculateTotals(SlittingProcess slittingProcess)
     {
+        slittingProcess.TotalSlittingOutput = slittingProcess.Lines.Sum(l => l.QuantityKg);
         slittingProcess.TotalProcessingMold = slittingProcess.Lines.Sum(l => l.ProcessingLossKg);
         slittingProcess.TotalBlowingStageMold = slittingProcess.Lines.Sum(l => l.BlowingLossKg);
         slittingProcess.TotalPrintingStageMold = slittingProcess.Lines.Sum(l => l.PrintingLossKg + l.CutViaKg);

@@ -42,6 +42,12 @@ public class SlittingProcess
     public string ProductionShift { get; set; } = null!;
 
     /// <summary>
+    /// Tổng sản lượng chia
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal TotalSlittingOutput { get; set; }
+
+    /// <summary>
     /// Tổng DC gia công
     /// </summary>
     [Precision(18, 4)]

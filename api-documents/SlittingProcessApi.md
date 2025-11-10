@@ -58,6 +58,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "isDraft": false,
       "productionDate": "2025-10-29T00:00:00",
       "productionShift": "Ca 1",
+      "totalSlittingOutput": 15.6,
       "totalProcessingMold": 15.5,
       "totalBlowingStageMold": 10.2,
       "totalPrintingStageMold": 8.3,
@@ -75,18 +76,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (SlittingProcess)
 
-| Trường                    | Kiểu     | Mô tả                        |
-| ------------------------- | -------- | ---------------------------- |
-| `id`                      | integer  | ID công đoạn chia            |
-| `shiftLeaderId`           | integer  | ID trưởng ca                 |
-| `shiftLeaderName`         | string   | Tên trưởng ca                |
-| `isDraft`                 | bool     | Có phải bản nháp không       |
-| `productionDate`          | datetime | Ngày sản xuất                |
-| `productionShift`         | string   | Ca sản xuất                  |
-| `totalProcessingMold`     | decimal  | Tổng DC gia công (kg)        |
-| `totalBlowingStageMold`   | decimal  | Tổng DC công đoạn Thổi (kg)  |
-| `totalPrintingStageMold`  | decimal  | Tổng DC công đoạn In (kg)    |
-| `totalSlittingStageMold`  | decimal  | Tổng DC công đoạn Chia (kg)  |
+| Trường                   | Kiểu     | Mô tả                       |
+| ------------------------ | -------- | --------------------------- |
+| `id`                     | integer  | ID công đoạn chia           |
+| `shiftLeaderId`          | integer  | ID trưởng ca                |
+| `shiftLeaderName`        | string   | Tên trưởng ca               |
+| `isDraft`                | bool     | Có phải bản nháp không      |
+| `productionDate`         | datetime | Ngày sản xuất               |
+| `productionShift`        | string   | Ca sản xuất                 |
+| `totalSlittingOutput`    | decimal  | Tổng sản lượng chia (kg)    |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)       |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg) |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)   |
+| `totalSlittingStageMold` | decimal  | Tổng DC công đoạn Chia (kg) |
 
 ---
 
@@ -104,8 +106,8 @@ Lấy thông tin chi tiết một công đoạn chia theo ID.
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả            |
-| ---- | ------- | -------- | ---------------- |
+| Tên  | Kiểu    | Bắt buộc | Mô tả             |
+| ---- | ------- | -------- | ----------------- |
 | `id` | integer | Có       | ID công đoạn chia |
 
 ### Ví dụ Request
@@ -125,6 +127,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "isDraft": false,
   "productionDate": "2025-10-29T00:00:00",
   "productionShift": "Ca 1",
+  "totalSlittingOutput": 15.2,
   "totalProcessingMold": 15.5,
   "totalBlowingStageMold": 10.2,
   "totalPrintingStageMold": 8.3,
@@ -185,69 +188,70 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 #### Thông tin Header (SlittingProcess)
 
-| Trường                    | Kiểu     | Mô tả                           |
-| ------------------------- | -------- | ------------------------------- |
-| `id`                      | integer  | ID công đoạn chia               |
-| `shiftLeaderId`           | integer  | ID trưởng ca                    |
-| `shiftLeaderName`         | string   | Tên trưởng ca                   |
-| `isDraft`                 | bool     | Có phải bản nháp không          |
-| `productionDate`          | datetime | Ngày sản xuất                   |
-| `productionShift`         | string   | Ca sản xuất                     |
-| `totalProcessingMold`     | decimal  | Tổng DC gia công (kg)           |
-| `totalBlowingStageMold`   | decimal  | Tổng DC công đoạn Thổi (kg)     |
-| `totalPrintingStageMold`  | decimal  | Tổng DC công đoạn In (kg)       |
-| `totalSlittingStageMold`  | decimal  | Tổng DC công đoạn Chia (kg)     |
-| `lines`                   | array    | Danh sách chi tiết công đoạn chia |
+| Trường                   | Kiểu     | Mô tả                             |
+| ------------------------ | -------- | --------------------------------- |
+| `id`                     | integer  | ID công đoạn chia                 |
+| `shiftLeaderId`          | integer  | ID trưởng ca                      |
+| `shiftLeaderName`        | string   | Tên trưởng ca                     |
+| `isDraft`                | bool     | Có phải bản nháp không            |
+| `productionDate`         | datetime | Ngày sản xuất                     |
+| `productionShift`        | string   | Ca sản xuất                       |
+| `totalSlittingOutput`    | decimal  | Tổng sản lượng chia (kg)          |
+| `totalProcessingMold`    | decimal  | Tổng DC gia công (kg)             |
+| `totalBlowingStageMold`  | decimal  | Tổng DC công đoạn Thổi (kg)       |
+| `totalPrintingStageMold` | decimal  | Tổng DC công đoạn In (kg)         |
+| `totalSlittingStageMold` | decimal  | Tổng DC công đoạn Chia (kg)       |
+| `lines`                  | array    | Danh sách chi tiết công đoạn chia |
 
 #### Thông tin Chi tiết (SlittingProcessLine)
 
-| Trường                  | Kiểu     | Mô tả                                      |
-| ----------------------- | -------- | ------------------------------------------ |
-| `id`                    | integer  | ID chi tiết công đoạn                      |
-| `slittingProcessId`     | integer  | ID công đoạn chia                          |
-| `productionOrderId`     | integer  | ID lệnh sản xuất SAP                       |
-| `itemCode`              | string   | Mã hàng                                    |
-| `productionBatch`       | string   | Lô sản xuất                                |
-| `cardCode`              | string   | Mã khách hàng                              |
-| `customerName`          | string   | Tên khách hàng                             |
-| `productType`           | string   | Chủng loại                                 |
-| `productTypeName`       | string   | Tên chủng loại                             |
-| `thickness`             | string   | Độ dày / 1 lá                              |
-| `semiProductWidth`      | string   | Khổ màng BTP                               |
-| `printPatternName`      | string   | Tên hình in                                |
-| `colorCount`            | string   | Số màu in                                  |
-| `slittingMachine`       | string   | Máy chia                                   |
-| `workerId`              | integer  | ID công nhân chia                          |
-| `workerName`            | string   | Tên công nhân chia                         |
-| `slittingSpeed`         | decimal  | Tốc độ chia                                |
-| `startTime`             | datetime | Thời gian bắt đầu chia                     |
-| `endTime`               | datetime | Thời gian kết thúc chia                    |
-| `machineStopMinutes`    | decimal  | Thời gian dừng máy (phút)                  |
-| `stopReason`            | string   | Nguyên nhân dừng máy                       |
-| `rollCount`             | decimal  | Số cuộn                                    |
-| `pieceCount`            | decimal  | Số chiếc                                   |
-| `quantityKg`            | decimal  | Số kg                                      |
-| `boxCount`              | decimal  | Số thùng                                   |
-| `requiredDate`          | datetime | Ngày cần hàng                              |
-| `isCompleted`           | boolean  | Xác nhận hoàn thành                        |
-| `actualCompletionDate`  | datetime | Ngày hoàn thành thực tế (QLSX)             |
-| `delayReason`           | string   | Nguyên nhân chậm tiến độ                   |
-| `processingLossKg`      | decimal  | DC gia công (Kg)                           |
-| `processingLossReason`  | string   | DC gia công - Nguyên nhân                  |
-| `blowingLossKg`         | decimal  | DC do công đoạn thổi (Kg)                  |
-| `blowingLossReason`     | string   | DC do công đoạn thổi - Nguyên nhân         |
-| `printingLossKg`        | decimal  | DC do công đoạn in (Kg)                    |
-| `printingLossReason`    | string   | DC do công đoạn in - Nguyên nhân           |
-| `printingMachine`       | string   | Số máy in                                  |
-| `cutViaKg`              | decimal  | Cắt via (Kg)                               |
-| `humanLossKg`           | decimal  | DC do công đoạn chia - Con người (Kg)      |
+| Trường                  | Kiểu     | Mô tả                                        |
+| ----------------------- | -------- | -------------------------------------------- |
+| `id`                    | integer  | ID chi tiết công đoạn                        |
+| `slittingProcessId`     | integer  | ID công đoạn chia                            |
+| `productionOrderId`     | integer  | ID lệnh sản xuất SAP                         |
+| `itemCode`              | string   | Mã hàng                                      |
+| `productionBatch`       | string   | Lô sản xuất                                  |
+| `cardCode`              | string   | Mã khách hàng                                |
+| `customerName`          | string   | Tên khách hàng                               |
+| `productType`           | string   | Chủng loại                                   |
+| `productTypeName`       | string   | Tên chủng loại                               |
+| `thickness`             | string   | Độ dày / 1 lá                                |
+| `semiProductWidth`      | string   | Khổ màng BTP                                 |
+| `printPatternName`      | string   | Tên hình in                                  |
+| `colorCount`            | string   | Số màu in                                    |
+| `slittingMachine`       | string   | Máy chia                                     |
+| `workerId`              | integer  | ID công nhân chia                            |
+| `workerName`            | string   | Tên công nhân chia                           |
+| `slittingSpeed`         | decimal  | Tốc độ chia                                  |
+| `startTime`             | datetime | Thời gian bắt đầu chia                       |
+| `endTime`               | datetime | Thời gian kết thúc chia                      |
+| `machineStopMinutes`    | decimal  | Thời gian dừng máy (phút)                    |
+| `stopReason`            | string   | Nguyên nhân dừng máy                         |
+| `rollCount`             | decimal  | Số cuộn                                      |
+| `pieceCount`            | decimal  | Số chiếc                                     |
+| `quantityKg`            | decimal  | Số kg                                        |
+| `boxCount`              | decimal  | Số thùng                                     |
+| `requiredDate`          | datetime | Ngày cần hàng                                |
+| `isCompleted`           | boolean  | Xác nhận hoàn thành                          |
+| `actualCompletionDate`  | datetime | Ngày hoàn thành thực tế (QLSX)               |
+| `delayReason`           | string   | Nguyên nhân chậm tiến độ                     |
+| `processingLossKg`      | decimal  | DC gia công (Kg)                             |
+| `processingLossReason`  | string   | DC gia công - Nguyên nhân                    |
+| `blowingLossKg`         | decimal  | DC do công đoạn thổi (Kg)                    |
+| `blowingLossReason`     | string   | DC do công đoạn thổi - Nguyên nhân           |
+| `printingLossKg`        | decimal  | DC do công đoạn in (Kg)                      |
+| `printingLossReason`    | string   | DC do công đoạn in - Nguyên nhân             |
+| `printingMachine`       | string   | Số máy in                                    |
+| `cutViaKg`              | decimal  | Cắt via (Kg)                                 |
+| `humanLossKg`           | decimal  | DC do công đoạn chia - Con người (Kg)        |
 | `humanLossReason`       | string   | DC do công đoạn chia - Nguyên nhân con người |
-| `machineLossKg`         | decimal  | DC do công đoạn chia - Lỗi máy (Kg)        |
-| `machineLossReason`     | string   | DC do công đoạn chia - Nguyên nhân lỗi máy |
-| `totalLossKg`           | decimal  | Tổng DC (Kg)                               |
-| `excessPOPrinting`      | decimal  | Thừa PO - BTP In (Kg)                      |
-| `excessPOSlitting`      | decimal  | Thừa PO - TP Chia (Kg)                     |
-| `btpWarehouseConfirmed` | boolean  | Xác nhận của kho BTP                       |
+| `machineLossKg`         | decimal  | DC do công đoạn chia - Lỗi máy (Kg)          |
+| `machineLossReason`     | string   | DC do công đoạn chia - Nguyên nhân lỗi máy   |
+| `totalLossKg`           | decimal  | Tổng DC (Kg)                                 |
+| `excessPOPrinting`      | decimal  | Thừa PO - BTP In (Kg)                        |
+| `excessPOSlitting`      | decimal  | Thừa PO - TP Chia (Kg)                       |
+| `btpWarehouseConfirmed` | boolean  | Xác nhận của kho BTP                         |
 
 ### Response Error (404 Not Found)
 
@@ -320,47 +324,47 @@ Tạo một công đoạn chia mới. Trưởng ca sẽ tự động được g�
 
 #### Thông tin Header
 
-| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                          |
-| ----------------- | -------- | -------- | ------------ | ------------------------------ |
-| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không         |
-| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                  |
-| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                    |
+| Trường            | Kiểu     | Bắt buộc | Giới hạn     | Mô tả                             |
+| ----------------- | -------- | -------- | ------------ | --------------------------------- |
+| `isDraft`         | boolean  | Không    | -            | Có phải bản nháp không            |
+| `productionDate`  | datetime | **Có**   | -            | Ngày sản xuất                     |
+| `productionShift` | string   | **Có**   | Max 50 ký tự | Ca sản xuất                       |
 | `lines`           | array    | Không    | -            | Danh sách chi tiết công đoạn chia |
 
 #### Thông tin Chi tiết (CreateSlittingProcessLineDto)
 
-| Trường                 | Kiểu     | Bắt buộc | Giới hạn      | Mô tả                                      |
-| ---------------------- | -------- | -------- | ------------- | ------------------------------------------ |
-| `productionOrderId`    | integer  | **Có**   | -             | DocEntry của lệnh sản xuất                 |
-| `slittingMachine`      | string   | Không    | Max 50 ký tự  | Máy chia                                   |
-| `workerId`             | integer  | Không    | -             | ID công nhân chia                          |
-| `slittingSpeed`        | decimal  | Không    | >= 0          | Tốc độ chia                                |
-| `startTime`            | datetime | Không    | -             | Thời gian bắt đầu chia                     |
-| `endTime`              | datetime | Không    | -             | Thời gian kết thúc chia                    |
-| `machineStopMinutes`   | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)                  |
-| `stopReason`           | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                       |
-| `rollCount`            | decimal  | Không    | >= 0          | Số cuộn                                    |
-| `pieceCount`           | decimal  | Không    | >= 0          | Số chiếc                                   |
-| `quantityKg`           | decimal  | Không    | >= 0          | Số kg                                      |
-| `boxCount`             | decimal  | Không    | >= 0          | Số thùng                                   |
-| `isCompleted`          | boolean  | Không    | -             | Xác nhận hoàn thành                        |
-| `actualCompletionDate` | datetime | Không    | -             | Ngày hoàn thành thực tế (QLSX)             |
-| `delayReason`          | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ                   |
-| `processingLossKg`     | decimal  | Không    | >= 0          | DC gia công (Kg)                           |
-| `processingLossReason` | string   | Không    | Max 500 ký tự | DC gia công - Nguyên nhân                  |
-| `blowingLossKg`        | decimal  | Không    | >= 0          | DC do công đoạn thổi (Kg)                  |
-| `blowingLossReason`    | string   | Không    | Max 500 ký tự | DC do công đoạn thổi - Nguyên nhân         |
-| `printingLossKg`       | decimal  | Không    | >= 0          | DC do công đoạn in (Kg)                    |
-| `printingLossReason`   | string   | Không    | Max 500 ký tự | DC do công đoạn in - Nguyên nhân           |
-| `printingMachine`      | string   | Không    | Max 50 ký tự  | Số máy in                                  |
-| `cutViaKg`             | decimal  | Không    | >= 0          | Cắt via (Kg)                               |
-| `humanLossKg`          | decimal  | Không    | >= 0          | DC do công đoạn chia - Con người (Kg)      |
-| `humanLossReason`      | string   | Không    | Max 500 ký tự | DC do công đoạn chia - Nguyên nhân con người |
-| `machineLossKg`        | decimal  | Không    | >= 0          | DC do công đoạn chia - Lỗi máy (Kg)        |
-| `machineLossReason`    | string   | Không    | Max 500 ký tự | DC do công đoạn chia - Nguyên nhân lỗi máy |
-| `excessPOPrinting`     | decimal  | Không    | >= 0          | Thừa PO - BTP In (Kg)                      |
-| `excessPOSlitting`     | decimal  | Không    | >= 0          | Thừa PO - TP Chia (Kg)                     |
-| `btpWarehouseConfirmed`| boolean  | Không    | -             | Xác nhận của kho BTP                       |
+| Trường                  | Kiểu     | Bắt buộc | Giới hạn      | Mô tả                                        |
+| ----------------------- | -------- | -------- | ------------- | -------------------------------------------- |
+| `productionOrderId`     | integer  | **Có**   | -             | DocEntry của lệnh sản xuất                   |
+| `slittingMachine`       | string   | Không    | Max 50 ký tự  | Máy chia                                     |
+| `workerId`              | integer  | Không    | -             | ID công nhân chia                            |
+| `slittingSpeed`         | decimal  | Không    | >= 0          | Tốc độ chia                                  |
+| `startTime`             | datetime | Không    | -             | Thời gian bắt đầu chia                       |
+| `endTime`               | datetime | Không    | -             | Thời gian kết thúc chia                      |
+| `machineStopMinutes`    | decimal  | Không    | >= 0          | Thời gian dừng máy (phút)                    |
+| `stopReason`            | string   | Không    | Max 500 ký tự | Nguyên nhân dừng máy                         |
+| `rollCount`             | decimal  | Không    | >= 0          | Số cuộn                                      |
+| `pieceCount`            | decimal  | Không    | >= 0          | Số chiếc                                     |
+| `quantityKg`            | decimal  | Không    | >= 0          | Số kg                                        |
+| `boxCount`              | decimal  | Không    | >= 0          | Số thùng                                     |
+| `isCompleted`           | boolean  | Không    | -             | Xác nhận hoàn thành                          |
+| `actualCompletionDate`  | datetime | Không    | -             | Ngày hoàn thành thực tế (QLSX)               |
+| `delayReason`           | string   | Không    | Max 500 ký tự | Nguyên nhân chậm tiến độ                     |
+| `processingLossKg`      | decimal  | Không    | >= 0          | DC gia công (Kg)                             |
+| `processingLossReason`  | string   | Không    | Max 500 ký tự | DC gia công - Nguyên nhân                    |
+| `blowingLossKg`         | decimal  | Không    | >= 0          | DC do công đoạn thổi (Kg)                    |
+| `blowingLossReason`     | string   | Không    | Max 500 ký tự | DC do công đoạn thổi - Nguyên nhân           |
+| `printingLossKg`        | decimal  | Không    | >= 0          | DC do công đoạn in (Kg)                      |
+| `printingLossReason`    | string   | Không    | Max 500 ký tự | DC do công đoạn in - Nguyên nhân             |
+| `printingMachine`       | string   | Không    | Max 50 ký tự  | Số máy in                                    |
+| `cutViaKg`              | decimal  | Không    | >= 0          | Cắt via (Kg)                                 |
+| `humanLossKg`           | decimal  | Không    | >= 0          | DC do công đoạn chia - Con người (Kg)        |
+| `humanLossReason`       | string   | Không    | Max 500 ký tự | DC do công đoạn chia - Nguyên nhân con người |
+| `machineLossKg`         | decimal  | Không    | >= 0          | DC do công đoạn chia - Lỗi máy (Kg)          |
+| `machineLossReason`     | string   | Không    | Max 500 ký tự | DC do công đoạn chia - Nguyên nhân lỗi máy   |
+| `excessPOPrinting`      | decimal  | Không    | >= 0          | Thừa PO - BTP In (Kg)                        |
+| `excessPOSlitting`      | decimal  | Không    | >= 0          | Thừa PO - TP Chia (Kg)                       |
+| `btpWarehouseConfirmed` | boolean  | Không    | -             | Xác nhận của kho BTP                         |
 
 ### Ví dụ Request
 
@@ -428,8 +432,8 @@ Cập nhật thông tin công đoạn chia hiện có.
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả                        |
-| ---- | ------- | -------- | ---------------------------- |
+| Tên  | Kiểu    | Bắt buộc | Mô tả                          |
+| ---- | ------- | -------- | ------------------------------ |
 | `id` | integer | Có       | ID công đoạn chia cần cập nhật |
 
 ### Request Body
@@ -458,11 +462,12 @@ Tương tự như `CreateSlittingProcessDto`, nhưng các line có thêm trườ
 
 #### Thông tin Chi tiết (UpdateSlittingProcessLineDto)
 
-| Trường | Kiểu    | Bắt buộc | Mô tả                                  |
-| ------ | ------- | -------- | -------------------------------------- |
-| `id`   | integer | Không    | ID của line (null nếu là line mới)     |
+| Trường | Kiểu    | Bắt buộc | Mô tả                              |
+| ------ | ------- | -------- | ---------------------------------- |
+| `id`   | integer | Không    | ID của line (null nếu là line mới) |
 
-**Lưu ý:** 
+**Lưu ý:**
+
 - Nếu `id` có giá trị, line sẽ được cập nhật.
 - Nếu `id` là `null`, line mới sẽ được thêm vào.
 - Các line không có trong request sẽ bị xóa.
@@ -496,8 +501,8 @@ Xóa một công đoạn chia theo ID. Các chi tiết công đoạn chia (lines
 
 ### Path Parameters
 
-| Tên  | Kiểu    | Bắt buộc | Mô tả                   |
-| ---- | ------- | -------- | ----------------------- |
+| Tên  | Kiểu    | Bắt buộc | Mô tả                     |
+| ---- | ------- | -------- | ------------------------- |
 | `id` | integer | Có       | ID công đoạn chia cần xóa |
 
 ### Ví dụ Request
@@ -529,22 +534,26 @@ Không có nội dung trả về khi xóa thành công.
 Khi tạo hoặc cập nhật công đoạn chia, các trường sau sẽ được tự động tính toán:
 
 1. **TotalLossKg (cho mỗi line):**
+
    ```
-   TotalLossKg = ProcessingLossKg + BlowingLossKg + PrintingLossKg + 
+   TotalLossKg = ProcessingLossKg + BlowingLossKg + PrintingLossKg +
                  CutViaKg + HumanLossKg + MachineLossKg
    ```
 
 2. **TotalProcessingMold (tổng DC gia công):**
+
    ```
    TotalProcessingMold = Sum(ProcessingLossKg của tất cả lines)
    ```
 
 3. **TotalBlowingStageMold (tổng DC công đoạn Thổi):**
+
    ```
    TotalBlowingStageMold = Sum(BlowingLossKg của tất cả lines)
    ```
 
 4. **TotalPrintingStageMold (tổng DC công đoạn In):**
+
    ```
    TotalPrintingStageMold = Sum(PrintingLossKg + CutViaKg của tất cả lines)
    ```
@@ -597,12 +606,12 @@ Một số ví dụ filter hữu ích:
 
 ### Mã lỗi
 
-| Mã lỗi | Mô tả                                          |
-| ------ | ---------------------------------------------- |
-| 200    | Thành công                                     |
-| 204    | Thành công - Không có nội dung trả về          |
-| 400    | Yêu cầu không hợp lệ (validation error)        |
-| 401    | Không được xác thực (token không hợp lệ)       |
-| 403    | Không có quyền truy cập                        |
-| 404    | Không tìm thấy tài nguyên                      |
-| 500    | Lỗi server                                     |
+| Mã lỗi | Mô tả                                    |
+| ------ | ---------------------------------------- |
+| 200    | Thành công                               |
+| 204    | Thành công - Không có nội dung trả về    |
+| 400    | Yêu cầu không hợp lệ (validation error)  |
+| 401    | Không được xác thực (token không hợp lệ) |
+| 403    | Không có quyền truy cập                  |
+| 404    | Không tìm thấy tài nguyên                |
+| 500    | Lỗi server                               |
