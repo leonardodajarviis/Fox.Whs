@@ -76,7 +76,7 @@ public class PrintingProcessService
     /// </summary>
     public async Task<PrintingProcess> CreateAsync(CreatePrintingProcessDto dto)
     {
-        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
+        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -127,7 +127,7 @@ public class PrintingProcessService
         {
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
-            ShiftLeaderId = currentEmployeeId,
+            ShiftLeaderId = shiftLeaderId,
             ProductionShift = dto.ProductionShift,
             CreatorId = currentUserId,
             Lines = lines
@@ -184,6 +184,7 @@ public class PrintingProcessService
         printingProcess.ProductionDate = dto.ProductionDate;
         printingProcess.ProductionShift = dto.ProductionShift;
         printingProcess.IsDraft = dto.IsDraft;
+        printingProcess.ShiftLeaderId = dto.ShiftLeaderId;
         printingProcess.ModifierId = currentUserId;
         printingProcess.ModifiedAt = DateTime.Now;
 

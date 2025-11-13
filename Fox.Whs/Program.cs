@@ -26,6 +26,7 @@ builder.Services.AddScoped<RewindingProcessService>();
 builder.Services.AddScoped<SlittingProcessService>();
 builder.Services.AddScoped<PrintingProcessService>();
 builder.Services.AddScoped<CuttingProcessService>();
+builder.Services.AddScoped<GrainMixingProcessService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

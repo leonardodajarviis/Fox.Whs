@@ -76,7 +76,7 @@ public class CuttingProcessService
     /// </summary>
     public async Task<CuttingProcess> CreateAsync(CreateCuttingProcessDto dto)
     {
-        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
+        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var workerIds = dto.Lines
@@ -124,7 +124,7 @@ public class CuttingProcessService
 
         var cuttingProcess = new CuttingProcess
         {
-            ShiftLeaderId = currentEmployeeId,
+            ShiftLeaderId = shiftLeaderId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
@@ -187,6 +187,7 @@ public class CuttingProcessService
         cuttingProcess.IsDraft = dto.IsDraft;
         cuttingProcess.ModifierId = currentUserId;
         cuttingProcess.ModifiedAt = DateTime.Now;
+        cuttingProcess.ShiftLeaderId = dto.ShiftLeaderId;
 
         // Cập nhật lines
         UpdateLines(cuttingProcess, dto.Lines, existingProductionOrders);

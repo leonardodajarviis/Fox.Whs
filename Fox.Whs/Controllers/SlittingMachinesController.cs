@@ -44,20 +44,20 @@ public class SlittingMachinesController : ControllerBase
         }
 
 
-        var totalRecords = await _dbContext.RewindingMachines.AsNoTracking().CountAsync();
+        var totalRecords = await _dbContext.SlittingMachines.AsNoTracking().CountAsync();
 
-        var rewindingMachines = await _dbContext.RewindingMachines.AsNoTracking()
+        var slittingMachines = await _dbContext.SlittingMachines.AsNoTracking()
             .OrderBy(b => b.Code)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return Ok(new PaginationResponse<RewindingMachine>
+        return Ok(new PaginationResponse<SlittingMachine>
         {
             Page = page,
             PageSize = pageSize,
             TotalCount = totalRecords,
-            Results = rewindingMachines
+            Results = slittingMachines
         });
     }
 }

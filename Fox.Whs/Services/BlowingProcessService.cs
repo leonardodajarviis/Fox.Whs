@@ -74,8 +74,8 @@ public class BlowingProcessService
     /// </summary>
     public async Task<BlowingProcess> CreateAsync(CreateBlowingProcessDto dto)
     {
-        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
-
+        var shiftLeaderId = dto.ShiftLeaderId ??
+            _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
         var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -122,7 +122,7 @@ public class BlowingProcessService
 
         var blowingProcess = new BlowingProcess
         {
-            ShiftLeaderId = currentEmployeeId,
+            ShiftLeaderId = shiftLeaderId,
             CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
@@ -186,6 +186,7 @@ public class BlowingProcessService
         blowingProcess.ModifierId = currentUserId;
         blowingProcess.ModifiedAt = DateTime.Now;
         blowingProcess.ListOfWorkersText = dto.ListOfWorkersText;
+        blowingProcess.ShiftLeaderId = dto.ShiftLeaderId;
 
         // Cập nhật lines
         UpdateLines(blowingProcess, dto.Lines, existingProductionOrders);

@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251110044820_UpdateMotThu")]
+    partial class UpdateMotThu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -492,296 +495,6 @@ namespace Fox.Whs.Migrations
                     b.HasIndex("WorkerId");
 
                     b.ToTable("FoxWms_CuttingProcessLine");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcess", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short>("CreatorId")
-                        .HasColumnType("smallint");
-
-                    b.Property<bool>("IsDraft")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("LaborProductivity")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("float(18)");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short?>("ModifierId")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("ProductionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<double>("TotalHoursWorked")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("float(18)");
-
-                    b.Property<int>("WorkerCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ModifierId");
-
-                    b.ToTable("FoxWms_GrainMixingProcess");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcessLine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("ActualCompletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CardCode")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("DelayReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("EvaDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaLdpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaPop3070")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaSlip")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaStaticAdditive")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("EvaTalcol")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<int>("GrainMixingProcessId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("HdColor")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdLldpe2320")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdRecycled")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdTalcol")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MachineName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaterialIssueVoucherNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MixtureType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PeAdditive")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeColor")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeLdpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeLldpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeRecycled")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeTalcol")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpAdditive")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpColor")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpHdNhot")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpLdpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PpTron")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<string>("ProductionBatch")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("QuantityKg")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<DateTime?>("RequiredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ShrinkDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkRe707")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkSlip")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkStatic")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkTalcol")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<string>("Specification")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("WrapAdditive")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapColor")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapGlue")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapLdpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapLldpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapOther")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapRecycledCa")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapRecycledCb")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapSlip")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CardCode");
-
-                    b.HasIndex("GrainMixingProcessId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("FoxWms_GrainMixingProcessLine");
                 });
 
             modelBuilder.Entity("Fox.Whs.Models.PrintingProcess", b =>
@@ -1730,10 +1443,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_CHIASTATUS");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Status");
-
                     b.HasKey("DocEntry");
 
                     b.HasIndex("CardCode");
@@ -1776,24 +1485,6 @@ namespace Fox.Whs.Migrations
                     b.HasKey("Code");
 
                     b.ToTable("@MAYTUA", t =>
-                        {
-                            t.ExcludeFromMigrations();
-                        });
-                });
-
-            modelBuilder.Entity("Fox.Whs.SapModels.SlittingMachine", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Code");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Code");
-
-                    b.ToTable("@MAYCHIA", t =>
                         {
                             t.ExcludeFromMigrations();
                         });
@@ -1950,46 +1641,6 @@ namespace Fox.Whs.Migrations
                     b.Navigation("BusinessPartner");
 
                     b.Navigation("CuttingProcess");
-
-                    b.Navigation("Worker");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcess", b =>
-                {
-                    b.HasOne("Fox.Whs.SapModels.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.User", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifierId");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Modifier");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcessLine", b =>
-                {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
-                    b.HasOne("Fox.Whs.Models.GrainMixingProcess", "GrainMixingProcess")
-                        .WithMany("Lines")
-                        .HasForeignKey("GrainMixingProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
-                        .WithMany()
-                        .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
-
-                    b.Navigation("GrainMixingProcess");
 
                     b.Navigation("Worker");
                 });
@@ -2192,11 +1843,6 @@ namespace Fox.Whs.Migrations
                 });
 
             modelBuilder.Entity("Fox.Whs.Models.CuttingProcess", b =>
-                {
-                    b.Navigation("Lines");
-                });
-
-            modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcess", b =>
                 {
                     b.Navigation("Lines");
                 });

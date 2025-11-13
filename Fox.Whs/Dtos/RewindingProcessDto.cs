@@ -12,6 +12,8 @@ public record CreateRewindingProcessDto
     /// </summary>
     public bool IsDraft { get; set; }
 
+    public int? ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>
@@ -36,6 +38,8 @@ public record CreateRewindingProcessDto
 /// </summary>
 public record UpdateRewindingProcessDto
 {
+    public int ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>

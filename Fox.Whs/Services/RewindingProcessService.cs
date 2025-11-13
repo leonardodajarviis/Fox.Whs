@@ -75,7 +75,7 @@ public class RewindingProcessService
     /// </summary>
     public async Task<RewindingProcess> CreateAsync(CreateRewindingProcessDto dto)
     {
-        var currentEmployeeId = _userContextService.GetCurrentEmployeeId()
+        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId()
             ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
         
         var currentUserId = _userContextService.GetCurrentUserId()
@@ -106,7 +106,7 @@ public class RewindingProcessService
                 productionOrder.ItemCode,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
-                null, // RequiredDate sẽ lấy từ DTO hoặc để null
+                productionOrder?.DateOfNeedRewinding, // RequiredDate sẽ lấy từ DTO hoặc để null
                 item.ProductType,
                 item.ProductTypeName,
                 item.Thickness,
@@ -117,7 +117,7 @@ public class RewindingProcessService
 
         var rewindingProcess = new RewindingProcess
         {
-            ShiftLeaderId = currentEmployeeId,
+            ShiftLeaderId = shiftLeaderId,
             CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
@@ -167,6 +167,7 @@ public class RewindingProcessService
         rewindingProcess.IsDraft = dto.IsDraft;
         rewindingProcess.ModifiedAt = DateTime.Now;
         rewindingProcess.ModifierId = currentUserId;
+        rewindingProcess.ShiftLeaderId = dto.ShiftLeaderId;
 
         // Cập nhật lines
         UpdateLines(rewindingProcess, dto.Lines, existingProductionOrders);

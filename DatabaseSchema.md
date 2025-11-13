@@ -273,6 +273,7 @@ Lưu trữ thông tin header của công đoạn chia.
 | `IsDraft`                | bit           | NO   | Có phải bản nháp không      | Default: 0            |
 | `ProductionDate`         | datetime      | NO   | Ngày sản xuất               |                       |
 | `ProductionShift`        | nvarchar(50)  | NO   | Ca sản xuất                 |                       |
+| `TotalSlittingOutput`    | decimal(18,4) | NO   | Tổng sẩn lượng chia (kg)    | Auto calculated       |
 | `TotalProcessingMold`    | decimal(18,4) | NO   | Tổng DC gia công (kg)       | Auto calculated       |
 | `TotalBlowingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
 | `TotalPrintingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |

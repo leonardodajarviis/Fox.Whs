@@ -32,9 +32,13 @@ public class AppDbContext : DbContext
     public DbSet<CuttingMachine> CuttingMachines { get; set; }
 
     public DbSet<SlittingProcess> SlittingProcesses { get; set; }
+    public DbSet<SlittingMachine> SlittingMachines { get; set; }
     public DbSet<SlittingProcessLine> SlittingProcessLines { get; set; }
     public DbSet<RewindingProcess> RewindingProcesses { get; set; }
     public DbSet<RewindingProcessLine> RewindingProcessLines { get; set; }
+
+    public DbSet<GrainMixingProcess> GrainMixingProcesses { get; set; }
+    public DbSet<GrainMixingProcessLine> GrainMixingProcessLines { get; set; }
 
     public DbSet<UserSession> UserSessions { get; set; }
 

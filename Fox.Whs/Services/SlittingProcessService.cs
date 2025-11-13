@@ -75,7 +75,7 @@ public class SlittingProcessService
     /// </summary>
     public async Task<SlittingProcess> CreateAsync(CreateSlittingProcessDto dto)
     {
-        var currentEmployeeId = _userContextService.GetCurrentEmployeeId() 
+        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId() 
             ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
         var currentUserId = _userContextService.GetCurrentUserId() 
@@ -119,7 +119,7 @@ public class SlittingProcessService
 
         var slittingProcess = new SlittingProcess
         {
-            ShiftLeaderId = currentEmployeeId,
+            ShiftLeaderId = shiftLeaderId,
             CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
@@ -170,6 +170,7 @@ public class SlittingProcessService
         slittingProcess.IsDraft = dto.IsDraft;
         slittingProcess.ModifierId = currentUserId;
         slittingProcess.ModifiedAt = DateTime.Now;
+        slittingProcess.ShiftLeaderId = dto.ShiftLeaderId;
 
         // Cập nhật lines
         UpdateLines(slittingProcess, dto.Lines, existingProductionOrders);

@@ -12,6 +12,8 @@ public record CreatePrintingProcessDto
     /// </summary>
     public bool IsDraft { get; set; }
 
+    public int? ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>
@@ -36,6 +38,8 @@ public record CreatePrintingProcessDto
 /// </summary>
 public record UpdatePrintingProcessDto
 {
+    public int ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>

@@ -12,6 +12,8 @@ public record CreateSlittingProcessDto
     /// </summary>
     public bool IsDraft { get; set; }
 
+    public int? ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>
@@ -41,6 +43,8 @@ public record UpdateSlittingProcessDto
     /// </summary>
     [Required(ErrorMessage = "Ngày sản xuất là bắt buộc")]
     public DateTime ProductionDate { get; set; }
+
+    public int ShiftLeaderId { get; set; }
 
     public bool IsDraft { get; set; }
 

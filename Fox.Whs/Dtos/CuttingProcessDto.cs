@@ -25,6 +25,8 @@ public record CreateCuttingProcessDto
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
 
+    public int? ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Danh sách chi tiết công đoạn cắt
     /// </summary>
@@ -36,6 +38,8 @@ public record CreateCuttingProcessDto
 /// </summary>
 public record UpdateCuttingProcessDto
 {
+    public int ShiftLeaderId { get; set; }
+
     /// <summary>
     /// Ngày sản xuất
     /// </summary>

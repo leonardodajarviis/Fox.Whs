@@ -50,7 +50,7 @@ public class ProductionOrdersController : ControllerBase
         }
 
 
-        var query = _dbContext.ProductionOrders.AsNoTracking().AsQueryable();
+        var query = _dbContext.ProductionOrders.AsNoTracking().Where(x => x.Status == "R").AsQueryable();
 
         if (itemCode is not null)
         {

@@ -55,6 +55,9 @@ public class ProductionOrder
     [Column("CardCode")]
     public string? CardCode { get; set; }
 
+    [Column("Status")]
+    public string? Status { get; set; }
+
     /// <summary>
     /// Lô sản xuất
     /// </summary>
