@@ -181,7 +181,7 @@ public class SlittingProcessService
         if (!slittingProcess.IsDraft)
         {
             var productOrderCompletedIds = slittingProcess.Lines
-                .Where(l => l.IsCompleted)
+                .Where(l => l.Status == 1)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -323,6 +323,7 @@ public class SlittingProcessService
             BoxCount = dto.BoxCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,

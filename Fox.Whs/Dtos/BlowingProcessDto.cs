@@ -157,6 +157,11 @@ public record CreateBlowingProcessLineDto
     public bool IsCompleted { get; set; }
 
     /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
     /// Ngày hoàn thành thực tế
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }
@@ -363,6 +368,11 @@ public record UpdateBlowingProcessLineDto
     /// Xác nhận hoàn thành
     /// </summary>
     public bool IsCompleted { get; set; }
+
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
 
     /// <summary>
     /// Ngày hoàn thành thực tế

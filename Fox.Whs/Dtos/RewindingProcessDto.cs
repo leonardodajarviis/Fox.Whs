@@ -129,6 +129,11 @@ public record CreateRewindingProcessLineDto
     public bool IsCompleted { get; set; }
 
     /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
     /// Ngày hoàn thành thực tế (QLSX)
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }
@@ -254,6 +259,11 @@ public record UpdateRewindingProcessLineDto
     /// Xác nhận hoàn thành
     /// </summary>
     public bool IsCompleted { get; set; }
+
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
 
     /// <summary>
     /// Ngày hoàn thành thực tế (QLSX)

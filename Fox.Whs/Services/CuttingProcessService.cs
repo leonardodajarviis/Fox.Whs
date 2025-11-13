@@ -197,7 +197,7 @@ public class CuttingProcessService
         if (!cuttingProcess.IsDraft)
         {
             var productOrderCompletedIds = cuttingProcess.Lines
-                .Where(l => l.IsCompleted)
+                .Where(l => l.Status == 1)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -275,6 +275,7 @@ public class CuttingProcessService
             FoldedCount = dto.FoldedCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -344,6 +345,7 @@ public class CuttingProcessService
             FoldedCount = dto.FoldedCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,

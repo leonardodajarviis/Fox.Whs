@@ -241,6 +241,11 @@ public class SlittingProcessLine
     public bool IsCompleted { get; set; }
 
     /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
     /// Ngày hoàn thành thực tế (QLSX)
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }

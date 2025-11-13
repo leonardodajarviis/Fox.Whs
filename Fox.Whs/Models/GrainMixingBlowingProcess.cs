@@ -6,8 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fox.Whs.Models;
 
-[Table("FoxWms_GrainMixingProcess")]
-public class GrainMixingProcess
+/// <summary>
+/// Công đoạn Pha hạt (Thổi)
+/// </summary>
+[Table("FoxWms_GrainMixingBlowingProcess")]
+public class GrainMixingBlowingProcess
 {
     [Key]
     public int Id { get; set; }
@@ -23,21 +26,9 @@ public class GrainMixingProcess
     public DateTime ProductionDate { get; set; }
 
     /// <summary>
-    /// Tổng số nhân công
+    /// Máy thổi
     /// </summary>
-    public int WorkerCount { get; set; }
-
-    /// <summary>
-    /// Tổng số giờ làm việc
-    /// </summary>
-    [Precision(18, 6)]
-    public double TotalHoursWorked { get; set; }
-
-    /// <summary>
-    /// Năng suất lao động (Kg/giờ)
-    /// </summary>
-    [Precision(18, 6)]
-    public double LaborProductivity { get; set; }
+    public string? BlowingMachine { get; set; }
 
     public short CreatorId { get; set; }
 
@@ -56,22 +47,22 @@ public class GrainMixingProcess
     public string? CreatorName => Creator?.FullName;
     [NotMapped]
     public string? ModifierName => Modifier?.FullName;
-    public List<GrainMixingProcessLine> Lines { get; set; } = [];
+    public List<GrainMixingBlowingProcessLine> Lines { get; set; } = [];
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];
 }
 
-[Table("FoxWms_GrainMixingProcessLine")]
-public class GrainMixingProcessLine
+[Table("FoxWms_GrainMixingBlowingProcessLine")]
+public class GrainMixingBlowingProcessLine
 {
     [Key]
     public int Id { get; set; }
 
-    public int GrainMixingProcessId { get; set; }
+    public int GrainMixingBlowingProcessId { get; set; }
 
-    [ForeignKey("GrainMixingProcessId"), JsonIgnore]
-    public GrainMixingProcess? GrainMixingProcess { get; set; }
+    [ForeignKey("GrainMixingBlowingProcessId"), JsonIgnore]
+    public GrainMixingBlowingProcess? GrainMixingBlowingProcess { get; set; }
 
     /// <summary>
     /// Lô sản xuất

@@ -224,6 +224,11 @@ public class PrintingProcessLine
     public bool IsCompleted { get; set; }
 
     /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
     /// Chậm tiến độ - ngày hoàn thành thực tế
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }

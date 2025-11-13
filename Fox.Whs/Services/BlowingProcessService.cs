@@ -197,7 +197,7 @@ public class BlowingProcessService
         if (!blowingProcess.IsDraft)
         {
             var productOrderCompletedIds = blowingProcess.Lines
-                .Where(l => l.IsCompleted)
+                .Where(l => l.Status == 1)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -271,6 +271,7 @@ public class BlowingProcessService
             ReservedWeight = dto.ReservedWeight,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             WidthChange = dto.WidthChange,
@@ -335,6 +336,7 @@ public class BlowingProcessService
             ReservedWeight = dto.ReservedWeight,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             WidthChange = dto.WidthChange,

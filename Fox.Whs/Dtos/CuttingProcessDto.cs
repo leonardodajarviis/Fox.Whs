@@ -157,6 +157,11 @@ public record CreateCuttingProcessLineDto
     public bool IsCompleted { get; set; }
 
     /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
     /// Ngày hoàn thành thực tế
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }
@@ -374,6 +379,11 @@ public record UpdateCuttingProcessLineDto
     /// Xác nhận hoàn thành
     /// </summary>
     public bool IsCompleted { get; set; }
+
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
 
     /// <summary>
     /// Ngày hoàn thành thực tế

@@ -40,6 +40,9 @@ public class AppDbContext : DbContext
     public DbSet<GrainMixingProcess> GrainMixingProcesses { get; set; }
     public DbSet<GrainMixingProcessLine> GrainMixingProcessLines { get; set; }
 
+    public DbSet<GrainMixingBlowingProcess> GrainMixingBlowingProcesses { get; set; }
+    public DbSet<GrainMixingBlowingProcessLine> GrainMixingBlowingProcessLines { get; set; }
+
     public DbSet<UserSession> UserSessions { get; set; }
 
 

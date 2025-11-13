@@ -178,7 +178,7 @@ public class RewindingProcessService
         if (!rewindingProcess.IsDraft)
         {
             var productOrderCompletedIds = rewindingProcess.Lines
-                .Where(l => l.IsCompleted)
+                .Where(l => l.Status == 1)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -248,6 +248,7 @@ public class RewindingProcessService
             BoxCount = dto.BoxCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             BlowingLossKg = dto.BlowingLossKg,
@@ -301,6 +302,7 @@ public class RewindingProcessService
             BoxCount = dto.BoxCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             BlowingLossKg = dto.BlowingLossKg,

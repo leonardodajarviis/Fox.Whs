@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Fox.Whs.Services;
 
 /// <summary>
-/// Service quản lý công đoạn pha hạt
+/// Service quản lý công đoạn pha hạt (Thổi)
 /// </summary>
-public class GrainMixingProcessService
+public class GrainMixingBlowingProcessService
 {
     private readonly AppDbContext _dbContext;
     private readonly UserContextService _userContextService;
 
-    public GrainMixingProcessService(
+    public GrainMixingBlowingProcessService(
         AppDbContext dbContext,
         UserContextService userContextService)
     {
@@ -24,11 +24,11 @@ public class GrainMixingProcessService
     }
 
     /// <summary>
-    /// Lấy danh sách tất cả công đoạn pha hạt
+    /// Lấy danh sách tất cả công đoạn pha hạt (Thổi)
     /// </summary>
-    public async Task<PaginationResponse<GrainMixingProcess>> GetAllAsync(QueryParam pr)
+    public async Task<PaginationResponse<GrainMixingBlowingProcess>> GetAllAsync(QueryParam pr)
     {
-        var query = _dbContext.GrainMixingProcesses
+        var query = _dbContext.GrainMixingBlowingProcesses
             .AsNoTracking()
             .ApplyFiltering(pr)
             .AsQueryable();
@@ -42,7 +42,7 @@ public class GrainMixingProcessService
             .OrderByDescending(gm => gm.ProductionDate)
             .ToListAsync();
 
-        return new PaginationResponse<GrainMixingProcess>
+        return new PaginationResponse<GrainMixingBlowingProcess>
         {
             Results = result,
             TotalCount = totalCount,
@@ -52,11 +52,11 @@ public class GrainMixingProcessService
     }
 
     /// <summary>
-    /// Lấy công đoạn pha hạt theo ID
+    /// Lấy công đoạn pha hạt (Thổi) theo ID
     /// </summary>
-    public async Task<GrainMixingProcess> GetByIdAsync(int id)
+    public async Task<GrainMixingBlowingProcess> GetByIdAsync(int id)
     {
-        var grainMixingProcess = await _dbContext.GrainMixingProcesses
+        var grainMixingBlowingProcess = await _dbContext.GrainMixingBlowingProcesses
             .AsNoTracking()
             .Include(gm => gm.Creator)
             .Include(gm => gm.Modifier)
@@ -66,18 +66,18 @@ public class GrainMixingProcessService
                 .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
-        if (grainMixingProcess == null)
+        if (grainMixingBlowingProcess == null)
         {
-            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt với ID: {id}");
+            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt (Thổi) với ID: {id}");
         }
 
-        return grainMixingProcess;
+        return grainMixingBlowingProcess;
     }
 
     /// <summary>
-    /// Tạo công đoạn pha hạt mới
+    /// Tạo công đoạn pha hạt (Thổi) mới
     /// </summary>
-    public async Task<GrainMixingProcess> CreateAsync(CreateGrainMixingProcessDto dto)
+    public async Task<GrainMixingBlowingProcess> CreateAsync(CreateGrainMixingBlowingProcessDto dto)
     {
         var currentUserId = _userContextService.GetCurrentUserId() 
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
@@ -124,42 +124,38 @@ public class GrainMixingProcessService
             }
         }
 
-        var lines = dto.Lines.Select(MapCreateToGrainMixingProcessLine).ToList();
+        var lines = dto.Lines.Select(MapCreateToGrainMixingBlowingProcessLine).ToList();
 
-        var grainMixingProcess = new GrainMixingProcess
+        var grainMixingBlowingProcess = new GrainMixingBlowingProcess
         {
             CreatorId = currentUserId,
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
-            WorkerCount = dto.WorkerCount,
-            TotalHoursWorked = dto.TotalHoursWorked,
+            BlowingMachine = dto.BlowingMachine,
             Lines = lines
         };
 
-        // Tính toán năng suất lao động
-        CalculateLaborProductivity(grainMixingProcess);
-
-        _dbContext.GrainMixingProcesses.Add(grainMixingProcess);
+        _dbContext.GrainMixingBlowingProcesses.Add(grainMixingBlowingProcess);
         await _dbContext.SaveChangesAsync();
 
-        return await GetByIdAsync(grainMixingProcess.Id);
+        return await GetByIdAsync(grainMixingBlowingProcess.Id);
     }
 
     /// <summary>
-    /// Cập nhật công đoạn pha hạt
+    /// Cập nhật công đoạn pha hạt (Thổi)
     /// </summary>
-    public async Task<GrainMixingProcess> UpdateAsync(int id, UpdateGrainMixingProcessDto dto)
+    public async Task<GrainMixingBlowingProcess> UpdateAsync(int id, UpdateGrainMixingBlowingProcessDto dto)
     {
         var currentUserId = _userContextService.GetCurrentUserId() 
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
-        var grainMixingProcess = await _dbContext.GrainMixingProcesses
+        var grainMixingBlowingProcess = await _dbContext.GrainMixingBlowingProcesses
             .Include(gm => gm.Lines)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
-        if (grainMixingProcess == null)
+        if (grainMixingBlowingProcess == null)
         {
-            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt với ID: {id}");
+            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt (Thổi) với ID: {id}");
         }
 
         // Validate workers if provided
@@ -205,18 +201,14 @@ public class GrainMixingProcessService
         }
 
         // Cập nhật thông tin cơ bản
-        grainMixingProcess.ProductionDate = dto.ProductionDate;
-        grainMixingProcess.IsDraft = dto.IsDraft;
-        grainMixingProcess.WorkerCount = dto.WorkerCount;
-        grainMixingProcess.TotalHoursWorked = dto.TotalHoursWorked;
-        grainMixingProcess.ModifierId = currentUserId;
-        grainMixingProcess.ModifiedAt = DateTime.Now;
+        grainMixingBlowingProcess.ProductionDate = dto.ProductionDate;
+        grainMixingBlowingProcess.IsDraft = dto.IsDraft;
+        grainMixingBlowingProcess.BlowingMachine = dto.BlowingMachine;
+        grainMixingBlowingProcess.ModifierId = currentUserId;
+        grainMixingBlowingProcess.ModifiedAt = DateTime.Now;
 
         // Cập nhật lines
-        UpdateLines(grainMixingProcess, dto.Lines);
-
-        // Tính toán lại năng suất lao động
-        CalculateLaborProductivity(grainMixingProcess);
+        UpdateLines(grainMixingBlowingProcess, dto.Lines);
 
         await _dbContext.SaveChangesAsync();
 
@@ -224,29 +216,29 @@ public class GrainMixingProcessService
     }
 
     /// <summary>
-    /// Xóa công đoạn pha hạt
+    /// Xóa công đoạn pha hạt (Thổi)
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        var grainMixingProcess = await _dbContext.GrainMixingProcesses
+        var grainMixingBlowingProcess = await _dbContext.GrainMixingBlowingProcesses
             .Include(gm => gm.Lines)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
-        if (grainMixingProcess == null)
+        if (grainMixingBlowingProcess == null)
         {
-            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt với ID: {id}");
+            throw new NotFoundException($"Không tìm thấy công đoạn pha hạt (Thổi) với ID: {id}");
         }
 
-        _dbContext.GrainMixingProcesses.Remove(grainMixingProcess);
+        _dbContext.GrainMixingBlowingProcesses.Remove(grainMixingBlowingProcess);
         await _dbContext.SaveChangesAsync();
     }
 
     #region Private Methods
 
-    private static GrainMixingProcessLine MapCreateToGrainMixingProcessLine(
-        CreateGrainMixingProcessLineDto dto)
+    private static GrainMixingBlowingProcessLine MapCreateToGrainMixingBlowingProcessLine(
+        CreateGrainMixingBlowingProcessLineDto dto)
     {
-        return new GrainMixingProcessLine
+        return new GrainMixingBlowingProcessLine
         {
             ProductionBatch = dto.ProductionBatch,
             CardCode = dto.CardCode,
@@ -316,11 +308,11 @@ public class GrainMixingProcessService
         };
     }
 
-    private static GrainMixingProcessLine MapUpdateToGrainMixingProcessLine(
-        UpdateGrainMixingProcessLineDto dto,
+    private static GrainMixingBlowingProcessLine MapUpdateToGrainMixingBlowingProcessLine(
+        UpdateGrainMixingBlowingProcessLineDto dto,
         int? existingId = null)
     {
-        var line = new GrainMixingProcessLine
+        var line = new GrainMixingBlowingProcessLine
         {
             ProductionBatch = dto.ProductionBatch,
             CardCode = dto.CardCode,
@@ -398,8 +390,8 @@ public class GrainMixingProcessService
     }
 
     private void UpdateLines(
-        GrainMixingProcess grainMixingProcess,
-        List<UpdateGrainMixingProcessLineDto> lineDtos)
+        GrainMixingBlowingProcess grainMixingBlowingProcess,
+        List<UpdateGrainMixingBlowingProcessLineDto> lineDtos)
     {
         // Xóa các line không còn tồn tại trong DTO
         var dtoLineIds = lineDtos
@@ -407,14 +399,14 @@ public class GrainMixingProcessService
             .Select(dto => dto.Id!.Value)
             .ToHashSet();
 
-        var linesToRemove = grainMixingProcess.Lines
+        var linesToRemove = grainMixingBlowingProcess.Lines
             .Where(line => !dtoLineIds.Contains(line.Id))
             .ToList();
 
         foreach (var line in linesToRemove)
         {
-            grainMixingProcess.Lines.Remove(line);
-            _dbContext.GrainMixingProcessLines.Remove(line);
+            grainMixingBlowingProcess.Lines.Remove(line);
+            _dbContext.GrainMixingBlowingProcessLines.Remove(line);
         }
 
         // Cập nhật hoặc thêm mới các line
@@ -423,37 +415,22 @@ public class GrainMixingProcessService
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
-                var existingLine = grainMixingProcess.Lines
+                var existingLine = grainMixingBlowingProcess.Lines
                     .FirstOrDefault(l => l.Id == lineDto.Id.Value);
                     
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, lineDto.Id);
-                    updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
+                    var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, lineDto.Id);
+                    updatedLine.GrainMixingBlowingProcessId = existingLine.GrainMixingBlowingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
             }
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingProcessLine(lineDto);
-                grainMixingProcess.Lines.Add(newLine);
+                var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto);
+                grainMixingBlowingProcess.Lines.Add(newLine);
             }
-        }
-    }
-
-    private static void CalculateLaborProductivity(GrainMixingProcess grainMixingProcess)
-    {
-        var totalQuantity = grainMixingProcess.Lines.Sum(l => (double)l.QuantityKg);
-        var totalHours = grainMixingProcess.TotalHoursWorked;
-
-        if (totalHours > 0)
-        {
-            grainMixingProcess.LaborProductivity = totalQuantity / totalHours;
-        }
-        else
-        {
-            grainMixingProcess.LaborProductivity = 0;
         }
     }
 

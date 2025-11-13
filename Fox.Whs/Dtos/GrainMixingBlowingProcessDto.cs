@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Fox.Whs.Dtos;
 
 /// <summary>
-/// DTO cho việc tạo công đoạn pha hạt
+/// DTO cho việc tạo công đoạn pha hạt (Thổi)
 /// </summary>
-public record CreateGrainMixingProcessDto
+public record CreateGrainMixingBlowingProcessDto
 {
     /// <summary>
     /// Bản nháp
@@ -19,27 +19,21 @@ public record CreateGrainMixingProcessDto
     public DateTime ProductionDate { get; set; }
 
     /// <summary>
-    /// Tổng số nhân công
+    /// Máy thổi
     /// </summary>
-    [Range(0, int.MaxValue, ErrorMessage = "Số nhân công phải lớn hơn hoặc bằng 0")]
-    public int WorkerCount { get; set; }
+    [StringLength(100)]
+    public string? BlowingMachine { get; set; }
 
     /// <summary>
-    /// Tổng số giờ làm việc
+    /// Danh sách chi tiết công đoạn pha hạt (Thổi)
     /// </summary>
-    [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
-    public double TotalHoursWorked { get; set; }
-
-    /// <summary>
-    /// Danh sách chi tiết công đoạn pha hạt
-    /// </summary>
-    public List<CreateGrainMixingProcessLineDto> Lines { get; set; } = [];
+    public List<CreateGrainMixingBlowingProcessLineDto> Lines { get; set; } = [];
 }
 
 /// <summary>
-/// DTO cho việc cập nhật công đoạn pha hạt
+/// DTO cho việc cập nhật công đoạn pha hạt (Thổi)
 /// </summary>
-public record UpdateGrainMixingProcessDto
+public record UpdateGrainMixingBlowingProcessDto
 {
     /// <summary>
     /// Bản nháp
@@ -53,27 +47,21 @@ public record UpdateGrainMixingProcessDto
     public DateTime ProductionDate { get; set; }
 
     /// <summary>
-    /// Tổng số nhân công
+    /// Máy thổi
     /// </summary>
-    [Range(0, int.MaxValue, ErrorMessage = "Số nhân công phải lớn hơn hoặc bằng 0")]
-    public int WorkerCount { get; set; }
+    [StringLength(100)]
+    public string? BlowingMachine { get; set; }
 
     /// <summary>
-    /// Tổng số giờ làm việc
+    /// Danh sách chi tiết công đoạn pha hạt (Thổi)
     /// </summary>
-    [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
-    public double TotalHoursWorked { get; set; }
-
-    /// <summary>
-    /// Danh sách chi tiết công đoạn pha hạt
-    /// </summary>
-    public List<UpdateGrainMixingProcessLineDto> Lines { get; set; } = [];
+    public List<UpdateGrainMixingBlowingProcessLineDto> Lines { get; set; } = [];
 }
 
 /// <summary>
-/// DTO cho việc tạo chi tiết công đoạn pha hạt
+/// DTO cho việc tạo chi tiết công đoạn pha hạt (Thổi)
 /// </summary>
-public record CreateGrainMixingProcessLineDto
+public record CreateGrainMixingBlowingProcessLineDto
 {
     /// <summary>
     /// Lô sản xuất
@@ -197,7 +185,7 @@ public record CreateGrainMixingProcessLineDto
     /// </summary>
     public bool IsCompleted { get; set; }
 
-        /// <summary>
+    /// <summary>
     /// Trạng thái
     /// </summary>
     public int Status { get; set; }
@@ -215,9 +203,9 @@ public record CreateGrainMixingProcessLineDto
 }
 
 /// <summary>
-/// DTO cho việc cập nhật chi tiết công đoạn pha hạt
+/// DTO cho việc cập nhật chi tiết công đoạn pha hạt (Thổi)
 /// </summary>
-public record UpdateGrainMixingProcessLineDto
+public record UpdateGrainMixingBlowingProcessLineDto
 {
     /// <summary>
     /// ID của line (null nếu tạo mới)
@@ -346,7 +334,7 @@ public record UpdateGrainMixingProcessLineDto
     /// </summary>
     public bool IsCompleted { get; set; }
 
-        /// <summary>
+    /// <summary>
     /// Trạng thái
     /// </summary>
     public int Status { get; set; }

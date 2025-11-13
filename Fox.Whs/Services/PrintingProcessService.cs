@@ -197,7 +197,7 @@ public class PrintingProcessService
         if (!printingProcess.IsDraft)
         {
             var productOrderCompletedIds = printingProcess.Lines
-                .Where(l => l.IsCompleted)
+                .Where(l => l.Status == 1)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -274,6 +274,7 @@ public class PrintingProcessService
             QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -292,8 +293,8 @@ public class PrintingProcessService
         };
 
         // Tính toán tổng DC cho line
-        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
-                          line.OppRollHeadKg + line.HumanLossKg + 
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
+                          line.OppRollHeadKg + line.HumanLossKg +
                           line.MachineLossKg;
 
         return line;
@@ -338,6 +339,7 @@ public class PrintingProcessService
             QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -361,8 +363,8 @@ public class PrintingProcessService
         }
 
         // Tính toán tổng DC cho line
-        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
-                          line.OppRollHeadKg + line.HumanLossKg + 
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
+                          line.OppRollHeadKg + line.HumanLossKg +
                           line.MachineLossKg;
 
         return line;
@@ -395,7 +397,7 @@ public class PrintingProcessService
         {
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
-            
+
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
