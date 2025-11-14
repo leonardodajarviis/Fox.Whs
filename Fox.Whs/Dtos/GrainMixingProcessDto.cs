@@ -28,7 +28,7 @@ public record CreateGrainMixingProcessDto
     /// Tổng số giờ làm việc
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
-    public double TotalHoursWorked { get; set; }
+    public decimal TotalHoursWorked { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt
@@ -62,7 +62,7 @@ public record UpdateGrainMixingProcessDto
     /// Tổng số giờ làm việc
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
-    public double TotalHoursWorked { get; set; }
+    public decimal TotalHoursWorked { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt
@@ -75,6 +75,12 @@ public record UpdateGrainMixingProcessDto
 /// </summary>
 public record CreateGrainMixingProcessLineDto
 {
+    /// <summary>
+    /// ID lệnh sản xuất pha hạt
+    /// </summary>
+    [Required(ErrorMessage = "ID lệnh sản xuất là bắt buộc")]
+    public int ProductionOrderId { get; set; }
+
     /// <summary>
     /// Lô sản xuất
     /// </summary>
@@ -134,6 +140,7 @@ public record CreateGrainMixingProcessLineDto
     public decimal PpAdditive { get; set; }
     public decimal PpColor { get; set; }
     public decimal PpOther { get; set; }
+    public decimal PpRit { get; set; }
 
     // ------------------ HD ------------------
     public decimal HdLldpe2320 { get; set; }
@@ -142,6 +149,7 @@ public record CreateGrainMixingProcessLineDto
     public decimal HdDc { get; set; }
     public decimal HdColor { get; set; }
     public decimal HdOther { get; set; }
+    public decimal HdHd { get; set; }
 
     // ------------------ PE ------------------
     public decimal PeAdditive { get; set; }
@@ -151,6 +159,7 @@ public record CreateGrainMixingProcessLineDto
     public decimal PeLdpe { get; set; }
     public decimal PeLldpe { get; set; }
     public decimal PeRecycled { get; set; }
+    public decimal PeDc { get; set; }
 
     // ------------------ Màng co ------------------
     public decimal ShrinkRe707 { get; set; }
@@ -159,6 +168,9 @@ public record CreateGrainMixingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLldpe { get; set; }
+    public decimal ShrinkRecycled { get; set; }
+    public decimal ShrinkTangDai { get; set; }
 
     // ------------------ Màng chít ------------------
     public decimal WrapRecycledCa { get; set; }
@@ -171,6 +183,8 @@ public record CreateGrainMixingProcessLineDto
     public decimal WrapSlip { get; set; }
     public decimal WrapAdditive { get; set; }
     public decimal WrapOther { get; set; }
+    public decimal WrapTangDaiC6 { get; set; }
+    public decimal WrapTangDaiC8 { get; set; }
 
     // ------------------ EVA ------------------
     public decimal EvaPop3070 { get; set; }
@@ -180,6 +194,7 @@ public record CreateGrainMixingProcessLineDto
     public decimal EvaSlip { get; set; }
     public decimal EvaStaticAdditive { get; set; }
     public decimal EvaOther { get; set; }
+    public decimal EvaTgc { get; set; }
 
     /// <summary>
     /// Sản lượng pha (Kg)
@@ -225,6 +240,12 @@ public record UpdateGrainMixingProcessLineDto
     public int? Id { get; set; }
 
     /// <summary>
+    /// ID lệnh sản xuất pha hạt
+    /// </summary>
+    [Required(ErrorMessage = "ID lệnh sản xuất là bắt buộc")]
+    public int ProductionOrderId { get; set; }
+
+    /// <summary>
     /// Lô sản xuất
     /// </summary>
     [StringLength(100)]
@@ -283,6 +304,7 @@ public record UpdateGrainMixingProcessLineDto
     public decimal PpAdditive { get; set; }
     public decimal PpColor { get; set; }
     public decimal PpOther { get; set; }
+    public decimal PpRit { get; set; }
 
     // ------------------ HD ------------------
     public decimal HdLldpe2320 { get; set; }
@@ -291,6 +313,7 @@ public record UpdateGrainMixingProcessLineDto
     public decimal HdDc { get; set; }
     public decimal HdColor { get; set; }
     public decimal HdOther { get; set; }
+    public decimal HdHd { get; set; }
 
     // ------------------ PE ------------------
     public decimal PeAdditive { get; set; }
@@ -300,6 +323,7 @@ public record UpdateGrainMixingProcessLineDto
     public decimal PeLdpe { get; set; }
     public decimal PeLldpe { get; set; }
     public decimal PeRecycled { get; set; }
+    public decimal PeDc { get; set; }
 
     // ------------------ Màng co ------------------
     public decimal ShrinkRe707 { get; set; }
@@ -308,6 +332,9 @@ public record UpdateGrainMixingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLldpe { get; set; }
+    public decimal ShrinkRecycled { get; set; }
+    public decimal ShrinkTangDai { get; set; }
 
     // ------------------ Màng chít ------------------
     public decimal WrapRecycledCa { get; set; }
@@ -320,6 +347,8 @@ public record UpdateGrainMixingProcessLineDto
     public decimal WrapSlip { get; set; }
     public decimal WrapAdditive { get; set; }
     public decimal WrapOther { get; set; }
+    public decimal WrapTangDaiC6 { get; set; }
+    public decimal WrapTangDaiC8 { get; set; }
 
     // ------------------ EVA ------------------
     public decimal EvaPop3070 { get; set; }
@@ -329,6 +358,7 @@ public record UpdateGrainMixingProcessLineDto
     public decimal EvaSlip { get; set; }
     public decimal EvaStaticAdditive { get; set; }
     public decimal EvaOther { get; set; }
+    public decimal EvaTgc { get; set; }
 
     /// <summary>
     /// Sản lượng pha (Kg)

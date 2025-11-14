@@ -40,6 +40,7 @@ public record UpdateGrainMixingBlowingProcessDto
     /// </summary>
     public bool IsDraft { get; set; }
 
+
     /// <summary>
     /// Ngày sản xuất (ngày pha)
     /// </summary>
@@ -68,6 +69,8 @@ public record CreateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? ProductionBatch { get; set; }
+
+    public int ProductionOrderId { get; set; }
 
     /// <summary>
     /// Mã khách hàng
@@ -217,6 +220,8 @@ public record UpdateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? ProductionBatch { get; set; }
+
+    public int ProductionOrderId { get; set; }
 
     /// <summary>
     /// Mã khách hàng

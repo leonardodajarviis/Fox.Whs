@@ -43,6 +43,9 @@ public class AppDbContext : DbContext
     public DbSet<GrainMixingBlowingProcess> GrainMixingBlowingProcesses { get; set; }
     public DbSet<GrainMixingBlowingProcessLine> GrainMixingBlowingProcessLines { get; set; }
 
+    public DbSet<MixingMachine> MixingMachines { get; set; }
+    public DbSet<ProductionOrderGrainMixing> ProductionOrderGrainMixings { get; set; }
+
     public DbSet<UserSession> UserSessions { get; set; }
 
 

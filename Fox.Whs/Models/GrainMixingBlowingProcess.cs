@@ -63,7 +63,7 @@ public class GrainMixingBlowingProcessLine
 {
     [Key]
     public int Id { get; set; }
-
+    public int ProductionOrderId { get; set; }
     public int GrainMixingBlowingProcessId { get; set; }
 
     [ForeignKey("GrainMixingBlowingProcessId"), JsonIgnore]

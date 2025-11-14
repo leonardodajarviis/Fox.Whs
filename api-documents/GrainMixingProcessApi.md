@@ -107,12 +107,14 @@ Lấy thông tin chi tiết của một công đoạn pha hạt theo ID.
       "ppAdditive": 0,
       "ppColor": 0,
       "ppOther": 0,
+      "ppRit": 0,
       "hdLldpe2320": 100.5,
       "hdRecycled": 20.0,
       "hdTalcol": 5.0,
       "hdDc": 2.0,
       "hdColor": 1.5,
       "hdOther": 0,
+      "hdHd": 0,
       "peAdditive": 0,
       "peTalcol": 0,
       "peColor": 0,
@@ -120,12 +122,16 @@ Lấy thông tin chi tiết của một công đoạn pha hạt theo ID.
       "peLdpe": 0,
       "peLldpe": 0,
       "peRecycled": 0,
+      "peDc": 0,
       "shrinkRe707": 0,
       "shrinkSlip": 0,
       "shrinkStatic": 0,
       "shrinkDc": 0,
       "shrinkTalcol": 0,
       "shrinkOther": 0,
+      "shrinkLldpe": 0,
+      "shrinkRecycled": 0,
+      "shrinkTangDai": 0,
       "wrapRecycledCa": 0,
       "wrapRecycledCb": 0,
       "wrapGlue": 0,
@@ -136,6 +142,8 @@ Lấy thông tin chi tiết của một công đoạn pha hạt theo ID.
       "wrapSlip": 0,
       "wrapAdditive": 0,
       "wrapOther": 0,
+      "wrapTangDaiC6": 0,
+      "wrapTangDaiC8": 0,
       "evaPop3070": 0,
       "evaLdpe": 0,
       "evaDc": 0,
@@ -143,6 +151,7 @@ Lấy thông tin chi tiết của một công đoạn pha hạt theo ID.
       "evaSlip": 0,
       "evaStaticAdditive": 0,
       "evaOther": 0,
+      "evaTgc": 0,
       "quantityKg": 129.0,
       "requiredDate": "2024-01-20T00:00:00",
       "isCompleted": true,
@@ -189,12 +198,14 @@ Tạo mới một công đoạn pha hạt.
       "ppAdditive": 0,
       "ppColor": 0,
       "ppOther": 0,
+      "ppRit": 0,
       "hdLldpe2320": 100.5,
       "hdRecycled": 20.0,
       "hdTalcol": 5.0,
       "hdDc": 2.0,
       "hdColor": 1.5,
       "hdOther": 0,
+      "hdHd": 0,
       "peAdditive": 0,
       "peTalcol": 0,
       "peColor": 0,
@@ -202,12 +213,16 @@ Tạo mới một công đoạn pha hạt.
       "peLdpe": 0,
       "peLldpe": 0,
       "peRecycled": 0,
+      "peDc": 0,
       "shrinkRe707": 0,
       "shrinkSlip": 0,
       "shrinkStatic": 0,
       "shrinkDc": 0,
       "shrinkTalcol": 0,
       "shrinkOther": 0,
+      "shrinkLldpe": 0,
+      "shrinkRecycled": 0,
+      "shrinkTangDai": 0,
       "wrapRecycledCa": 0,
       "wrapRecycledCb": 0,
       "wrapGlue": 0,
@@ -218,6 +233,8 @@ Tạo mới một công đoạn pha hạt.
       "wrapSlip": 0,
       "wrapAdditive": 0,
       "wrapOther": 0,
+      "wrapTangDaiC6": 0,
+      "wrapTangDaiC8": 0,
       "evaPop3070": 0,
       "evaLdpe": 0,
       "evaDc": 0,
@@ -225,6 +242,7 @@ Tạo mới một công đoạn pha hạt.
       "evaSlip": 0,
       "evaStaticAdditive": 0,
       "evaOther": 0,
+      "evaTgc": 0,
       "quantityKg": 129.0,
       "requiredDate": "2024-01-20T00:00:00",
       "isCompleted": true,
@@ -298,12 +316,14 @@ Cập nhật thông tin của một công đoạn pha hạt.
       "ppAdditive": 0,
       "ppColor": 0,
       "ppOther": 0,
+      "ppRit": 0,
       "hdLldpe2320": 110.0,
       "hdRecycled": 22.0,
       "hdTalcol": 5.5,
       "hdDc": 2.2,
       "hdColor": 1.8,
       "hdOther": 0,
+      "hdHd": 0,
       "peAdditive": 0,
       "peTalcol": 0,
       "peColor": 0,
@@ -311,12 +331,16 @@ Cập nhật thông tin của một công đoạn pha hạt.
       "peLdpe": 0,
       "peLldpe": 0,
       "peRecycled": 0,
+      "peDc": 0,
       "shrinkRe707": 0,
       "shrinkSlip": 0,
       "shrinkStatic": 0,
       "shrinkDc": 0,
       "shrinkTalcol": 0,
       "shrinkOther": 0,
+      "shrinkLldpe": 0,
+      "shrinkRecycled": 0,
+      "shrinkTangDai": 0,
       "wrapRecycledCa": 0,
       "wrapRecycledCb": 0,
       "wrapGlue": 0,
@@ -327,6 +351,8 @@ Cập nhật thông tin của một công đoạn pha hạt.
       "wrapSlip": 0,
       "wrapAdditive": 0,
       "wrapOther": 0,
+      "wrapTangDaiC6": 0,
+      "wrapTangDaiC8": 0,
       "evaPop3070": 0,
       "evaLdpe": 0,
       "evaDc": 0,
@@ -334,6 +360,7 @@ Cập nhật thông tin của một công đoạn pha hạt.
       "evaSlip": 0,
       "evaStaticAdditive": 0,
       "evaOther": 0,
+      "evaTgc": 0,
       "quantityKg": 141.5,
       "requiredDate": "2024-01-20T00:00:00",
       "isCompleted": true,
@@ -431,12 +458,14 @@ Xóa một công đoạn pha hạt.
 | ppAdditive | decimal | Phụ gia (PP) |
 | ppColor | decimal | Hạt màu (PP) |
 | ppOther | decimal | Hạt khác (PP) |
+| ppRit | decimal | Hạt Rit (PP) |
 | hdLldpe2320 | decimal | Hạt LLDPE 2320 (HD) |
 | hdRecycled | decimal | Hạt tái chế (HD) |
 | hdTalcol | decimal | Hạt Talcol (HD) |
 | hdDc | decimal | Hạt DC (HD) |
 | hdColor | decimal | Hạt màu (HD) |
 | hdOther | decimal | Hạt khác (HD) |
+| hdHd | decimal | Hạt HD (HD) |
 | peAdditive | decimal | Phụ gia (PE) |
 | peTalcol | decimal | Talcol (PE) |
 | peColor | decimal | Hạt màu (PE) |
@@ -444,12 +473,16 @@ Xóa một công đoạn pha hạt.
 | peLdpe | decimal | Hạt LDPE (PE) |
 | peLldpe | decimal | Hạt LLDPE (PE) |
 | peRecycled | decimal | Hạt tái chế (PE) |
+| peDc | decimal | Hạt DC (PE) |
 | shrinkRe707 | decimal | Tăng R8707 (Màng co) |
 | shrinkSlip | decimal | Tăng Slip (Màng co) |
 | shrinkStatic | decimal | Tăng tĩnh điện (Màng co) |
 | shrinkDc | decimal | Hạt DC (Màng co) |
 | shrinkTalcol | decimal | Talcol (Màng co) |
 | shrinkOther | decimal | Hạt khác (Màng co) |
+| shrinkLldpe | decimal | Hạt LLDPE (Màng co) |
+| shrinkRecycled | decimal | Hạt tái chế (Màng co) |
+| shrinkTangDai | decimal | Tăng dài (Màng co) |
 | wrapRecycledCa | decimal | Hạt tái chế Ca (Màng chít) |
 | wrapRecycledCb | decimal | Hạt tái chế Cb (Màng chít) |
 | wrapGlue | decimal | Keo (Màng chít) |
@@ -460,6 +493,8 @@ Xóa một công đoạn pha hạt.
 | wrapSlip | decimal | Hạt Slip (Màng chít) |
 | wrapAdditive | decimal | Phụ gia (Màng chít) |
 | wrapOther | decimal | Hạt khác (Màng chít) |
+| wrapTangDaiC6 | decimal | Tăng dài C6 (Màng chít) |
+| wrapTangDaiC8 | decimal | Tăng dài C8 (Màng chít) |
 | evaPop3070 | decimal | POP 3070 (EVA) |
 | evaLdpe | decimal | Hạt LDPE (EVA) |
 | evaDc | decimal | Hạt DC (EVA) |
@@ -467,6 +502,7 @@ Xóa một công đoạn pha hạt.
 | evaSlip | decimal | Slip (EVA) |
 | evaStaticAdditive | decimal | Trợ tĩnh chống dính (EVA) |
 | evaOther | decimal | Hạt khác (EVA) |
+| evaTgc | decimal | TGC (EVA) |
 | quantityKg | decimal | Sản lượng pha (Kg) |
 | requiredDate | datetime? | Ngày cần hàng |
 | isCompleted | bool | Xác nhận hoàn thành |

@@ -2,6 +2,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Dtos;
 using Fox.Whs.Exceptions;
 using Fox.Whs.Models;
+using Fox.Whs.SapModels;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
 
@@ -124,7 +125,28 @@ public class GrainMixingProcessService
             }
         }
 
-        var lines = dto.Lines.Select(MapCreateToGrainMixingProcessLine).ToList();
+        var productionOrderIds = dto.Lines
+            .Select(l => l.ProductionOrderId)
+            .Distinct()
+            .ToList();
+
+        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings
+            .Where(po => productionOrderIds.Contains(po.DocEntry))
+            .ToDictionaryAsync(po => po.DocEntry);
+
+        var lines = new List<GrainMixingProcessLine>();
+        foreach (var lineDto in dto.Lines)
+        {
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+
+            var line = MapCreateToGrainMixingProcessLine(
+                lineDto,
+                lineDto.ProductionOrderId,
+                productionOrder.ProductionBatch ?? string.Empty,
+                productionOrder.DateOfNeed);
+
+            lines.Add(line);
+        }
 
         var grainMixingProcess = new GrainMixingProcess
         {
@@ -212,8 +234,17 @@ public class GrainMixingProcessService
         grainMixingProcess.ModifierId = currentUserId;
         grainMixingProcess.ModifiedAt = DateTime.Now;
 
+        var productionOrderIds = dto.Lines
+            .Select(l => l.ProductionOrderId)
+            .Distinct()
+            .ToList();
+        
+        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings.AsNoTracking()
+            .Where(po => productionOrderIds.Contains(po.DocEntry))
+            .ToDictionaryAsync(po => po.DocEntry);
+
         // Cập nhật lines
-        UpdateLines(grainMixingProcess, dto.Lines);
+        UpdateLines(grainMixingProcess, dto.Lines, existingProductionOrders);
 
         // Tính toán lại năng suất lao động
         CalculateLaborProductivity(grainMixingProcess);
@@ -260,11 +291,12 @@ public class GrainMixingProcessService
     #region Private Methods
 
     private static GrainMixingProcessLine MapCreateToGrainMixingProcessLine(
-        CreateGrainMixingProcessLineDto dto)
+        CreateGrainMixingProcessLineDto dto, int productOrderId, string productionBatch, DateTime? requiredDate)
     {
         return new GrainMixingProcessLine
         {
-            ProductionBatch = dto.ProductionBatch,
+            ProductionOrderId = productOrderId,
+            ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
@@ -281,6 +313,7 @@ public class GrainMixingProcessService
             PpAdditive = dto.PpAdditive,
             PpColor = dto.PpColor,
             PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
             HdRecycled = dto.HdRecycled,
@@ -288,6 +321,7 @@ public class GrainMixingProcessService
             HdDc = dto.HdDc,
             HdColor = dto.HdColor,
             HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
             PeTalcol = dto.PeTalcol,
@@ -296,6 +330,7 @@ public class GrainMixingProcessService
             PeLdpe = dto.PeLdpe,
             PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
+            PeDc = dto.PeDc,
             // Màng co
             ShrinkRe707 = dto.ShrinkRe707,
             ShrinkSlip = dto.ShrinkSlip,
@@ -303,6 +338,9 @@ public class GrainMixingProcessService
             ShrinkDc = dto.ShrinkDc,
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
+            ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkRecycled = dto.ShrinkRecycled,
+            ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
@@ -314,6 +352,8 @@ public class GrainMixingProcessService
             WrapSlip = dto.WrapSlip,
             WrapAdditive = dto.WrapAdditive,
             WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
             EvaPop3070 = dto.EvaPop3070,
             EvaLdpe = dto.EvaLdpe,
@@ -322,9 +362,10 @@ public class GrainMixingProcessService
             EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
             EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
             QuantityKg = dto.QuantityKg,
-            RequiredDate = dto.RequiredDate,
+            RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
@@ -334,11 +375,15 @@ public class GrainMixingProcessService
 
     private static GrainMixingProcessLine MapUpdateToGrainMixingProcessLine(
         UpdateGrainMixingProcessLineDto dto,
+        int productionOrderId,
+        string productionBatch,
+        DateTime? requiredDate,
         int? existingId = null)
     {
         var line = new GrainMixingProcessLine
         {
-            ProductionBatch = dto.ProductionBatch,
+            ProductionOrderId = productionOrderId,
+            ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
@@ -355,6 +400,7 @@ public class GrainMixingProcessService
             PpAdditive = dto.PpAdditive,
             PpColor = dto.PpColor,
             PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
             HdRecycled = dto.HdRecycled,
@@ -362,6 +408,7 @@ public class GrainMixingProcessService
             HdDc = dto.HdDc,
             HdColor = dto.HdColor,
             HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
             PeTalcol = dto.PeTalcol,
@@ -370,6 +417,7 @@ public class GrainMixingProcessService
             PeLdpe = dto.PeLdpe,
             PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
+            PeDc = dto.PeDc,
             // Màng co
             ShrinkRe707 = dto.ShrinkRe707,
             ShrinkSlip = dto.ShrinkSlip,
@@ -377,6 +425,9 @@ public class GrainMixingProcessService
             ShrinkDc = dto.ShrinkDc,
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
+            ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkRecycled = dto.ShrinkRecycled,
+            ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
@@ -388,6 +439,8 @@ public class GrainMixingProcessService
             WrapSlip = dto.WrapSlip,
             WrapAdditive = dto.WrapAdditive,
             WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
             EvaPop3070 = dto.EvaPop3070,
             EvaLdpe = dto.EvaLdpe,
@@ -396,9 +449,10 @@ public class GrainMixingProcessService
             EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
             EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
             QuantityKg = dto.QuantityKg,
-            RequiredDate = dto.RequiredDate,
+            RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
@@ -415,7 +469,9 @@ public class GrainMixingProcessService
 
     private void UpdateLines(
         GrainMixingProcess grainMixingProcess,
-        List<UpdateGrainMixingProcessLineDto> lineDtos)
+        List<UpdateGrainMixingProcessLineDto> lineDtos,
+        Dictionary<int, ProductionOrderGrainMixing> existingProductionOrders
+        )
     {
         // Xóa các line không còn tồn tại trong DTO
         var dtoLineIds = lineDtos
@@ -436,6 +492,7 @@ public class GrainMixingProcessService
         // Cập nhật hoặc thêm mới các line
         foreach (var lineDto in lineDtos)
         {
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
@@ -444,7 +501,7 @@ public class GrainMixingProcessService
 
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, lineDto.Id);
+                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed, lineDto.Id);
                     updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -452,7 +509,7 @@ public class GrainMixingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingProcessLine(lineDto);
+                var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed);
                 grainMixingProcess.Lines.Add(newLine);
             }
         }
@@ -460,7 +517,7 @@ public class GrainMixingProcessService
 
     private static void CalculateLaborProductivity(GrainMixingProcess grainMixingProcess)
     {
-        var totalQuantity = grainMixingProcess.Lines.Sum(l => (double)l.QuantityKg);
+        var totalQuantity = grainMixingProcess.Lines.Sum(l => l.QuantityKg);
         var totalHours = grainMixingProcess.TotalHoursWorked;
 
         if (totalHours > 0)

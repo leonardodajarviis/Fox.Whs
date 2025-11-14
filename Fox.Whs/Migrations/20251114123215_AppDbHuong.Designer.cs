@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251114123215_AppDbHuong")]
+    partial class AppDbHuong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -901,10 +904,6 @@ namespace Fox.Whs.Migrations
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
-                    b.Property<decimal>("EvaTgc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
                     b.Property<int>("GrainMixingProcessId")
                         .HasColumnType("int");
 
@@ -913,10 +912,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("HdDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("HdHd")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -953,10 +948,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("PeColor")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("PeDc")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -1004,10 +995,6 @@ namespace Fox.Whs.Migrations
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
-                    b.Property<decimal>("PpRit")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
                     b.Property<decimal>("PpTron")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -1029,19 +1016,11 @@ namespace Fox.Whs.Migrations
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
-                    b.Property<decimal>("ShrinkLldpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
                     b.Property<decimal>("ShrinkOther")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("ShrinkRe707")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkRecycled")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -1054,10 +1033,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("ShrinkTalcol")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkTangDai")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -1110,14 +1085,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("WrapSlip")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapTangDaiC6")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("WrapTangDaiC8")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
