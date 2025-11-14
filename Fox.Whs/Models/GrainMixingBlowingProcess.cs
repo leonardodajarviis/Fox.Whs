@@ -30,6 +30,11 @@ public class GrainMixingBlowingProcess
     /// </summary>
     public string? BlowingMachine { get; set; }
 
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
     public short CreatorId { get; set; }
 
     [ForeignKey("CreatorId"), JsonIgnore]

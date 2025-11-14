@@ -35,6 +35,8 @@ Hệ thống database được thiết kế để quản lý các công đoạn 
 3. **Cắt (Cutting)** - Công đoạn cắt thành sản phẩm
 4. **Chia (Slitting)** - Công đoạn chia cuộn
 5. **Tua (Rewinding)** - Công đoạn tua cuộn
+6. **Pha Hạt (Grain Mixing)** - Công đoạn pha hạt nguyên liệu
+7. **Pha Hạt - Thổi (Grain Mixing Blowing)** - Công đoạn pha hạt kết hợp thổi
 
 ---
 
@@ -390,6 +392,128 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn tua.
 
 ---
 
+## Công Đoạn Pha Hạt (Grain Mixing Process)
+
+### Bảng: `FoxWms_GrainMixingProcess`
+
+Lưu trữ thông tin header của công đoạn pha hạt.
+
+| Cột                 | Kiểu dữ liệu | Null | Mô tả                           | Ghi chú               |
+| ------------------- | ------------ | ---- | ------------------------------- | --------------------- |
+| `Id`                | int          | NO   | ID công đoạn pha hạt            | Primary Key, Identity |
+| `IsDraft`           | bit          | NO   | Có phải bản nháp không          | Default: 0            |
+| `ProductionDate`    | datetime     | NO   | Ngày sản xuất (ngày pha)        |                       |
+| `WorkerCount`       | int          | NO   | Tổng số nhân công               |                       |
+| `TotalHoursWorked`  | double       | NO   | Tổng số giờ làm việc            | Precision(18,6)       |
+| `LaborProductivity` | double       | NO   | Năng suất lao động (Kg/giờ)     | Auto calculated       |
+| `Status`            | int          | NO   | Trạng thái                      |                       |
+| `CreatorId`         | smallint     | NO   | ID người tạo                    | FK -> Users           |
+| `ModifierId`        | smallint     | YES  | ID người sửa                    | FK -> Users           |
+| `CreatedAt`         | datetime     | NO   | Ngày giờ tạo                    | Default: GETDATE()    |
+| `ModifiedAt`        | datetime     | YES  | Ngày giờ sửa                    |                       |
+| `RowVersion`        | rowversion   | NO   | Version cho concurrency control | Timestamp             |
+
+### Bảng: `FoxWms_GrainMixingProcessLine`
+
+Lưu trữ chi tiết từng batch pha hạt trong công đoạn pha hạt.
+
+| Cột                      | Kiểu dữ liệu  | Null | Mô tả                            | Ghi chú                         |
+| ------------------------ | ------------- | ---- | -------------------------------- | ------------------------------- |
+| `Id`                     | int           | NO   | ID chi tiết                      | Primary Key, Identity           |
+| `GrainMixingProcessId`   | int           | NO   | ID công đoạn pha hạt             | FK -> FoxWms_GrainMixingProcess |
+| `ProductionBatch`        | nvarchar(100) | YES  | Lô sản xuất                      |                                 |
+| `CardCode`               | nvarchar(15)  | YES  | Mã khách hàng                    | FK -> BusinessPartners          |
+| `MaterialIssueVoucherNo` | nvarchar(100) | YES  | Số phiếu lĩnh vật tư             |                                 |
+| `MixtureType`            | nvarchar(100) | YES  | Chủng loại pha (HD, PE, PP, EVA) |                                 |
+| `Specification`          | nvarchar(500) | YES  | Quy cách diễn giải               |                                 |
+| `WorkerId`               | int           | YES  | ID công nhân pha                 | FK -> Employees                 |
+| `MachineName`            | nvarchar(100) | YES  | Tên máy pha                      |                                 |
+| `StartTime`              | datetime      | YES  | Thời gian bắt đầu pha            |                                 |
+| `EndTime`                | datetime      | YES  | Thời gian kết thúc pha           |                                 |
+| `PpTron`                 | decimal(18,6) | NO   | Hạt PP trơn (kg) - PP            |                                 |
+| `PpHdNhot`               | decimal(18,6) | NO   | Hạt HD nhớt (kg) - PP            |                                 |
+| `PpLdpe`                 | decimal(18,6) | NO   | Hạt LDPE (kg) - PP               |                                 |
+| `PpDc`                   | decimal(18,6) | NO   | Hạt DC (kg) - PP                 |                                 |
+| `PpAdditive`             | decimal(18,6) | NO   | Phụ gia (kg) - PP                |                                 |
+| `PpColor`                | decimal(18,6) | NO   | Hạt màu (kg) - PP                |                                 |
+| `PpOther`                | decimal(18,6) | NO   | Hạt khác (kg) - PP               |                                 |
+| `HdLldpe2320`            | decimal(18,6) | NO   | Hạt LLDPE 2320 (kg) - HD         |                                 |
+| `HdRecycled`             | decimal(18,6) | NO   | Hạt tái chế (kg) - HD            |                                 |
+| `HdTalcol`               | decimal(18,6) | NO   | Hạt Talcol (kg) - HD             |                                 |
+| `HdDc`                   | decimal(18,6) | NO   | Hạt DC (kg) - HD                 |                                 |
+| `HdColor`                | decimal(18,6) | NO   | Hạt màu (kg) - HD                |                                 |
+| `HdOther`                | decimal(18,6) | NO   | Hạt khác (kg) - HD               |                                 |
+| `PeAdditive`             | decimal(18,6) | NO   | Phụ gia (kg) - PE                |                                 |
+| `PeTalcol`               | decimal(18,6) | NO   | Talcol (kg) - PE                 |                                 |
+| `PeColor`                | decimal(18,6) | NO   | Hạt màu (kg) - PE                |                                 |
+| `PeOther`                | decimal(18,6) | NO   | Hạt khác (kg) - PE               |                                 |
+| `PeLdpe`                 | decimal(18,6) | NO   | Hạt LDPE (kg) - PE               |                                 |
+| `PeLldpe`                | decimal(18,6) | NO   | Hạt LLDPE (kg) - PE              |                                 |
+| `PeRecycled`             | decimal(18,6) | NO   | Hạt tái chế (kg) - PE            |                                 |
+| `ShrinkRe707`            | decimal(18,6) | NO   | Tăng R8707 (kg) - Màng co        |                                 |
+| `ShrinkSlip`             | decimal(18,6) | NO   | Tăng Slip (kg) - Màng co         |                                 |
+| `ShrinkStatic`           | decimal(18,6) | NO   | Tăng tĩnh điện (kg) - Màng co    |                                 |
+| `ShrinkDc`               | decimal(18,6) | NO   | Hạt DC (kg) - Màng co            |                                 |
+| `ShrinkTalcol`           | decimal(18,6) | NO   | Talcol (kg) - Màng co            |                                 |
+| `ShrinkOther`            | decimal(18,6) | NO   | Hạt khác (kg) - Màng co          |                                 |
+| `WrapRecycledCa`         | decimal(18,6) | NO   | Hạt tái chế Ca (kg) - Màng chít  |                                 |
+| `WrapRecycledCb`         | decimal(18,6) | NO   | Hạt tái chế Cb (kg) - Màng chít  |                                 |
+| `WrapGlue`               | decimal(18,6) | NO   | Keo (kg) - Màng chít             |                                 |
+| `WrapColor`              | decimal(18,6) | NO   | Hạt màu (kg) - Màng chít         |                                 |
+| `WrapDc`                 | decimal(18,6) | NO   | Hạt DC (kg) - Màng chít          |                                 |
+| `WrapLdpe`               | decimal(18,6) | NO   | Hạt LDPE (kg) - Màng chít        |                                 |
+| `WrapLldpe`              | decimal(18,6) | NO   | Hạt LLDPE (kg) - Màng chít       |                                 |
+| `WrapSlip`               | decimal(18,6) | NO   | Hạt Slip (kg) - Màng chít        |                                 |
+| `WrapAdditive`           | decimal(18,6) | NO   | Phụ gia (kg) - Màng chít         |                                 |
+| `WrapOther`              | decimal(18,6) | NO   | Hạt khác (kg) - Màng chít        |                                 |
+| `EvaPop3070`             | decimal(18,6) | NO   | POP 3070 (kg) - EVA              |                                 |
+| `EvaLdpe`                | decimal(18,6) | NO   | Hạt LDPE (kg) - EVA              |                                 |
+| `EvaDc`                  | decimal(18,6) | NO   | Hạt DC (kg) - EVA                |                                 |
+| `EvaTalcol`              | decimal(18,6) | NO   | Hạt Talcol (kg) - EVA            |                                 |
+| `EvaSlip`                | decimal(18,6) | NO   | Slip (kg) - EVA                  |                                 |
+| `EvaStaticAdditive`      | decimal(18,6) | NO   | Trợ tĩnh chống dính (kg) - EVA   |                                 |
+| `EvaOther`               | decimal(18,6) | NO   | Hạt khác (kg) - EVA              |                                 |
+| `QuantityKg`             | decimal(18,6) | NO   | Sản lượng pha (kg)               |                                 |
+| `RequiredDate`           | datetime      | YES  | Ngày cần hàng                    |                                 |
+| `IsCompleted`            | bit           | NO   | Xác nhận hoàn thành              | Default: 0                      |
+| `Status`                 | int           | NO   | Trạng thái                       |                                 |
+| `ActualCompletionDate`   | datetime      | YES  | Ngày hoàn thành thực tế (QLSX)   |                                 |
+| `DelayReason`            | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ         |                                 |
+
+---
+
+## Công Đoạn Pha Hạt - Thổi (Grain Mixing Blowing Process)
+
+### Bảng: `FoxWms_GrainMixingBlowingProcess`
+
+Lưu trữ thông tin header của công đoạn pha hạt kết hợp thổi.
+
+| Cột              | Kiểu dữ liệu  | Null | Mô tả                           | Ghi chú               |
+| ---------------- | ------------- | ---- | ------------------------------- | --------------------- |
+| `Id`             | int           | NO   | ID công đoạn pha hạt (Thổi)     | Primary Key, Identity |
+| `IsDraft`        | bit           | NO   | Có phải bản nháp không          | Default: 0            |
+| `ProductionDate` | datetime      | NO   | Ngày sản xuất (ngày pha)        |                       |
+| `BlowingMachine` | nvarchar(100) | YES  | Máy thổi                        |                       |
+| `CreatorId`      | smallint      | NO   | ID người tạo                    | FK -> Users           |
+| `ModifierId`     | smallint      | YES  | ID người sửa                    | FK -> Users           |
+| `CreatedAt`      | datetime      | NO   | Ngày giờ tạo                    | Default: GETDATE()    |
+| `ModifiedAt`     | datetime      | YES  | Ngày giờ sửa                    |                       |
+| `RowVersion`     | rowversion    | NO   | Version cho concurrency control | Timestamp             |
+
+### Bảng: `FoxWms_GrainMixingBlowingProcessLine`
+
+Lưu trữ chi tiết từng batch pha hạt trong công đoạn pha hạt - thổi. Bảng này có cùng cấu trúc với `FoxWms_GrainMixingProcessLine`, bao gồm tất cả các trường nguyên liệu (PP, HD, PE, Màng co, Màng chít, EVA) nhưng thay `GrainMixingProcessId` bằng `GrainMixingBlowingProcessId`.
+
+| Cột                                                 | Kiểu dữ liệu | Null | Mô tả                       | Ghi chú                                |
+| --------------------------------------------------- | ------------ | ---- | --------------------------- | -------------------------------------- |
+| `Id`                                                | int          | NO   | ID chi tiết                 | Primary Key, Identity                  |
+| `GrainMixingBlowingProcessId`                       | int          | NO   | ID công đoạn pha hạt (Thổi) | FK -> FoxWms_GrainMixingBlowingProcess |
+| _(Các trường còn lại giống GrainMixingProcessLine)_ |              |      |                             |                                        |
+
+**Lưu ý:** Để tránh trùng lặp, các trường còn lại của bảng này giống hệt với `FoxWms_GrainMixingProcessLine`.
+
+---
+
 ## Relationships
 
 ### Entity Relationship Diagram (ERD)
@@ -422,18 +546,20 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn tua.
 
 ### Foreign Key Constraints
 
-| Bảng                   | Cột                  | References                 | On Delete |
-| ---------------------- | -------------------- | -------------------------- | --------- |
-| All Process Tables     | `ShiftLeaderId`      | Employees(Id)              | RESTRICT  |
-| All Process Tables     | `CreatorId`          | Users(Id)                  | RESTRICT  |
-| All Process Tables     | `ModifierId`         | Users(Id)                  | SET NULL  |
-| All ProcessLine Tables | `WorkerId`           | Employees(Id)              | SET NULL  |
-| All ProcessLine Tables | `CardCode`           | BusinessPartners(CardCode) | SET NULL  |
-| BlowingProcessLine     | `BlowingProcessId`   | BlowingProcess(Id)         | CASCADE   |
-| PrintingProcessLine    | `PrintingProcessId`  | PrintingProcess(Id)        | CASCADE   |
-| CuttingProcessLine     | `CuttingProcessId`   | CuttingProcess(Id)         | CASCADE   |
-| SlittingProcessLine    | `SlittingProcessId`  | SlittingProcess(Id)        | CASCADE   |
-| RewindingProcessLine   | `RewindingProcessId` | RewindingProcess(Id)       | CASCADE   |
+| Bảng                          | Cột                           | References                    | On Delete |
+| ----------------------------- | ----------------------------- | ----------------------------- | --------- |
+| All Process Tables            | `ShiftLeaderId`               | Employees(Id)                 | RESTRICT  |
+| All Process Tables            | `CreatorId`                   | Users(Id)                     | RESTRICT  |
+| All Process Tables            | `ModifierId`                  | Users(Id)                     | SET NULL  |
+| All ProcessLine Tables        | `WorkerId`                    | Employees(Id)                 | SET NULL  |
+| All ProcessLine Tables        | `CardCode`                    | BusinessPartners(CardCode)    | SET NULL  |
+| BlowingProcessLine            | `BlowingProcessId`            | BlowingProcess(Id)            | CASCADE   |
+| PrintingProcessLine           | `PrintingProcessId`           | PrintingProcess(Id)           | CASCADE   |
+| CuttingProcessLine            | `CuttingProcessId`            | CuttingProcess(Id)            | CASCADE   |
+| SlittingProcessLine           | `SlittingProcessId`           | SlittingProcess(Id)           | CASCADE   |
+| RewindingProcessLine          | `RewindingProcessId`          | RewindingProcess(Id)          | CASCADE   |
+| GrainMixingProcessLine        | `GrainMixingProcessId`        | GrainMixingProcess(Id)        | CASCADE   |
+| GrainMixingBlowingProcessLine | `GrainMixingBlowingProcessId` | GrainMixingBlowingProcess(Id) | CASCADE   |
 
 ---
 
@@ -467,6 +593,12 @@ CREATE INDEX IX_RewindingProcess_ProductionDate ON FoxWms_RewindingProcess(Produ
 CREATE INDEX IX_RewindingProcess_ShiftLeaderId ON FoxWms_RewindingProcess(ShiftLeaderId);
 CREATE INDEX IX_RewindingProcessLine_RewindingProcessId ON FoxWms_RewindingProcessLine(RewindingProcessId);
 CREATE INDEX IX_RewindingProcessLine_ProductionOrderId ON FoxWms_RewindingProcessLine(ProductionOrderId);
+
+CREATE INDEX IX_GrainMixingProcess_ProductionDate ON FoxWms_GrainMixingProcess(ProductionDate DESC);
+CREATE INDEX IX_GrainMixingProcessLine_GrainMixingProcessId ON FoxWms_GrainMixingProcessLine(GrainMixingProcessId);
+
+CREATE INDEX IX_GrainMixingBlowingProcess_ProductionDate ON FoxWms_GrainMixingBlowingProcess(ProductionDate DESC);
+CREATE INDEX IX_GrainMixingBlowingProcessLine_GrainMixingBlowingProcessId ON FoxWms_GrainMixingBlowingProcessLine(GrainMixingBlowingProcessId);
 ```
 
 ### Check Constraints
@@ -595,6 +727,16 @@ TotalBlowingStageMold = SUM(Lines.BlowingLossKg)
 TotalRewindingStageMold = SUM(Lines.HumanLossKg + MachineLossKg)
 ```
 
+#### Grain Mixing Process
+
+```
+LaborProductivity = TotalQuantityKg / TotalHoursWorked
+
+TotalQuantityKg = SUM(Lines.QuantityKg)
+```
+
+**Lưu ý:** Grain Mixing Blowing Process không có tính toán năng suất lao động, chỉ lưu trữ thông tin về máy thổi được sử dụng.
+
 ### Quy Tắc Validation
 
 1. **ProductionDate** không được là ngày tương lai
@@ -660,9 +802,10 @@ BACKUP LOG FoxWms TO DISK = 'C:\Backups\FoxWms_Log.trn'
 
 ## Changelog
 
-| Version | Date       | Changes                               |
-| ------- | ---------- | ------------------------------------- |
-| 1.0     | 03/11/2025 | Initial database schema documentation |
+| Version | Date       | Changes                                  |
+| ------- | ---------- | ---------------------------------------- |
+| 1.1     | 14/11/2025 | Thêm công đoạn Pha Hạt và Pha Hạt - Thổi |
+| 1.0     | 03/11/2025 | Initial database schema documentation    |
 
 ---
 

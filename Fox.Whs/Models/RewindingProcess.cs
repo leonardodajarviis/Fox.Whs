@@ -64,6 +64,11 @@ public class RewindingProcess
     /// </summary>
     public List<RewindingProcessLine> Lines { get; set; } = [];
 
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
     public short CreatorId { get; set; }
 
     [ForeignKey("CreatorId"), JsonIgnore]

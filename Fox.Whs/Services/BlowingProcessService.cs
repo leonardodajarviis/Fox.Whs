@@ -206,6 +206,19 @@ public class BlowingProcessService
             {
                 await _dbContext.UpdateStatusProductionOrderSapAsync("U_THOISTATUS", productOrderCompletedIds);
             }
+
+            if (blowingProcess.Lines.All(l => l.Status == 1))
+            {
+                blowingProcess.Status = 1; // Hoàn thành
+            }
+            else if (blowingProcess.Lines.Any(l => l.Status == 1))
+            {
+                blowingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (blowingProcess.Lines.All(l => l.Status == 0))
+            {
+                blowingProcess.Status = 0;
+            }
         }
 
         await _dbContext.SaveChangesAsync();

@@ -75,10 +75,10 @@ public class SlittingProcessService
     /// </summary>
     public async Task<SlittingProcess> CreateAsync(CreateSlittingProcessDto dto)
     {
-        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId() 
+        var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId()
             ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var productionOrderIds = dto.Lines
@@ -95,10 +95,10 @@ public class SlittingProcessService
         var lines = new List<SlittingProcessLine>();
         foreach (var lineDto in dto.Lines)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) 
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId)
                 ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            
-            var item = productionOrder.ItemDetail 
+
+            var item = productionOrder.ItemDetail
                 ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
 
             var line = MapCreateToSlittingProcessLine(
@@ -141,7 +141,7 @@ public class SlittingProcessService
     /// </summary>
     public async Task<SlittingProcess> UpdateAsync(int id, UpdateSlittingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var slittingProcess = await _dbContext.SlittingProcesses
@@ -189,6 +189,19 @@ public class SlittingProcessService
             if (productOrderCompletedIds.Length > 0)
             {
                 await _dbContext.UpdateStatusProductionOrderSapAsync("U_CHIASTATUS", productOrderCompletedIds);
+            }
+
+            if (slittingProcess.Lines.All(l => l.Status == 1))
+            {
+                slittingProcess.Status = 1; // Hoàn thành
+            }
+            else if (slittingProcess.Lines.Any(l => l.Status == 1))
+            {
+                slittingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (slittingProcess.Lines.All(l => l.Status == 0))
+            {
+                slittingProcess.Status = 0;
             }
         }
 
@@ -276,8 +289,8 @@ public class SlittingProcessService
         };
 
         // Tính toán tổng DC cho line
-        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
-                          line.PrintingLossKg + line.CutViaKg + 
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
+                          line.PrintingLossKg + line.CutViaKg +
                           line.HumanLossKg + line.MachineLossKg;
 
         return line;
@@ -349,8 +362,8 @@ public class SlittingProcessService
         }
 
         // Tính toán tổng DC cho line
-        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg + 
-                          line.PrintingLossKg + line.CutViaKg + 
+        line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
+                          line.PrintingLossKg + line.CutViaKg +
                           line.HumanLossKg + line.MachineLossKg;
 
         return line;
@@ -381,10 +394,10 @@ public class SlittingProcessService
         // Cập nhật hoặc thêm mới các line
         foreach (var lineDto in lineDtos)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) 
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId)
                 ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            
-            var item = productionOrder.ItemDetail 
+
+            var item = productionOrder.ItemDetail
                 ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
 
             if (lineDto.Id.HasValue)
@@ -394,19 +407,19 @@ public class SlittingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToSlittingProcessLine(
-                        lineDto, 
-                        productionOrder.ItemCode, 
-                        productionOrder?.CardCode, 
-                        productionOrder?.ProductionBatch, 
+                        lineDto,
+                        productionOrder.ItemCode,
+                        productionOrder?.CardCode,
+                        productionOrder?.ProductionBatch,
                         null,
-                        item.ProductType, 
-                        item.ProductTypeName, 
-                        item.Thickness, 
+                        item.ProductType,
+                        item.ProductTypeName,
+                        item.Thickness,
                         item.SemiProductWidth,
                         item.PrintPatternName,
                         item.ColorCount,
                         lineDto.Id);
-                    
+
                     updatedLine.SlittingProcessId = existingLine.SlittingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -415,18 +428,18 @@ public class SlittingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToSlittingProcessLine(
-                    lineDto, 
-                    productionOrder.ItemCode, 
-                    productionOrder?.CardCode, 
-                    productionOrder?.ProductionBatch, 
+                    lineDto,
+                    productionOrder.ItemCode,
+                    productionOrder?.CardCode,
+                    productionOrder?.ProductionBatch,
                     null,
-                    item.ProductType, 
-                    item.ProductTypeName, 
-                    item.Thickness, 
+                    item.ProductType,
+                    item.ProductTypeName,
+                    item.Thickness,
                     item.SemiProductWidth,
                     item.PrintPatternName,
                     item.ColorCount);
-                
+
                 slittingProcess.Lines.Add(newLine);
             }
         }

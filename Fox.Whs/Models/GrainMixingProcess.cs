@@ -39,6 +39,11 @@ public class GrainMixingProcess
     [Precision(18, 6)]
     public double LaborProductivity { get; set; }
 
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
     public short CreatorId { get; set; }
 
     [ForeignKey("CreatorId"), JsonIgnore]

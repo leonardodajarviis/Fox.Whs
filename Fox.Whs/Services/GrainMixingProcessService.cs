@@ -79,7 +79,7 @@ public class GrainMixingProcessService
     /// </summary>
     public async Task<GrainMixingProcess> CreateAsync(CreateGrainMixingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         // Validate workers if provided
@@ -150,7 +150,7 @@ public class GrainMixingProcessService
     /// </summary>
     public async Task<GrainMixingProcess> UpdateAsync(int id, UpdateGrainMixingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var grainMixingProcess = await _dbContext.GrainMixingProcesses
@@ -217,6 +217,22 @@ public class GrainMixingProcessService
 
         // Tính toán lại năng suất lao động
         CalculateLaborProductivity(grainMixingProcess);
+
+        if (!grainMixingProcess.IsDraft)
+        {
+            if (grainMixingProcess.Lines.All(l => l.Status == 1))
+            {
+                grainMixingProcess.Status = 1; // Hoàn thành
+            }
+            else if (grainMixingProcess.Lines.Any(l => l.Status == 1))
+            {
+                grainMixingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (grainMixingProcess.Lines.All(l => l.Status == 0))
+            {
+                grainMixingProcess.Status = 0;
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 
@@ -425,7 +441,7 @@ public class GrainMixingProcessService
                 // Cập nhật line hiện có
                 var existingLine = grainMixingProcess.Lines
                     .FirstOrDefault(l => l.Id == lineDto.Id.Value);
-                    
+
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, lineDto.Id);

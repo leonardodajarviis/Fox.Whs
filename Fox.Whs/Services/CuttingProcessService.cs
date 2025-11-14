@@ -206,6 +206,19 @@ public class CuttingProcessService
             {
                 await _dbContext.UpdateStatusProductionOrderSapAsync("U_CATSTATUS", productOrderCompletedIds);
             }
+
+            if (cuttingProcess.Lines.All(l => l.Status == 1))
+            {
+                cuttingProcess.Status = 1; // Hoàn thành
+            }
+            else if (cuttingProcess.Lines.Any(l => l.Status == 1))
+            {
+                cuttingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (cuttingProcess.Lines.All(l => l.Status == 0))
+            {
+                cuttingProcess.Status = 0;
+            }
         }
 
         await _dbContext.SaveChangesAsync();

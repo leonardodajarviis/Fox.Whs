@@ -77,7 +77,7 @@ public class RewindingProcessService
     {
         var shiftLeaderId = dto.ShiftLeaderId ?? _userContextService.GetCurrentEmployeeId()
             ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
-        
+
         var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
@@ -95,10 +95,10 @@ public class RewindingProcessService
         var lines = new List<RewindingProcessLine>();
         foreach (var lineDto in dto.Lines)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) 
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId)
                 ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            
-            var item = productionOrder.ItemDetail 
+
+            var item = productionOrder.ItemDetail
                 ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
 
             var line = MapCreateToRewindingProcessLine(
@@ -186,6 +186,19 @@ public class RewindingProcessService
             if (productOrderCompletedIds.Length > 0)
             {
                 await _dbContext.UpdateStatusProductionOrderSapAsync("U_TUASTATUS", productOrderCompletedIds);
+            }
+
+            if (rewindingProcess.Lines.All(l => l.Status == 1))
+            {
+                rewindingProcess.Status = 1; // Hoàn thành
+            }
+            else if (rewindingProcess.Lines.Any(l => l.Status == 1))
+            {
+                rewindingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (rewindingProcess.Lines.All(l => l.Status == 0))
+            {
+                rewindingProcess.Status = 0;
             }
         }
 
@@ -351,10 +364,10 @@ public class RewindingProcessService
         // Cập nhật hoặc thêm mới các line
         foreach (var lineDto in lineDtos)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) 
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId)
                 ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            
-            var item = productionOrder.ItemDetail 
+
+            var item = productionOrder.ItemDetail
                 ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
 
             if (lineDto.Id.HasValue)
@@ -364,17 +377,17 @@ public class RewindingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToRewindingProcessLine(
-                        lineDto, 
-                        productionOrder.ItemCode, 
-                        productionOrder?.CardCode, 
-                        productionOrder?.ProductionBatch, 
+                        lineDto,
+                        productionOrder.ItemCode,
+                        productionOrder?.CardCode,
+                        productionOrder?.ProductionBatch,
                         null, // RequiredDate sẽ lấy từ DTO hoặc để null
-                        item.ProductType, 
-                        item.ProductTypeName, 
-                        item.Thickness, 
-                        item.SemiProductWidth, 
+                        item.ProductType,
+                        item.ProductTypeName,
+                        item.Thickness,
+                        item.SemiProductWidth,
                         lineDto.Id);
-                    
+
                     updatedLine.RewindingProcessId = existingLine.RewindingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -383,16 +396,16 @@ public class RewindingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToRewindingProcessLine(
-                    lineDto, 
-                    productionOrder.ItemCode, 
-                    productionOrder?.CardCode, 
-                    productionOrder?.ProductionBatch, 
+                    lineDto,
+                    productionOrder.ItemCode,
+                    productionOrder?.CardCode,
+                    productionOrder?.ProductionBatch,
                     null, // RequiredDate sẽ lấy từ DTO hoặc để null
-                    item.ProductType, 
-                    item.ProductTypeName, 
-                    item.Thickness, 
+                    item.ProductType,
+                    item.ProductTypeName,
+                    item.Thickness,
                     item.SemiProductWidth);
-                
+
                 rewindingProcess.Lines.Add(newLine);
             }
         }

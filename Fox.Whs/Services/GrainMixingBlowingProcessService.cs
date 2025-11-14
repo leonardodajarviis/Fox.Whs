@@ -79,7 +79,7 @@ public class GrainMixingBlowingProcessService
     /// </summary>
     public async Task<GrainMixingBlowingProcess> CreateAsync(CreateGrainMixingBlowingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         // Validate workers if provided
@@ -146,7 +146,7 @@ public class GrainMixingBlowingProcessService
     /// </summary>
     public async Task<GrainMixingBlowingProcess> UpdateAsync(int id, UpdateGrainMixingBlowingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() 
+        var currentUserId = _userContextService.GetCurrentUserId()
             ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var grainMixingBlowingProcess = await _dbContext.GrainMixingBlowingProcesses
@@ -200,6 +200,7 @@ public class GrainMixingBlowingProcessService
             }
         }
 
+
         // Cập nhật thông tin cơ bản
         grainMixingBlowingProcess.ProductionDate = dto.ProductionDate;
         grainMixingBlowingProcess.IsDraft = dto.IsDraft;
@@ -209,6 +210,22 @@ public class GrainMixingBlowingProcessService
 
         // Cập nhật lines
         UpdateLines(grainMixingBlowingProcess, dto.Lines);
+
+        if (!grainMixingBlowingProcess.IsDraft)
+        {
+            if (grainMixingBlowingProcess.Lines.All(l => l.Status == 1))
+            {
+                grainMixingBlowingProcess.Status = 1; // Hoàn thành
+            }
+            else if (grainMixingBlowingProcess.Lines.Any(l => l.Status == 1))
+            {
+                grainMixingBlowingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (grainMixingBlowingProcess.Lines.All(l => l.Status == 0))
+            {
+                grainMixingBlowingProcess.Status = 0;
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 
@@ -417,7 +434,7 @@ public class GrainMixingBlowingProcessService
                 // Cập nhật line hiện có
                 var existingLine = grainMixingBlowingProcess.Lines
                     .FirstOrDefault(l => l.Id == lineDto.Id.Value);
-                    
+
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, lineDto.Id);

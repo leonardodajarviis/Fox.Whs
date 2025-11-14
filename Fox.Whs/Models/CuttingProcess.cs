@@ -77,6 +77,11 @@ public class CuttingProcess
     [Precision(18, 4)]
     public decimal TotalCuttingStageMold { get; set; }
 
+    /// <summary>
+    /// Trạng thái
+    /// </summary>
+    public int Status { get; set; }
+
     public short CreatorId { get; set; }
 
     [ForeignKey("CreatorId"), JsonIgnore]

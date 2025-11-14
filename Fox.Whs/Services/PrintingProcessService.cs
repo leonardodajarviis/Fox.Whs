@@ -206,7 +206,21 @@ public class PrintingProcessService
             {
                 await _dbContext.UpdateStatusProductionOrderSapAsync("U_INSTATUS", productOrderCompletedIds);
             }
+
+            if (printingProcess.Lines.All(l => l.Status == 1))
+            {
+                printingProcess.Status = 1; // Hoàn thành
+            }
+            else if (printingProcess.Lines.Any(l => l.Status == 1))
+            {
+                printingProcess.Status = 2; // Đang tiến hành
+            }
+            else if (printingProcess.Lines.All(l => l.Status == 0))
+            {
+                printingProcess.Status = 0;
+            }
         }
+
 
         await _dbContext.SaveChangesAsync();
 
