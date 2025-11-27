@@ -15,9 +15,11 @@ Tài liệu này mô tả cấu trúc database cho hệ thống quản lý kho F
 4. [Công Đoạn Cắt (Cutting Process)](#công-đoạn-cắt-cutting-process)
 5. [Công Đoạn Chia (Slitting Process)](#công-đoạn-chia-slitting-process)
 6. [Công Đoạn Tua (Rewinding Process)](#công-đoạn-tua-rewinding-process)
-7. [Relationships](#relationships)
-8. [Indexes & Constraints](#indexes--constraints)
-9. [Data Types](#data-types)
+7. [Công Đoạn Pha Hạt (Grain Mixing Process)](#công-đoạn-pha-hạt-grain-mixing-process)
+8. [Công Đoạn Pha Hạt - Thổi (Grain Mixing Blowing Process)](#công-đoạn-pha-hạt---thổi-grain-mixing-blowing-process)
+9. [Relationships](#relationships)
+10. [Indexes & Constraints](#indexes--constraints)
+11. [Data Types](#data-types)
 
 ---
 
