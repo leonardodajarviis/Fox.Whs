@@ -21,7 +21,8 @@ public class MixtureTypeController : ControllerBase
             "PE",
             "Màng co",
             "Màng chít",
-            "PP"
+            "PP",
+            "EVA"
         ];
 
     /// <summary>

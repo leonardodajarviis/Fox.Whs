@@ -168,6 +168,7 @@ public record CreateGrainMixingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLdpe { get; set; }
     public decimal ShrinkLldpe { get; set; }
     public decimal ShrinkRecycled { get; set; }
     public decimal ShrinkTangDai { get; set; }
@@ -212,7 +213,7 @@ public record CreateGrainMixingProcessLineDto
     /// </summary>
     public bool IsCompleted { get; set; }
 
-        /// <summary>
+    /// <summary>
     /// Trạng thái
     /// </summary>
     public int Status { get; set; }
@@ -332,6 +333,7 @@ public record UpdateGrainMixingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLdpe { get; set; }
     public decimal ShrinkLldpe { get; set; }
     public decimal ShrinkRecycled { get; set; }
     public decimal ShrinkTangDai { get; set; }
@@ -376,7 +378,7 @@ public record UpdateGrainMixingProcessLineDto
     /// </summary>
     public bool IsCompleted { get; set; }
 
-        /// <summary>
+    /// <summary>
     /// Trạng thái
     /// </summary>
     public int Status { get; set; }

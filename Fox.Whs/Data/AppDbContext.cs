@@ -125,5 +125,4 @@ public class AppDbContext : DbContext
 
         return await Database.ExecuteSqlRawAsync(sql, parameters);
     }
-
 }

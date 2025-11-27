@@ -307,6 +307,7 @@ public class GrainMixingBlowingProcessService
             PpAdditive = dto.PpAdditive,
             PpColor = dto.PpColor,
             PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
             HdRecycled = dto.HdRecycled,
@@ -314,6 +315,7 @@ public class GrainMixingBlowingProcessService
             HdDc = dto.HdDc,
             HdColor = dto.HdColor,
             HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
             PeTalcol = dto.PeTalcol,
@@ -322,6 +324,7 @@ public class GrainMixingBlowingProcessService
             PeLdpe = dto.PeLdpe,
             PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
+            PeDc = dto.PeDc,
             // Màng co
             ShrinkRe707 = dto.ShrinkRe707,
             ShrinkSlip = dto.ShrinkSlip,
@@ -329,6 +332,10 @@ public class GrainMixingBlowingProcessService
             ShrinkDc = dto.ShrinkDc,
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
+            ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkLdpe = dto.ShrinkLdpe,
+            ShrinkRecycled = dto.ShrinkRecycled,
+            ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
@@ -340,6 +347,8 @@ public class GrainMixingBlowingProcessService
             WrapSlip = dto.WrapSlip,
             WrapAdditive = dto.WrapAdditive,
             WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
             EvaPop3070 = dto.EvaPop3070,
             EvaLdpe = dto.EvaLdpe,
@@ -348,6 +357,7 @@ public class GrainMixingBlowingProcessService
             EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
             EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
             QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,
@@ -385,6 +395,7 @@ public class GrainMixingBlowingProcessService
             PpAdditive = dto.PpAdditive,
             PpColor = dto.PpColor,
             PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
             HdRecycled = dto.HdRecycled,
@@ -392,6 +403,7 @@ public class GrainMixingBlowingProcessService
             HdDc = dto.HdDc,
             HdColor = dto.HdColor,
             HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
             PeTalcol = dto.PeTalcol,
@@ -400,11 +412,16 @@ public class GrainMixingBlowingProcessService
             PeLdpe = dto.PeLdpe,
             PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
+            PeDc = dto.PeDc,
             // Màng co
             ShrinkRe707 = dto.ShrinkRe707,
             ShrinkSlip = dto.ShrinkSlip,
             ShrinkStatic = dto.ShrinkStatic,
             ShrinkDc = dto.ShrinkDc,
+            ShrinkLdpe = dto.ShrinkLdpe,
+            ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkRecycled = dto.ShrinkRecycled,
+            ShrinkTangDai = dto.ShrinkTangDai,
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
             // Màng chít
@@ -418,6 +435,8 @@ public class GrainMixingBlowingProcessService
             WrapSlip = dto.WrapSlip,
             WrapAdditive = dto.WrapAdditive,
             WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
             EvaPop3070 = dto.EvaPop3070,
             EvaLdpe = dto.EvaLdpe,
@@ -426,6 +445,7 @@ public class GrainMixingBlowingProcessService
             EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
             EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
             QuantityKg = dto.QuantityKg,
             RequiredDate = requiredDate,

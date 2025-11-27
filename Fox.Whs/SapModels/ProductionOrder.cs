@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Fox.Whs.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fox.Whs.SapModels;
 
@@ -93,6 +94,56 @@ public class ProductionOrder
     /// </summary>
     [Column("U_CHIANCH")]
     public DateTime? DateOfNeedSlitting { get; set; }
+
+    /// <summary>
+    /// Số lượng còn lại
+    /// </summary>
+    [Precision(18, 2)]
+    [NotMapped]
+    public decimal RemainingQuantity { get; set; }
+
+    [Column("U_THOIL")]
+    public decimal? BlowingQuantity { get; set; }
+
+    [Column("U_CATSL")]
+    public decimal? CuttingQuantity { get; set; }
+
+    [Column("U_CHIASL")]
+    public decimal? SlittingQuantity { get; set; }
+
+    [Column("U_INSL")]
+    public decimal? PrintingQuantity { get; set; }
+
+    [Column("U_TUASL")]
+    public decimal? RewindingQuantity { get; set; }
+
+    public decimal Quantity()
+    {
+        if (IsBlowing == "Y")
+        {
+            return BlowingQuantity ?? 0;
+        }
+        if (IsCutting == "Y")
+        {
+            return CuttingQuantity ?? 0;
+        }
+        if (IsSlitting == "Y")
+        {
+            return SlittingQuantity ?? 0;
+        }
+        if (IsPrinting == "Y")
+        {
+            return PrintingQuantity ?? 0;
+        }
+        if (IsRewinding == "Y")
+        {
+            return RewindingQuantity ?? 0;
+        }
+
+        return 0;
+    }
+
+
 
     [ForeignKey("ItemCode")]
     public Item? ItemDetail { get; set; }

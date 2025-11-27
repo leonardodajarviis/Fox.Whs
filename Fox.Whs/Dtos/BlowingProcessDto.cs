@@ -81,7 +81,9 @@ public record CreateBlowingProcessLineDto
     /// <summary>
     /// ID lệnh sản xuất
     /// </summary>
-    public int ProductionOrderId { get; set; }
+    public int? ProductionOrderId { get; set; }
+
+    public string? ItemCode { get; set; }
 
     /// <summary>
     /// Máy thổi
@@ -278,10 +280,12 @@ public record UpdateBlowingProcessLineDto
     /// </summary>
     public int? Id { get; set; }
 
+    public string? ItemCode { get; set; }
+
     /// <summary>
     /// ID lệnh sản xuất
     /// </summary>
-    public int ProductionOrderId { get; set; }
+    public int? ProductionOrderId { get; set; }
 
     /// <summary>
     /// Chủng loại

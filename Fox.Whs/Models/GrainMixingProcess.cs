@@ -323,6 +323,12 @@ public class GrainMixingProcessLine
     /// Hạt LLDPE
     /// </summary>
     [Precision(18, 6)]
+    public decimal ShrinkLdpe { get; set; }
+
+    /// <summary>
+    /// Hạt LLDPE
+    /// </summary>
+    [Precision(18, 6)]
     public decimal ShrinkLldpe { get; set; }
 
     /// <summary>

@@ -75,7 +75,7 @@ public class BlowingProcess
     /// <summary>
     /// Trạng thái
     /// </summary>
-    public int Status {get; set;}
+    public int Status { get; set; }
 
     public short CreatorId { get; set; }
 
@@ -112,7 +112,7 @@ public class BlowingProcessLine
 
     public int BlowingProcessId { get; set; }
 
-    public int ProductionOrderId { get; set; }
+    public int? ProductionOrderId { get; set; }
 
     [ForeignKey("BlowingProcessId"), JsonIgnore]
     public BlowingProcess? BlowingProcess { get; set; }

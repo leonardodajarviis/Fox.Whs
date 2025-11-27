@@ -70,6 +70,71 @@ public class ProductionOrdersController : ControllerBase
             .Take(pageSize)
             .ToListAsync();
 
+        var productionOrderIds = productionOrders
+            .Where(p => p.IsBlowing == "Y" || p.IsCutting == "Y" || p.IsPrinting == "Y" || p.IsRewinding == "Y" || p.IsSlitting == "Y")
+            .Select(p => p.DocEntry);
+
+        //----------------------------
+
+        var blowingProcessLines = await _dbContext.BlowingProcessLines.AsNoTracking()
+            .Where(x => x.Status == 1)
+            .Where(x => productionOrderIds.Contains(x.ProductionOrderId ?? 0))
+            .Select(x => new
+            {
+                Quantity = x.QuantityKg,
+                Id = x.ProductionOrderId ?? 0
+            })
+            .ToListAsync();
+
+        var cuttingProcessLines = await _dbContext.CuttingProcessLines.AsNoTracking()
+            .Where(x => x.Status == 1)
+            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+            .Select(x => new
+            {
+                Quantity = x.QuantityKg,
+                Id = x.ProductionOrderId
+            })
+            .ToListAsync();
+
+        var printingProcessLines = await _dbContext.PrintingProcessLines.AsNoTracking()
+            .Where(x => x.Status == 1)
+            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+            .Select(x => new
+            {
+                Quantity = x.QuantityKg ?? 0,
+                Id = x.ProductionOrderId
+            })
+            .ToListAsync();
+
+        var rewindingProcessLines = await _dbContext.RewindingProcessLines.AsNoTracking()
+            .Where(x => x.Status == 1)
+            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+            .Select(x => new
+            {
+                Quantity = x.QuantityKg,
+                Id = x.ProductionOrderId
+            })
+            .ToListAsync();
+
+        var slittingProcessLines = await _dbContext.SlittingProcessLines.AsNoTracking()
+            .Where(x => x.Status == 1)
+            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+            .Select(x => new
+            {
+                Quantity = x.QuantityKg,
+                Id = x.ProductionOrderId
+            })
+            .ToListAsync();
+
+        var lines = blowingProcessLines.Concat(cuttingProcessLines).Concat(printingProcessLines).Concat(rewindingProcessLines).Concat(slittingProcessLines);
+
+        productionOrders.ForEach(p =>
+        {
+            p.RemainingQuantity = p.Quantity() - lines.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
+        });
+
+
+
         return Ok(new PaginationResponse<ProductionOrder>
         {
             Page = page,

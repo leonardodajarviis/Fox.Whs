@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251116154944_NewFieldForGood")]
+    partial class NewFieldForGood
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,7 +190,7 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("ProductionBatch")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductionOrderId")
+                    b.Property<int>("ProductionOrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("QuantityKg")
@@ -730,10 +733,6 @@ namespace Fox.Whs.Migrations
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
-                    b.Property<decimal>("ShrinkLdpe")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
                     b.Property<decimal>("ShrinkLldpe")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -1066,10 +1065,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("ShrinkDc")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<decimal>("ShrinkLdpe")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 

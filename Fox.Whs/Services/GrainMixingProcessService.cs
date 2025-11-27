@@ -339,6 +339,7 @@ public class GrainMixingProcessService
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
             ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkLdpe = dto.ShrinkLdpe,
             ShrinkRecycled = dto.ShrinkRecycled,
             ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
@@ -426,6 +427,7 @@ public class GrainMixingProcessService
             ShrinkTalcol = dto.ShrinkTalcol,
             ShrinkOther = dto.ShrinkOther,
             ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkLdpe = dto.ShrinkLdpe,
             ShrinkRecycled = dto.ShrinkRecycled,
             ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
@@ -520,9 +522,9 @@ public class GrainMixingProcessService
         var totalQuantity = grainMixingProcess.Lines.Sum(l => l.QuantityKg);
         var totalHours = grainMixingProcess.TotalHoursWorked;
 
-        if (totalHours > 0)
+        if (totalHours > 0 && grainMixingProcess.WorkerCount > 0)
         {
-            grainMixingProcess.LaborProductivity = totalQuantity / totalHours;
+            grainMixingProcess.LaborProductivity = totalQuantity / (totalHours * grainMixingProcess.WorkerCount);
         }
         else
         {

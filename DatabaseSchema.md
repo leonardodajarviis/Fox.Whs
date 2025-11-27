@@ -56,8 +56,9 @@ Lưu trữ thông tin header của công đoạn thổi.
 | `TotalBlowingOutput`   | decimal(18,4) | NO   | Tổng sản lượng thổi (kg)        | Auto calculated       |
 | `TotalRewindingOutput` | decimal(18,4) | NO   | Tổng sản lượng tua/chia/tờ (kg) | Auto calculated       |
 | `TotalReservedOutput`  | decimal(18,4) | NO   | Tổng sản lượng dự trữ (kg)      | Auto calculated       |
-| `TotalBlowingLoss`     | decimal(18,4) | NO   | Tổng DC công đoạn thổi (kg)     | Auto calculated       |
-| `CreatorId`            | smallint      | NO   | ID người tạo                    | FK -> Users           |
+| TotalBlowingLoss     | decimal(18,4) | NO   | Tổng DC công đoạn thổi (kg)     | Auto calculated       |
+| Status               | int           | NO   | Trạng thái                      |
+| CreatorId            | smallint      | NO   | ID người tạo                    | FK -> Users           |
 | `ModifierId`           | smallint      | YES  | ID người sửa                    | FK -> Users           |
 | `CreatedAt`            | datetime      | NO   | Ngày giờ tạo                    | Default: GETDATE()    |
 | `ModifiedAt`           | datetime      | YES  | Ngày giờ sửa                    |                       |
@@ -90,8 +91,9 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn thổi.
 | `QuantityKg`                    | decimal(18,4)  | NO   | Sản lượng thổi (số kg)              |                             |
 | `RewindOrSplitWeight`           | decimal(18,4)  | NO   | Sản lượng tua/chia/tờ (kg)          |                             |
 | `ReservedWeight`                | decimal(18,4)  | NO   | Sản lượng dự trữ (kg)               |                             |
-| `RequiredDate`                  | nvarchar(50)   | YES  | Ngày cần hàng                       |                             |
-| `IsCompleted`                   | bit            | NO   | Xác nhận hoàn thành                 | Default: 0                  |
+| RequiredDate                  | nvarchar(50)   | YES  | Ngày cần hàng                       |                             |
+| Status                        | int            | NO   | Trạng thái                          |                             |
+| IsCompleted                   | bit            | NO   | Xác nhận hoàn thành                 | Default: 0                  |
 | `ActualCompletionDate`          | datetime       | YES  | Ngày hoàn thành thực tế             |                             |
 | `DelayReason`                   | nvarchar(500)  | YES  | Nguyên nhân chậm tiến độ (QLSX ghi) |                             |
 | `WidthChange`                   | decimal(18,4)  | NO   | Đổi khổ (kg)                        |                             |
@@ -130,8 +132,9 @@ Lưu trữ thông tin header của công đoạn in.
 | `TotalPrintingOutput`    | decimal(18,4) | NO   | Tổng sản lượng in (kg)      | Auto calculated       |
 | `TotalProcessingMold`    | decimal(18,4) | NO   | Tổng DC gia công (kg)       | Auto calculated       |
 | `TotalBlowingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
-| `TotalPrintingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |
-| `CreatorId`              | smallint      | NO   | ID người tạo                | FK -> Users           |
+| TotalPrintingStageMold | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |
+| Status                 | int           | NO   | Trạng thái                  |                       |
+| CreatorId              | smallint      | NO   | ID người tạo                | FK -> Users           |
 | `ModifierId`             | smallint      | YES  | ID người sửa                | FK -> Users           |
 | `CreatedAt`              | datetime      | NO   | Ngày giờ tạo                | Default: GETDATE()    |
 | `ModifiedAt`             | datetime      | YES  | Ngày giờ sửa                |                       |
@@ -164,8 +167,9 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn in.
 | `RollCount`                | int           | NO   | Số cuộn                            |                                |
 | `PieceCount`               | int           | NO   | Số chiếc                           |                                |
 | `QuantityKg`               | decimal(18,4) | YES  | Số kg                              |                                |
-| `RequiredDate`             | datetime      | YES  | Ngày cần hàng                      |                                |
-| `IsCompleted`              | bit           | NO   | Xác nhận hoàn thành                | Default: 0                     |
+| RequiredDate             | datetime      | YES  | Ngày cần hàng                      |                                |
+| Status                   | int           | NO   | Trạng thái                         |                                |
+| IsCompleted              | bit           | NO   | Xác nhận hoàn thành                | Default: 0                     |
 | `ActualCompletionDate`     | datetime      | YES  | Ngày hoàn thành thực tế            |                                |
 | `DelayReason`              | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ           |                                |
 | `ProcessingLossKg`         | decimal(18,4) | NO   | DC gia công (kg)                   |                                |
@@ -203,8 +207,9 @@ Lưu trữ thông tin header của công đoạn cắt.
 | `TotalProcessingMold`    | decimal(18,4) | NO   | Tổng DC gia công (kg)       | Auto calculated       |
 | `TotalBlowingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
 | `TotalPrintingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |
-| `TotalCuttingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Cắt (kg)  | Auto calculated       |
-| `CreatorId`              | smallint      | NO   | ID người tạo                | FK -> Users           |
+| TotalCuttingStageMold  | decimal(18,4) | NO   | Tổng DC công đoạn Cắt (kg)  | Auto calculated       |
+| Status                 | int           | NO   | Trạng thái                  |                       |
+| CreatorId              | smallint      | NO   | ID người tạo                | FK -> Users           |
 | `ModifierId`             | smallint      | YES  | ID người sửa                | FK -> Users           |
 | `CreatedAt`              | datetime      | NO   | Ngày giờ tạo                | Default: GETDATE()    |
 | `ModifiedAt`             | datetime      | YES  | Ngày giờ sửa                |                       |
@@ -237,8 +242,9 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `QuantityKg`            | decimal(18,4) | NO   | Số kg (sản lượng cắt)              |                               |
 | `BagCount`              | decimal(18,4) | NO   | Số bao (sản lượng cắt)             |                               |
 | `FoldedCount`           | decimal(18,4) | NO   | Số lượng gấp xúc                   |                               |
-| `RequiredDate`          | datetime      | YES  | Ngày cần hàng                      |                               |
-| `IsCompleted`           | bit           | NO   | Xác nhận hoàn thành                | Default: 0                    |
+| RequiredDate          | datetime      | YES  | Ngày cần hàng                      |                               |
+| Status                | int           | NO   | Trạng thái                         |                               |
+| IsCompleted           | bit           | NO   | Xác nhận hoàn thành                | Default: 0                    |
 | `ActualCompletionDate`  | datetime      | YES  | Ngày hoàn thành thực tế            |                               |
 | `DelayReason`           | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ           |                               |
 | `ProcessingLossKg`      | decimal(18,4) | NO   | DC gia công (kg)                   |                               |
@@ -279,8 +285,9 @@ Lưu trữ thông tin header của công đoạn chia.
 | `TotalProcessingMold`    | decimal(18,4) | NO   | Tổng DC gia công (kg)       | Auto calculated       |
 | `TotalBlowingStageMold`  | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
 | `TotalPrintingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn In (kg)   | Auto calculated       |
-| `TotalSlittingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn Chia (kg) | Auto calculated       |
-| `CreatorId`              | smallint      | NO   | ID người tạo                | FK -> Users           |
+| TotalSlittingStageMold | decimal(18,4) | NO   | Tổng DC công đoạn Chia (kg) | Auto calculated       |
+| Status                 | int           | NO   | Trạng thái                  |                       |
+| CreatorId              | smallint      | NO   | ID người tạo                | FK -> Users           |
 | `ModifierId`             | smallint      | YES  | ID người sửa                | FK -> Users           |
 | `CreatedAt`              | datetime      | NO   | Ngày giờ tạo                | Default: GETDATE()    |
 | `ModifiedAt`             | datetime      | YES  | Ngày giờ sửa                |                       |
@@ -315,8 +322,9 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn chia.
 | `PieceCount`            | decimal(18,4) | NO   | Số chiếc                              |                              |
 | `QuantityKg`            | decimal(18,4) | NO   | Số kg                                 |                              |
 | `BoxCount`              | decimal(18,4) | NO   | Số thùng                              |                              |
-| `RequiredDate`          | datetime      | YES  | Ngày cần hàng                         |                              |
-| `IsCompleted`           | bit           | NO   | Xác nhận hoàn thành                   | Default: 0                   |
+| RequiredDate          | datetime      | YES  | Ngày cần hàng                         |                              |
+| Status                | int           | NO   | Trạng thái                            |                              |
+| IsCompleted           | bit           | NO   | Xác nhận hoàn thành                   | Default: 0                   |
 | `ActualCompletionDate`  | datetime      | YES  | Ngày hoàn thành thực tế               |                              |
 | `DelayReason`           | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ              |                              |
 | `ProcessingLossKg`      | decimal(18,4) | NO   | DC gia công (kg)                      |                              |
@@ -353,7 +361,8 @@ Lưu trữ thông tin header của công đoạn tua.
 | `ProductionShift`         | nvarchar(50)  | NO   | Ca sản xuất                 |                       |
 | `TotalRewindingOutput`    | decimal(18,4) | NO   | Tổng sản lượng tua (kg)     | Auto calculated       |
 | `TotalBlowingStageMold`   | decimal(18,4) | NO   | Tổng DC công đoạn Thổi (kg) | Auto calculated       |
-| `TotalRewindingStageMold` | decimal(18,4) | NO   | Tổng DC công đoạn Tua (kg)  | Auto calculated       |
+| TotalRewindingStageMold | decimal(18,4) | NO   | Tổng DC công đoạn Tua (kg)  | Auto calculated       |
+| Status                  | int           | NO   | Trạng thái                  |                       |
 
 ### Bảng: `FoxWms_RewindingProcessLine`
 
@@ -371,24 +380,29 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn tua.
 | `Thickness`            | nvarchar(50)  | YES  | Độ dày / 1 lá                        |                               |
 | `SemiProductWidth`     | nvarchar(50)  | YES  | Khổ màng BTP                         |                               |
 | `RewindingMachine`     | nvarchar(50)  | YES  | Máy tua                              |                               |
-| `WorkerId`             | int           | YES  | ID công nhân tua                     | FK -> Employees               |
-| `StartTime`            | datetime      | YES  | Thời gian bắt đầu tua                |                               |
-| `EndTime`              | datetime      | YES  | Thời gian kết thúc tua               |                               |
-| `MachineStopMinutes`   | decimal(18,4) | NO   | Thời gian dừng máy (phút)            |                               |
-| `StopReason`           | nvarchar(500) | YES  | Nguyên nhân dừng máy                 |                               |
-| `RollCount`            | decimal(18,4) | NO   | Số cuộn                              |                               |
-| `QuantityKg`           | decimal(18,4) | NO   | Số kg                                |                               |
-| `RequiredDate`         | datetime      | YES  | Ngày cần hàng                        |                               |
-| `IsCompleted`          | bit           | NO   | Xác nhận hoàn thành                  | Default: 0                    |
-| `ActualCompletionDate` | datetime      | YES  | Ngày hoàn thành thực tế              |                               |
-| `DelayReason`          | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ             |                               |
-| `BlowingLossKg`        | decimal(18,4) | NO   | DC do công đoạn thổi (kg)            |                               |
-| `BlowingLossReason`    | nvarchar(500) | YES  | DC do công đoạn thổi - nguyên nhân   |                               |
-| `HumanLossKg`          | decimal(18,4) | NO   | DC do công đoạn tua - Con người (kg) |                               |
-| `HumanLossReason`      | nvarchar(500) | YES  | DC - Nguyên nhân con người           |                               |
-| `MachineLossKg`        | decimal(18,4) | NO   | DC do công đoạn tua - Lỗi máy (kg)   |                               |
-| `MachineLossReason`    | nvarchar(500) | YES  | DC - Nguyên nhân lỗi máy             |                               |
-| `TotalLossKg`          | decimal(18,4) | NO   | Tổng DC (kg)                         | Auto calculated               |
+| WorkerId               | int           | YES  | ID công nhân tua                     | FK -> Employees               |
+| RewindingSpeed         | decimal(18,4) | NO   | Tốc độ tua                           |                               |
+| StartTime              | datetime      | YES  | Thời gian bắt đầu tua                |                               |
+| EndTime                | datetime      | YES  | Thời gian kết thúc tua               |                               |
+| MachineStopMinutes     | decimal(18,4) | NO   | Thời gian dừng máy (phút)            |                               |
+| StopReason             | nvarchar(500) | YES  | Nguyên nhân dừng máy                 |                               |
+| RollCount              | decimal(18,4) | NO   | Số cuộn                              |                               |
+| QuantityKg             | decimal(18,4) | NO   | Số kg                                |                               |
+| BoxCount               | decimal(18,4) | NO   | Số thùng                             |                               |
+| RequiredDate           | datetime      | YES  | Ngày cần hàng                        |                               |
+| Status                 | int           | NO   | Trạng thái                           |                               |
+| IsCompleted            | bit           | NO   | Xác nhận hoàn thành                  | Default: 0                    |
+| ActualCompletionDate   | datetime      | YES  | Ngày hoàn thành thực tế              |                               |
+| DelayReason            | nvarchar(500) | YES  | Nguyên nhân chậm tiến độ             |                               |
+| BlowingLossKg          | decimal(18,4) | NO   | DC do công đoạn thổi (kg)            |                               |
+| BlowingLossReason      | nvarchar(500) | YES  | DC do công đoạn thổi - nguyên nhân   |                               |
+| HumanLossKg            | decimal(18,4) | NO   | DC do công đoạn tua - Con người (kg) |                               |
+| HumanLossReason        | nvarchar(500) | YES  | DC - Nguyên nhân con người           |                               |
+| MachineLossKg          | decimal(18,4) | NO   | DC do công đoạn tua - Lỗi máy (kg)   |                               |
+| MachineLossReason      | nvarchar(500) | YES  | DC - Nguyên nhân lỗi máy             |                               |
+| TotalLossKg            | decimal(18,4) | NO   | Tổng DC (kg)                         | Auto calculated               |
+| ExcessPO               | decimal(18,4) | NO   | Thừa PO (kg)                         |                               |
+| BtpWarehouseConfirmed  | bit           | NO   | Xác nhận của kho BTP                 | Default: 0                    |
 
 ---
 
@@ -436,43 +450,53 @@ Lưu trữ chi tiết từng batch pha hạt trong công đoạn pha hạt.
 | `PpDc`                   | decimal(18,6) | NO   | Hạt DC (kg) - PP                 |                                 |
 | `PpAdditive`             | decimal(18,6) | NO   | Phụ gia (kg) - PP                |                                 |
 | `PpColor`                | decimal(18,6) | NO   | Hạt màu (kg) - PP                |                                 |
-| `PpOther`                | decimal(18,6) | NO   | Hạt khác (kg) - PP               |                                 |
-| `HdLldpe2320`            | decimal(18,6) | NO   | Hạt LLDPE 2320 (kg) - HD         |                                 |
-| `HdRecycled`             | decimal(18,6) | NO   | Hạt tái chế (kg) - HD            |                                 |
-| `HdTalcol`               | decimal(18,6) | NO   | Hạt Talcol (kg) - HD             |                                 |
-| `HdDc`                   | decimal(18,6) | NO   | Hạt DC (kg) - HD                 |                                 |
-| `HdColor`                | decimal(18,6) | NO   | Hạt màu (kg) - HD                |                                 |
-| `HdOther`                | decimal(18,6) | NO   | Hạt khác (kg) - HD               |                                 |
-| `PeAdditive`             | decimal(18,6) | NO   | Phụ gia (kg) - PE                |                                 |
-| `PeTalcol`               | decimal(18,6) | NO   | Talcol (kg) - PE                 |                                 |
-| `PeColor`                | decimal(18,6) | NO   | Hạt màu (kg) - PE                |                                 |
-| `PeOther`                | decimal(18,6) | NO   | Hạt khác (kg) - PE               |                                 |
-| `PeLdpe`                 | decimal(18,6) | NO   | Hạt LDPE (kg) - PE               |                                 |
-| `PeLldpe`                | decimal(18,6) | NO   | Hạt LLDPE (kg) - PE              |                                 |
-| `PeRecycled`             | decimal(18,6) | NO   | Hạt tái chế (kg) - PE            |                                 |
-| `ShrinkRe707`            | decimal(18,6) | NO   | Tăng R8707 (kg) - Màng co        |                                 |
-| `ShrinkSlip`             | decimal(18,6) | NO   | Tăng Slip (kg) - Màng co         |                                 |
-| `ShrinkStatic`           | decimal(18,6) | NO   | Tăng tĩnh điện (kg) - Màng co    |                                 |
-| `ShrinkDc`               | decimal(18,6) | NO   | Hạt DC (kg) - Màng co            |                                 |
-| `ShrinkTalcol`           | decimal(18,6) | NO   | Talcol (kg) - Màng co            |                                 |
-| `ShrinkOther`            | decimal(18,6) | NO   | Hạt khác (kg) - Màng co          |                                 |
-| `WrapRecycledCa`         | decimal(18,6) | NO   | Hạt tái chế Ca (kg) - Màng chít  |                                 |
-| `WrapRecycledCb`         | decimal(18,6) | NO   | Hạt tái chế Cb (kg) - Màng chít  |                                 |
-| `WrapGlue`               | decimal(18,6) | NO   | Keo (kg) - Màng chít             |                                 |
-| `WrapColor`              | decimal(18,6) | NO   | Hạt màu (kg) - Màng chít         |                                 |
-| `WrapDc`                 | decimal(18,6) | NO   | Hạt DC (kg) - Màng chít          |                                 |
-| `WrapLdpe`               | decimal(18,6) | NO   | Hạt LDPE (kg) - Màng chít        |                                 |
-| `WrapLldpe`              | decimal(18,6) | NO   | Hạt LLDPE (kg) - Màng chít       |                                 |
-| `WrapSlip`               | decimal(18,6) | NO   | Hạt Slip (kg) - Màng chít        |                                 |
-| `WrapAdditive`           | decimal(18,6) | NO   | Phụ gia (kg) - Màng chít         |                                 |
-| `WrapOther`              | decimal(18,6) | NO   | Hạt khác (kg) - Màng chít        |                                 |
-| `EvaPop3070`             | decimal(18,6) | NO   | POP 3070 (kg) - EVA              |                                 |
-| `EvaLdpe`                | decimal(18,6) | NO   | Hạt LDPE (kg) - EVA              |                                 |
-| `EvaDc`                  | decimal(18,6) | NO   | Hạt DC (kg) - EVA                |                                 |
-| `EvaTalcol`              | decimal(18,6) | NO   | Hạt Talcol (kg) - EVA            |                                 |
-| `EvaSlip`                | decimal(18,6) | NO   | Slip (kg) - EVA                  |                                 |
-| `EvaStaticAdditive`      | decimal(18,6) | NO   | Trợ tĩnh chống dính (kg) - EVA   |                                 |
-| `EvaOther`               | decimal(18,6) | NO   | Hạt khác (kg) - EVA              |                                 |
+| PpOther                  | decimal(18,6) | NO   | Hạt khác (kg) - PP               |                                 |
+| PpRit                    | decimal(18,6) | NO   | Hạt PP Rít (kg) - PP             |                                 |
+| HdLldpe2320              | decimal(18,6) | NO   | Hạt LLDPE 2320 (kg) - HD         |                                 |
+| HdRecycled               | decimal(18,6) | NO   | Hạt tái chế (kg) - HD            |                                 |
+| HdTalcol                 | decimal(18,6) | NO   | Hạt Talcol (kg) - HD             |                                 |
+| HdDc                     | decimal(18,6) | NO   | Hạt DC (kg) - HD                 |                                 |
+| HdColor                  | decimal(18,6) | NO   | Hạt màu (kg) - HD                |                                 |
+| HdOther                  | decimal(18,6) | NO   | Hạt khác (kg) - HD               |                                 |
+| HdHd                     | decimal(18,6) | NO   | Hạt HD (kg) - HD                 |                                 |
+| PeAdditive               | decimal(18,6) | NO   | Phụ gia (kg) - PE                |                                 |
+| PeTalcol                 | decimal(18,6) | NO   | Talcol (kg) - PE                 |                                 |
+| PeColor                  | decimal(18,6) | NO   | Hạt màu (kg) - PE                |                                 |
+| PeOther                  | decimal(18,6) | NO   | Hạt khác (kg) - PE               |                                 |
+| PeLdpe                   | decimal(18,6) | NO   | Hạt LDPE (kg) - PE               |                                 |
+| PeLldpe                  | decimal(18,6) | NO   | Hạt LLDPE (kg) - PE              |                                 |
+| PeRecycled               | decimal(18,6) | NO   | Hạt tái chế (kg) - PE            |                                 |
+| PeDc                     | decimal(18,6) | NO   | Hạt PE DC (kg) - PE              |                                 |
+| ShrinkRe707              | decimal(18,6) | NO   | Tăng R8707 (kg) - Màng co        |                                 |
+| ShrinkSlip               | decimal(18,6) | NO   | Tăng Slip (kg) - Màng co         |                                 |
+| ShrinkStatic             | decimal(18,6) | NO   | Tăng tĩnh điện (kg) - Màng co    |                                 |
+| ShrinkDc                 | decimal(18,6) | NO   | Hạt DC (kg) - Màng co            |                                 |
+| ShrinkTalcol             | decimal(18,6) | NO   | Talcol (kg) - Màng co            |                                 |
+| ShrinkOther              | decimal(18,6) | NO   | Hạt khác (kg) - Màng co          |                                 |
+| ShrinkLdpe               | decimal(18,6) | NO   | Hạt LDPE (kg) - Màng co          |                                 |
+| ShrinkLldpe              | decimal(18,6) | NO   | Hạt LLDPE (kg) - Màng co         |                                 |
+| ShrinkRecycled           | decimal(18,6) | NO   | Hạt tái chế (kg) - Màng co       |                                 |
+| ShrinkTangDai            | decimal(18,6) | NO   | Tăng dãi (kg) - Màng co          |                                 |
+| WrapRecycledCa           | decimal(18,6) | NO   | Hạt tái chế Ca (kg) - Màng chít  |                                 |
+| WrapRecycledCb           | decimal(18,6) | NO   | Hạt tái chế Cb (kg) - Màng chít  |                                 |
+| WrapGlue                 | decimal(18,6) | NO   | Keo (kg) - Màng chít             |                                 |
+| WrapColor                | decimal(18,6) | NO   | Hạt màu (kg) - Màng chít         |                                 |
+| WrapDc                   | decimal(18,6) | NO   | Hạt DC (kg) - Màng chít          |                                 |
+| WrapLdpe                 | decimal(18,6) | NO   | Hạt LDPE (kg) - Màng chít        |                                 |
+| WrapLldpe                | decimal(18,6) | NO   | Hạt LLDPE (kg) - Màng chít       |                                 |
+| WrapSlip                 | decimal(18,6) | NO   | Hạt Slip (kg) - Màng chít        |                                 |
+| WrapAdditive             | decimal(18,6) | NO   | Phụ gia (kg) - Màng chít         |                                 |
+| WrapOther                | decimal(18,6) | NO   | Hạt khác (kg) - Màng chít        |                                 |
+| WrapTangDaiC6            | decimal(18,6) | NO   | Tăng dãi C6 (kg) - Màng chít     |                                 |
+| WrapTangDaiC8            | decimal(18,6) | NO   | Tăng dãi C8 (kg) - Màng chít     |                                 |
+| EvaPop3070               | decimal(18,6) | NO   | POP 3070 (kg) - EVA              |                                 |
+| EvaLdpe                  | decimal(18,6) | NO   | Hạt LDPE (kg) - EVA              |                                 |
+| EvaDc                    | decimal(18,6) | NO   | Hạt DC (kg) - EVA                |                                 |
+| EvaTalcol                | decimal(18,6) | NO   | Hạt Talcol (kg) - EVA            |                                 |
+| EvaSlip                  | decimal(18,6) | NO   | Slip (kg) - EVA                  |                                 |
+| EvaStaticAdditive        | decimal(18,6) | NO   | Trợ tĩnh chống dính (kg) - EVA   |                                 |
+| EvaOther                 | decimal(18,6) | NO   | Hạt khác (kg) - EVA              |                                 |
+| EvaTgc                   | decimal(18,6) | NO   | Tăng chống (kg) - EVA            |                                 |
 | `QuantityKg`             | decimal(18,6) | NO   | Sản lượng pha (kg)               |                                 |
 | `RequiredDate`           | datetime      | YES  | Ngày cần hàng                    |                                 |
 | `IsCompleted`            | bit           | NO   | Xác nhận hoàn thành              | Default: 0                      |
@@ -493,8 +517,9 @@ Lưu trữ thông tin header của công đoạn pha hạt kết hợp thổi.
 | `Id`             | int           | NO   | ID công đoạn pha hạt (Thổi)     | Primary Key, Identity |
 | `IsDraft`        | bit           | NO   | Có phải bản nháp không          | Default: 0            |
 | `ProductionDate` | datetime      | NO   | Ngày sản xuất (ngày pha)        |                       |
-| `BlowingMachine` | nvarchar(100) | YES  | Máy thổi                        |                       |
-| `CreatorId`      | smallint      | NO   | ID người tạo                    | FK -> Users           |
+| BlowingMachine   | nvarchar(100) | YES  | Máy thổi                        |                       |
+| Status           | int           | NO   | Trạng thái                      |                       |
+| CreatorId        | smallint      | NO   | ID người tạo                    | FK -> Users           |
 | `ModifierId`     | smallint      | YES  | ID người sửa                    | FK -> Users           |
 | `CreatedAt`      | datetime      | NO   | Ngày giờ tạo                    | Default: GETDATE()    |
 | `ModifiedAt`     | datetime      | YES  | Ngày giờ sửa                    |                       |
@@ -511,6 +536,28 @@ Lưu trữ chi tiết từng batch pha hạt trong công đoạn pha hạt - th�
 | _(Các trường còn lại giống GrainMixingProcessLine)_ |              |      |                             |                                        |
 
 **Lưu ý:** Để tránh trùng lặp, các trường còn lại của bảng này giống hệt với `FoxWms_GrainMixingProcessLine`.
+
+---
+
+## User Sessions
+
+### Bảng: `FoxWms_UserSessions`
+
+Lưu trữ phiên đăng nhập của người dùng, bao gồm Refresh Token và Access Token JTI.
+
+| Cột                | Kiểu dữ liệu  | Null | Mô tả                            | Ghi chú               |
+| ------------------ | ------------- | ---- | -------------------------------- | --------------------- |
+| `Id`               | int           | NO   | ID phiên                         | Primary Key, Identity |
+| `UserId`           | smallint      | NO   | ID người dùng                    | FK -> Users           |
+| `AccessTokenJti`   | nvarchar(100) | NO   | JTI của Access Token             |                       |
+| `RefreshTokenJti`  | nvarchar(100) | NO   | JTI của Refresh Token            |                       |
+| `RefreshToken`     | nvarchar(500) | NO   | Refresh Token (mã hóa)           |                       |
+| `RefreshExpiresAt` | datetime      | NO   | Ngày hết hạn của phiên           |                       |
+| `CreatedAt`        | datetime      | NO   | Ngày tạo phiên                   |                       |
+| `RevokedAt`        | datetime      | YES  | Ngày thu hồi phiên (nếu có)      |                       |
+| `RevokedReason`    | nvarchar(200) | YES  | Lý do thu hồi                    |                       |
+| `IpAddress`        | nvarchar(50)  | YES  | IP Address của client            |                       |
+| `UserAgent`        | nvarchar(500) | YES  | User Agent của client            |                       |
 
 ---
 
@@ -560,6 +607,7 @@ Lưu trữ chi tiết từng batch pha hạt trong công đoạn pha hạt - th�
 | RewindingProcessLine          | `RewindingProcessId`          | RewindingProcess(Id)          | CASCADE   |
 | GrainMixingProcessLine        | `GrainMixingProcessId`        | GrainMixingProcess(Id)        | CASCADE   |
 | GrainMixingBlowingProcessLine | `GrainMixingBlowingProcessId` | GrainMixingBlowingProcess(Id) | CASCADE   |
+| FoxWms_UserSessions           | `UserId`                      | Users(Id)                     | CASCADE   |
 
 ---
 
@@ -804,6 +852,7 @@ BACKUP LOG FoxWms TO DISK = 'C:\Backups\FoxWms_Log.trn'
 
 | Version | Date       | Changes                                  |
 | ------- | ---------- | ---------------------------------------- |
+| 1.2     | 27/11/2025 | Thêm bảng UserSessions                   |
 | 1.1     | 14/11/2025 | Thêm công đoạn Pha Hạt và Pha Hạt - Thổi |
 | 1.0     | 03/11/2025 | Initial database schema documentation    |
 

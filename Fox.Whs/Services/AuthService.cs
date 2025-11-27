@@ -48,12 +48,12 @@ public class AuthService
             throw new BadRequestException("Mật khẩu không được để trống");
         }
 
-        // var sessionId = await _sapAuthService.LoginAsync(username, password);
+        var sessionId = await _sapAuthService.LoginAsync(username, password);
 
-        // if (string.IsNullOrEmpty(sessionId))
-        // {
-        //     throw new UnauthorizedException("Tên đăng nhập hoặc mật khẩu không đúng");
-        // }
+        if (string.IsNullOrEmpty(sessionId))
+        {
+            throw new UnauthorizedException("Tên đăng nhập hoặc mật khẩu không đúng");
+        }
 
         var user = await _dbContext.Users.AsNoTracking()
             .Include(x => x.Permissions)

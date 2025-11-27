@@ -125,6 +125,7 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal PpAdditive { get; set; }
     public decimal PpColor { get; set; }
     public decimal PpOther { get; set; }
+    public decimal PpRit { get; set; }
 
     // ------------------ HD ------------------
     public decimal HdLldpe2320 { get; set; }
@@ -133,6 +134,7 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal HdDc { get; set; }
     public decimal HdColor { get; set; }
     public decimal HdOther { get; set; }
+    public decimal HdHd { get; set; }
 
     // ------------------ PE ------------------
     public decimal PeAdditive { get; set; }
@@ -142,6 +144,7 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal PeLdpe { get; set; }
     public decimal PeLldpe { get; set; }
     public decimal PeRecycled { get; set; }
+    public decimal PeDc { get; set; }
 
     // ------------------ Màng co ------------------
     public decimal ShrinkRe707 { get; set; }
@@ -150,6 +153,10 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLdpe { get; set; }
+    public decimal ShrinkLldpe { get; set; }
+    public decimal ShrinkRecycled { get; set; }
+    public decimal ShrinkTangDai { get; set; }
 
     // ------------------ Màng chít ------------------
     public decimal WrapRecycledCa { get; set; }
@@ -162,6 +169,8 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal WrapSlip { get; set; }
     public decimal WrapAdditive { get; set; }
     public decimal WrapOther { get; set; }
+    public decimal WrapTangDaiC6 { get; set; }
+    public decimal WrapTangDaiC8 { get; set; }
 
     // ------------------ EVA ------------------
     public decimal EvaPop3070 { get; set; }
@@ -171,6 +180,7 @@ public record CreateGrainMixingBlowingProcessLineDto
     public decimal EvaSlip { get; set; }
     public decimal EvaStaticAdditive { get; set; }
     public decimal EvaOther { get; set; }
+    public decimal EvaTgc { get; set; }
 
     /// <summary>
     /// Sản lượng pha (Kg)
@@ -276,6 +286,7 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal PpAdditive { get; set; }
     public decimal PpColor { get; set; }
     public decimal PpOther { get; set; }
+    public decimal PpRit { get; set; }
 
     // ------------------ HD ------------------
     public decimal HdLldpe2320 { get; set; }
@@ -284,6 +295,7 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal HdDc { get; set; }
     public decimal HdColor { get; set; }
     public decimal HdOther { get; set; }
+    public decimal HdHd { get; set; }
 
     // ------------------ PE ------------------
     public decimal PeAdditive { get; set; }
@@ -293,6 +305,7 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal PeLdpe { get; set; }
     public decimal PeLldpe { get; set; }
     public decimal PeRecycled { get; set; }
+    public decimal PeDc { get; set; }
 
     // ------------------ Màng co ------------------
     public decimal ShrinkRe707 { get; set; }
@@ -301,6 +314,10 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal ShrinkDc { get; set; }
     public decimal ShrinkTalcol { get; set; }
     public decimal ShrinkOther { get; set; }
+    public decimal ShrinkLdpe { get; set; }
+    public decimal ShrinkLldpe { get; set; }
+    public decimal ShrinkRecycled { get; set; }
+    public decimal ShrinkTangDai { get; set; }
 
     // ------------------ Màng chít ------------------
     public decimal WrapRecycledCa { get; set; }
@@ -313,6 +330,8 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal WrapSlip { get; set; }
     public decimal WrapAdditive { get; set; }
     public decimal WrapOther { get; set; }
+    public decimal WrapTangDaiC6 { get; set; }
+    public decimal WrapTangDaiC8 { get; set; }
 
     // ------------------ EVA ------------------
     public decimal EvaPop3070 { get; set; }
@@ -322,6 +341,7 @@ public record UpdateGrainMixingBlowingProcessLineDto
     public decimal EvaSlip { get; set; }
     public decimal EvaStaticAdditive { get; set; }
     public decimal EvaOther { get; set; }
+    public decimal EvaTgc { get; set; }
 
     /// <summary>
     /// Sản lượng pha (Kg)

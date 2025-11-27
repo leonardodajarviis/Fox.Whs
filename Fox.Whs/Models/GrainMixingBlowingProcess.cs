@@ -170,6 +170,12 @@ public class GrainMixingBlowingProcessLine
     [Precision(18, 6)]
     public decimal PpOther { get; set; }
 
+    /// <summary>
+    /// Hạt PP Rít
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal PpRit { get; set; }
+
     // ------------------ HD ------------------
 
     /// <summary>
@@ -207,6 +213,12 @@ public class GrainMixingBlowingProcessLine
     /// </summary>
     [Precision(18, 6)]
     public decimal HdOther { get; set; }
+
+    /// <summary>
+    /// Hạt HD
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal HdHd { get; set; }
 
     // ------------------ PE ------------------
 
@@ -252,6 +264,12 @@ public class GrainMixingBlowingProcessLine
     [Precision(18, 6)]
     public decimal PeRecycled { get; set; }
 
+    /// <summary>
+    /// Hạt PE DC
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal PeDc { get; set; }
+
     // ------------------ Màng co ------------------
 
     /// <summary>
@@ -289,6 +307,30 @@ public class GrainMixingBlowingProcessLine
     /// </summary>
     [Precision(18, 6)]
     public decimal ShrinkOther { get; set; }
+
+    /// <summary>
+    /// Hạt LLDPE
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal ShrinkLdpe { get; set; }
+
+    /// <summary>
+    /// Hạt LLDPE
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal ShrinkLldpe { get; set; }
+
+    /// <summary>
+    /// Hạt tái chế
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal ShrinkRecycled { get; set; }
+
+    /// <summary>
+    /// Tăng dãi
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal ShrinkTangDai { get; set; }
 
     // ------------------ Màng chít ------------------
 
@@ -352,6 +394,18 @@ public class GrainMixingBlowingProcessLine
     [Precision(18, 6)]
     public decimal WrapOther { get; set; }
 
+    /// <summary>
+    /// Tăng dãi C6
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal WrapTangDaiC6 { get; set; }
+
+    /// <summary>
+    /// Tăng dãi C8
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal WrapTangDaiC8 { get; set; }
+
     // ------------------ EVA ------------------
 
     /// <summary>
@@ -395,6 +449,12 @@ public class GrainMixingBlowingProcessLine
     /// </summary>
     [Precision(18, 6)]
     public decimal EvaOther { get; set; }
+
+    /// <summary>
+    /// Tăng chống
+    /// </summary>
+    [Precision(18, 6)]
+    public decimal EvaTgc { get; set; }
 
     /// <summary>
     /// Sản lượng pha (Kg)

@@ -5,6 +5,7 @@ using Fox.Whs.Models;
 using Fox.Whs.SapModels;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Fox.Whs.Services;
 
@@ -66,6 +67,7 @@ public class BlowingProcessService
             throw new NotFoundException($"Không tìm với ID: {id}");
         }
 
+
         return blowingProcess;
     }
 
@@ -99,17 +101,32 @@ public class BlowingProcessService
             .ThenInclude(po => po!.ProductTypeInfo)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
+        
+        var itemCodes = dto.Lines
+            .Select(l => l.ItemCode)
+            .Distinct()
+            .ToList();
+
+        var existingItems = await _dbContext.Items
+            .Where(i => itemCodes.Contains(i.ItemCode))
+            .Distinct()
+            .ToDictionaryAsync(i => i.ItemCode);
 
         var lines = new List<BlowingProcessLine>();
         foreach (var lineDto in dto.Lines)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
+            ProductionOrder? productionOrder = null;
+            if (lineDto.ProductionOrderId.HasValue)
+            {
+                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            }
+
+            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ?? throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
 
             var line = MapCreateToBlowingProcessLine(
                 lineDto,
-                productionOrder.ItemCode,
-                productionOrder?.CardCode ?? string.Empty,
+                item.ItemCode,
+                productionOrder?.CardCode,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedBlowing,
                 item.ProductType,
@@ -197,8 +214,8 @@ public class BlowingProcessService
         if (!blowingProcess.IsDraft)
         {
             var productOrderCompletedIds = blowingProcess.Lines
-                .Where(l => l.Status == 1)
-                .Select(l => l.ProductionOrderId)
+                .Where(l => l.Status == 1 && l.ProductionOrderId != null)
+                .Select(l => l.ProductionOrderId!.Value)
                 .Distinct()
                 .ToArray() ?? [];
 
@@ -405,18 +422,36 @@ public class BlowingProcessService
             _dbContext.BlowingProcessLines.Remove(line);
         }
 
+        var itemCodes = lineDtos
+            .Select(dto => dto.ItemCode)
+            .Where(code => !string.IsNullOrEmpty(code))
+            .Distinct()
+            .ToList();
+        
+        var existingItems = _dbContext.Items
+            .Where(i => itemCodes.Contains(i.ItemCode))
+            .Distinct()
+            .ToDictionary(i => i.ItemCode);
+
         // Cập nhật hoặc thêm mới các line
         foreach (var lineDto in lineDtos)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
+            ProductionOrder? productionOrder = null;
+            if (lineDto.ProductionOrderId.HasValue)
+            {
+                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            }
+
+            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ?? throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
+            // var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            // var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
                 var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -424,7 +459,7 @@ public class BlowingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToBlowingProcessLine(lineDto, productionOrder.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth);
+                var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth);
                 blowingProcess.Lines.Add(newLine);
             }
         }
