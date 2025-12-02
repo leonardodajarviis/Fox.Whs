@@ -73,6 +73,7 @@ public class RewindingProcess
 
     [ForeignKey("CreatorId"), JsonIgnore]
     public User? Creator { get; set; }
+    [MaxLength(255)] public string? Notes { get; set; }
 
     public short? ModifierId { get; set; }
 

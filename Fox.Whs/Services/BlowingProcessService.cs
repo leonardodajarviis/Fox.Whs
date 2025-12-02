@@ -14,14 +14,14 @@ namespace Fox.Whs.Services;
 /// </summary>
 public class BlowingProcessService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext       _dbContext;
     private readonly UserContextService _userContextService;
 
     public BlowingProcessService(
         AppDbContext dbContext,
         UserContextService userContextService)
     {
-        _dbContext = dbContext;
+        _dbContext          = dbContext;
         _userContextService = userContextService;
     }
 
@@ -45,10 +45,10 @@ public class BlowingProcessService
 
         return new PaginationResponse<BlowingProcess>
         {
-            Results = result,
+            Results    = result,
             TotalCount = totalCount,
-            PageSize = pr.PageSize,
-            Page = pr.Page,
+            PageSize   = pr.PageSize,
+            Page       = pr.Page,
         };
     }
 
@@ -59,7 +59,7 @@ public class BlowingProcessService
             .Include(pp => pp.Modifier)
             .Include(bp => bp.ShiftLeader)
             .Include(bp => bp.Lines)
-                .ThenInclude(line => line.Worker)
+            .ThenInclude(line => line.Worker)
             .FirstOrDefaultAsync(bp => bp.Id == id);
 
         if (blowingProcess == null)
@@ -77,9 +77,11 @@ public class BlowingProcessService
     public async Task<BlowingProcess> CreateAsync(CreateBlowingProcessDto dto)
     {
         var shiftLeaderId = dto.ShiftLeaderId ??
-            _userContextService.GetCurrentEmployeeId() ?? throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
+            _userContextService.GetCurrentEmployeeId() ??
+            throw new UnauthorizedException("Không xác định được nhân viên hiện tại");
 
-        var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
+        var currentUserId = _userContextService.GetCurrentUserId() ??
+            throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var workerIds = dto.Lines
             .Where(l => l.WorkerId.HasValue)
@@ -101,7 +103,7 @@ public class BlowingProcessService
             .ThenInclude(po => po!.ProductTypeInfo)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
-        
+
         var itemCodes = dto.Lines
             .Select(l => l.ItemCode)
             .Distinct()
@@ -118,10 +120,12 @@ public class BlowingProcessService
             ProductionOrder? productionOrder = null;
             if (lineDto.ProductionOrderId.HasValue)
             {
-                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ??
+                    throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             }
 
-            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ?? throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
+            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ??
+                throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
 
             var line = MapCreateToBlowingProcessLine(
                 lineDto,
@@ -139,13 +143,14 @@ public class BlowingProcessService
 
         var blowingProcess = new BlowingProcess
         {
-            ShiftLeaderId = shiftLeaderId,
-            CreatorId = currentUserId,
-            ProductionDate = dto.ProductionDate,
-            IsDraft = dto.IsDraft,
-            ProductionShift = dto.ProductionShift,
+            ShiftLeaderId     = shiftLeaderId,
+            CreatorId         = currentUserId,
+            ProductionDate    = dto.ProductionDate,
+            IsDraft           = dto.IsDraft,
+            ProductionShift   = dto.ProductionShift,
             ListOfWorkersText = dto.ListOfWorkersText,
-            Lines = lines
+            Notes             = dto.Notes,
+            Lines             = lines
         };
 
         // Tính toán tổng
@@ -163,7 +168,8 @@ public class BlowingProcessService
     /// </summary>
     public async Task<BlowingProcess> UpdateAsync(int id, UpdateBlowingProcessDto dto)
     {
-        var currentUserId = _userContextService.GetCurrentUserId() ?? throw new UnauthorizedException("Không xác định được người dùng hiện tại");
+        var currentUserId = _userContextService.GetCurrentUserId() ??
+            throw new UnauthorizedException("Không xác định được người dùng hiện tại");
 
         var blowingProcess = await _dbContext.BlowingProcesses
             .Include(bp => bp.Lines)
@@ -197,13 +203,14 @@ public class BlowingProcessService
 
 
         // Cập nhật thông tin cơ bản
-        blowingProcess.ProductionDate = dto.ProductionDate;
-        blowingProcess.ProductionShift = dto.ProductionShift;
-        blowingProcess.IsDraft = dto.IsDraft;
-        blowingProcess.ModifierId = currentUserId;
-        blowingProcess.ModifiedAt = DateTime.Now;
+        blowingProcess.ProductionDate    = dto.ProductionDate;
+        blowingProcess.ProductionShift   = dto.ProductionShift;
+        blowingProcess.IsDraft           = dto.IsDraft;
+        blowingProcess.ModifierId        = currentUserId;
+        blowingProcess.ModifiedAt        = DateTime.Now;
         blowingProcess.ListOfWorkersText = dto.ListOfWorkersText;
-        blowingProcess.ShiftLeaderId = dto.ShiftLeaderId;
+        blowingProcess.ShiftLeaderId     = dto.ShiftLeaderId;
+        blowingProcess.Notes             = dto.Notes;
 
         // Cập nhật lines
         UpdateLines(blowingProcess, dto.Lines, existingProductionOrders);
@@ -214,7 +221,7 @@ public class BlowingProcessService
         if (!blowingProcess.IsDraft)
         {
             var productOrderCompletedIds = blowingProcess.Lines
-                .Where(l => l.Status == 1 && l.ProductionOrderId != null)
+                .Where(l => l.IsCompleted && l.ProductionOrderId != null)
                 .Select(l => l.ProductionOrderId!.Value)
                 .Distinct()
                 .ToArray() ?? [];
@@ -249,7 +256,6 @@ public class BlowingProcessService
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-
         var blowingProcess = await _dbContext.BlowingProcesses
             .Include(bp => bp.Lines)
             .FirstOrDefaultAsync(bp => bp.Id == id);
@@ -261,7 +267,6 @@ public class BlowingProcessService
 
         _dbContext.BlowingProcesses.Remove(blowingProcess);
         await _dbContext.SaveChangesAsync();
-
     }
 
     #region Private Methods
@@ -280,52 +285,52 @@ public class BlowingProcessService
     {
         var line = new BlowingProcessLine
         {
-            ProductionOrderId = dto.ProductionOrderId,
-            ItemCode = itemCode,
-            CardCode = cardCode,
-            ProductType = productType,
-            ProductTypeName = productTypeName,
-            ProductionBatch = productionBatch,
-            Thickness = thickness,
-            SemiProductWidth = semiProductWidth,
-            BlowingMachine = dto.BlowingMachine,
-            WorkerId = dto.WorkerId,
-            BlowingSpeed = dto.BlowingSpeed,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
-            StopDurationMinutes = dto.StopDurationMinutes,
-            StopReason = dto.StopReason,
-            QuantityRolls = dto.QuantityRolls,
-            QuantityKg = dto.QuantityKg,
-            RewindOrSplitWeight = dto.RewindOrSplitWeight,
-            ReservedWeight = dto.ReservedWeight,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
-            ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason,
-            WidthChange = dto.WidthChange,
-            InnerCoating = dto.InnerCoating,
-            TrimmedEdge = dto.TrimmedEdge,
-            ElectricalIssue = dto.ElectricalIssue,
-            MaterialLossKg = dto.MaterialLossKg,
-            MaterialLossReason = dto.MaterialLossReason,
-            HumanErrorKg = dto.HumanErrorKg,
-            HumanErrorReason = dto.HumanErrorReason,
-            MachineErrorKg = dto.MachineErrorKg,
-            MachineErrorReason = dto.MachineErrorReason,
-            OtherErrorKg = dto.OtherErrorKg,
-            OtherErrorReason = dto.OtherErrorReason,
-            ExcessPO = dto.ExcessPO,
+            ProductionOrderId             = dto.ProductionOrderId,
+            ItemCode                      = itemCode,
+            CardCode                      = cardCode,
+            ProductType                   = productType,
+            ProductTypeName               = productTypeName,
+            ProductionBatch               = productionBatch,
+            Thickness                     = thickness,
+            SemiProductWidth              = semiProductWidth,
+            BlowingMachine                = dto.BlowingMachine,
+            WorkerId                      = dto.WorkerId,
+            BlowingSpeed                  = dto.BlowingSpeed,
+            StartTime                     = dto.StartTime,
+            EndTime                       = dto.EndTime,
+            StopDurationMinutes           = dto.StopDurationMinutes,
+            StopReason                    = dto.StopReason,
+            QuantityRolls                 = dto.QuantityRolls,
+            QuantityKg                    = dto.QuantityKg,
+            RewindOrSplitWeight           = dto.RewindOrSplitWeight,
+            ReservedWeight                = dto.ReservedWeight,
+            RequiredDate                  = requiredDate,
+            IsCompleted                   = dto.IsCompleted,
+            Status                        = dto.Status,
+            ActualCompletionDate          = dto.ActualCompletionDate,
+            DelayReason                   = dto.DelayReason,
+            WidthChange                   = dto.WidthChange,
+            InnerCoating                  = dto.InnerCoating,
+            TrimmedEdge                   = dto.TrimmedEdge,
+            ElectricalIssue               = dto.ElectricalIssue,
+            MaterialLossKg                = dto.MaterialLossKg,
+            MaterialLossReason            = dto.MaterialLossReason,
+            HumanErrorKg                  = dto.HumanErrorKg,
+            HumanErrorReason              = dto.HumanErrorReason,
+            MachineErrorKg                = dto.MachineErrorKg,
+            MachineErrorReason            = dto.MachineErrorReason,
+            OtherErrorKg                  = dto.OtherErrorKg,
+            OtherErrorReason              = dto.OtherErrorReason,
+            ExcessPO                      = dto.ExcessPO,
             SemiProductWarehouseConfirmed = dto.SemiProductWarehouseConfirmed,
-            Note = dto.Note,
-            BlowingStageInventory = dto.BlowingStageInventory
+            Note                          = dto.Note,
+            BlowingStageInventory         = dto.BlowingStageInventory
         };
 
         // Tính toán tổng DC cho line
-        line.TotalLoss = line.WidthChange + line.InnerCoating + line.TrimmedEdge +
-                        line.ElectricalIssue + line.MaterialLossKg +
-                        line.HumanErrorKg + line.MachineErrorKg + line.OtherErrorKg;
+        line.TotalLoss = line.WidthChange + line.InnerCoating   + line.TrimmedEdge +
+            line.ElectricalIssue          + line.MaterialLossKg +
+            line.HumanErrorKg             + line.MachineErrorKg + line.OtherErrorKg;
 
         return line;
     }
@@ -345,46 +350,46 @@ public class BlowingProcessService
     {
         var line = new BlowingProcessLine
         {
-            ProductionOrderId = dto.ProductionOrderId,
-            ItemCode = itemCode,
-            CardCode = cardCode,
-            ProductionBatch = productionBatch,
-            ProductType = productType,
-            ProductTypeName = productTypeName,
-            Thickness = thickness,
-            SemiProductWidth = semiProductWidth,
-            BlowingMachine = dto.BlowingMachine,
-            WorkerId = dto.WorkerId,
-            BlowingSpeed = dto.BlowingSpeed,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
-            StopDurationMinutes = dto.StopDurationMinutes,
-            StopReason = dto.StopReason,
-            QuantityRolls = dto.QuantityRolls,
-            QuantityKg = dto.QuantityKg,
-            RewindOrSplitWeight = dto.RewindOrSplitWeight,
-            ReservedWeight = dto.ReservedWeight,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
-            ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason,
-            WidthChange = dto.WidthChange,
-            InnerCoating = dto.InnerCoating,
-            TrimmedEdge = dto.TrimmedEdge,
-            ElectricalIssue = dto.ElectricalIssue,
-            MaterialLossKg = dto.MaterialLossKg,
-            MaterialLossReason = dto.MaterialLossReason,
-            HumanErrorKg = dto.HumanErrorKg,
-            HumanErrorReason = dto.HumanErrorReason,
-            MachineErrorKg = dto.MachineErrorKg,
-            MachineErrorReason = dto.MachineErrorReason,
-            OtherErrorKg = dto.OtherErrorKg,
-            OtherErrorReason = dto.OtherErrorReason,
-            ExcessPO = dto.ExcessPO,
+            ProductionOrderId             = dto.ProductionOrderId,
+            ItemCode                      = itemCode,
+            CardCode                      = cardCode,
+            ProductionBatch               = productionBatch,
+            ProductType                   = productType,
+            ProductTypeName               = productTypeName,
+            Thickness                     = thickness,
+            SemiProductWidth              = semiProductWidth,
+            BlowingMachine                = dto.BlowingMachine,
+            WorkerId                      = dto.WorkerId,
+            BlowingSpeed                  = dto.BlowingSpeed,
+            StartTime                     = dto.StartTime,
+            EndTime                       = dto.EndTime,
+            StopDurationMinutes           = dto.StopDurationMinutes,
+            StopReason                    = dto.StopReason,
+            QuantityRolls                 = dto.QuantityRolls,
+            QuantityKg                    = dto.QuantityKg,
+            RewindOrSplitWeight           = dto.RewindOrSplitWeight,
+            ReservedWeight                = dto.ReservedWeight,
+            RequiredDate                  = requiredDate,
+            IsCompleted                   = dto.IsCompleted,
+            Status                        = dto.Status,
+            ActualCompletionDate          = dto.ActualCompletionDate,
+            DelayReason                   = dto.DelayReason,
+            WidthChange                   = dto.WidthChange,
+            InnerCoating                  = dto.InnerCoating,
+            TrimmedEdge                   = dto.TrimmedEdge,
+            ElectricalIssue               = dto.ElectricalIssue,
+            MaterialLossKg                = dto.MaterialLossKg,
+            MaterialLossReason            = dto.MaterialLossReason,
+            HumanErrorKg                  = dto.HumanErrorKg,
+            HumanErrorReason              = dto.HumanErrorReason,
+            MachineErrorKg                = dto.MachineErrorKg,
+            MachineErrorReason            = dto.MachineErrorReason,
+            OtherErrorKg                  = dto.OtherErrorKg,
+            OtherErrorReason              = dto.OtherErrorReason,
+            ExcessPO                      = dto.ExcessPO,
             SemiProductWarehouseConfirmed = dto.SemiProductWarehouseConfirmed,
-            Note = dto.Note,
-            BlowingStageInventory = dto.BlowingStageInventory
+            Note                          = dto.Note,
+            BlowingStageInventory         = dto.BlowingStageInventory
         };
 
         if (existingId.HasValue)
@@ -393,9 +398,9 @@ public class BlowingProcessService
         }
 
         // Tính toán tổng DC cho line
-        line.TotalLoss = line.WidthChange + line.InnerCoating + line.TrimmedEdge +
-                        line.ElectricalIssue + line.MaterialLossKg +
-                        line.HumanErrorKg + line.MachineErrorKg + line.OtherErrorKg;
+        line.TotalLoss = line.WidthChange + line.InnerCoating   + line.TrimmedEdge +
+            line.ElectricalIssue          + line.MaterialLossKg +
+            line.HumanErrorKg             + line.MachineErrorKg + line.OtherErrorKg;
 
         return line;
     }
@@ -427,7 +432,7 @@ public class BlowingProcessService
             .Where(code => !string.IsNullOrEmpty(code))
             .Distinct()
             .ToList();
-        
+
         var existingItems = _dbContext.Items
             .Where(i => itemCodes.Contains(i.ItemCode))
             .Distinct()
@@ -439,10 +444,12 @@ public class BlowingProcessService
             ProductionOrder? productionOrder = null;
             if (lineDto.ProductionOrderId.HasValue)
             {
-                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+                productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ??
+                    throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             }
 
-            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ?? throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
+            var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ??
+                throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
             // var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             // var item = productionOrder.ItemDetail ?? throw new NotFoundException($"Không tìm thấy Item với mã: {productionOrder.ItemCode}");
             if (lineDto.Id.HasValue)
@@ -451,7 +458,9 @@ public class BlowingProcessService
                 var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode,
+                        productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
+                        item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -459,7 +468,9 @@ public class BlowingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth);
+                var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.CardCode,
+                    productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
+                    item.ProductTypeName, item.Thickness, item.SemiProductWidth);
                 blowingProcess.Lines.Add(newLine);
             }
         }
@@ -467,10 +478,10 @@ public class BlowingProcessService
 
     private static void CalculateTotals(BlowingProcess blowingProcess)
     {
-        blowingProcess.TotalBlowingOutput = blowingProcess.Lines.Sum(l => l.QuantityKg);
+        blowingProcess.TotalBlowingOutput   = blowingProcess.Lines.Sum(l => l.QuantityKg);
         blowingProcess.TotalRewindingOutput = blowingProcess.Lines.Sum(l => l.RewindOrSplitWeight);
-        blowingProcess.TotalReservedOutput = blowingProcess.Lines.Sum(l => l.ReservedWeight);
-        blowingProcess.TotalBlowingLoss = blowingProcess.Lines.Sum(l => l.TotalLoss);
+        blowingProcess.TotalReservedOutput  = blowingProcess.Lines.Sum(l => l.ReservedWeight);
+        blowingProcess.TotalBlowingLoss     = blowingProcess.Lines.Sum(l => l.TotalLoss);
     }
 
     #endregion

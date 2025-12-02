@@ -24,6 +24,7 @@ public record CreateCuttingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+    public string? Notes { get; set; }
 
     public int? ShiftLeaderId { get; set; }
 
@@ -54,6 +55,8 @@ public record UpdateCuttingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+    
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn cắt

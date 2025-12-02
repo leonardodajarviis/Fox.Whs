@@ -79,26 +79,23 @@ public class BlowingProcess
 
     public short CreatorId { get; set; }
 
-    [ForeignKey("CreatorId"), JsonIgnore]
-    public User? Creator { get; set; }
+    [ForeignKey("CreatorId"), JsonIgnore] public User? Creator { get; set; }
 
 
     public short? ModifierId { get; set; }
 
-    [ForeignKey("ModifierId"), JsonIgnore]
-    public User? Modifier { get; set; }
+    [ForeignKey("ModifierId"), JsonIgnore] public User? Modifier { get; set; }
+
+    [MaxLength(255)] public string? Notes { get; set; }
 
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
 
-    [NotMapped]
-    public string? CreatorName => Creator?.FullName;
-    [NotMapped]
-    public string? ModifierName => Modifier?.FullName;
+    [NotMapped] public string? CreatorName => Creator?.FullName;
+    [NotMapped] public string? ModifierName => Modifier?.FullName;
 
-    [Timestamp]
-    public byte[] RowVersion { get; set; } = [];
+    [Timestamp] public byte[] RowVersion { get; set; } = [];
 }
 
 /// <summary>
@@ -107,8 +104,7 @@ public class BlowingProcess
 [Table("FoxWms_BlowingProcessLine")]
 public class BlowingProcessLine
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public int BlowingProcessId { get; set; }
 
@@ -127,11 +123,9 @@ public class BlowingProcessLine
     /// </summary>
     public string? ProductionBatch { get; set; }
 
-    [MaxLength(15)]
-    public string? CardCode { get; set; }
+    [MaxLength(15)] public string? CardCode { get; set; }
 
-    [ForeignKey("CardCode"), JsonIgnore]
-    public BusinessPartner? BusinessPartner { get; set; }
+    [ForeignKey("CardCode"), JsonIgnore] public BusinessPartner? BusinessPartner { get; set; }
 
     /// <summary>
     /// Khách hàng
@@ -164,9 +158,7 @@ public class BlowingProcessLine
     /// </summary>
     public string? BlowingMachine { get; set; }
 
-    [JsonIgnore]
-    [ForeignKey("WorkerId")]
-    public Employee? Worker { get; set; }
+    [JsonIgnore] [ForeignKey("WorkerId")] public Employee? Worker { get; set; }
 
     public int? WorkerId { get; set; }
 

@@ -94,6 +94,7 @@ public class CuttingProcess
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
+    [MaxLength(255)] public string? Notes { get; set; }
 
     [NotMapped]
     public string? CreatorName => Creator?.FullName;

@@ -66,6 +66,7 @@ public class PrintingProcess
     public decimal TotalPrintingStageMold { get; set; }
 
     public List<PrintingProcessLine> Lines { get; set; } = [];
+    [MaxLength(255)] public string? Notes { get; set; }
 
     /// <summary>
     /// Trạng thái

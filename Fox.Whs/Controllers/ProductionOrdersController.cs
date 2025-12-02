@@ -71,7 +71,8 @@ public class ProductionOrdersController : ControllerBase
             .ToListAsync();
 
         var productionOrderIds = productionOrders
-            .Where(p => p.IsBlowing == "Y" || p.IsCutting == "Y" || p.IsPrinting == "Y" || p.IsRewinding == "Y" || p.IsSlitting == "Y")
+            .Where(p => p.IsBlowing == "Y" || p.IsCutting == "Y" || p.IsPrinting == "Y" || p.IsRewinding == "Y" ||
+                p.IsSlitting        == "Y")
             .Select(p => p.DocEntry);
 
         //----------------------------
@@ -82,7 +83,7 @@ public class ProductionOrdersController : ControllerBase
             .Select(x => new
             {
                 Quantity = x.QuantityKg,
-                Id = x.ProductionOrderId ?? 0
+                Id       = x.ProductionOrderId ?? 0
             })
             .ToListAsync();
 
@@ -91,8 +92,8 @@ public class ProductionOrdersController : ControllerBase
             .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
             .Select(x => new
             {
-                Quantity = x.QuantityKg,
-                Id = x.ProductionOrderId
+                Quantity = x.PieceCount,
+                Id       = x.ProductionOrderId
             })
             .ToListAsync();
 
@@ -102,7 +103,7 @@ public class ProductionOrdersController : ControllerBase
             .Select(x => new
             {
                 Quantity = x.QuantityKg ?? 0,
-                Id = x.ProductionOrderId
+                Id       = x.ProductionOrderId
             })
             .ToListAsync();
 
@@ -112,7 +113,7 @@ public class ProductionOrdersController : ControllerBase
             .Select(x => new
             {
                 Quantity = x.QuantityKg,
-                Id = x.ProductionOrderId
+                Id       = x.ProductionOrderId
             })
             .ToListAsync();
 
@@ -122,25 +123,26 @@ public class ProductionOrdersController : ControllerBase
             .Select(x => new
             {
                 Quantity = x.QuantityKg,
-                Id = x.ProductionOrderId
+                Id       = x.ProductionOrderId
             })
             .ToListAsync();
 
-        var lines = blowingProcessLines.Concat(cuttingProcessLines).Concat(printingProcessLines).Concat(rewindingProcessLines).Concat(slittingProcessLines);
+        var lines = blowingProcessLines.Concat(cuttingProcessLines).Concat(printingProcessLines)
+            .Concat(rewindingProcessLines).Concat(slittingProcessLines);
 
         productionOrders.ForEach(p =>
         {
             p.RemainingQuantity = p.Quantity() - lines.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
+            p.QuantityProduced  = lines.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
         });
-
 
 
         return Ok(new PaginationResponse<ProductionOrder>
         {
-            Page = page,
-            PageSize = pageSize,
+            Page       = page,
+            PageSize   = pageSize,
             TotalCount = totalRecords,
-            Results = productionOrders
+            Results    = productionOrders
         });
     }
 
@@ -172,8 +174,6 @@ public class ProductionOrdersController : ControllerBase
             case "slitting":
                 query = query
                     .Where(po => (po.SlittingStatus == "N" || po.SlittingStatus == null) && po.IsSlitting == "Y");
-                break;
-            default:
                 break;
         }
 

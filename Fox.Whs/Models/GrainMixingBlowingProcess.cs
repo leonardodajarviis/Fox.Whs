@@ -53,6 +53,7 @@ public class GrainMixingBlowingProcess
     [NotMapped]
     public string? ModifierName => Modifier?.FullName;
     public List<GrainMixingBlowingProcessLine> Lines { get; set; } = [];
+    [MaxLength(255)] public string? Notes { get; set; }
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];

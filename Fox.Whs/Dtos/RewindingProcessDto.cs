@@ -27,6 +27,7 @@ public record CreateRewindingProcessDto
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
 
+    public string? Notes { get; set; }
     /// <summary>
     /// Danh sách chi tiết công đoạn tua
     /// </summary>
@@ -54,6 +55,7 @@ public record UpdateRewindingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn tua

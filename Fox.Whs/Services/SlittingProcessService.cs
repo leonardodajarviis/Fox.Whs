@@ -181,7 +181,7 @@ public class SlittingProcessService
         if (!slittingProcess.IsDraft)
         {
             var productOrderCompletedIds = slittingProcess.Lines
-                .Where(l => l.Status == 1)
+                .Where(l => l.IsCompleted)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];

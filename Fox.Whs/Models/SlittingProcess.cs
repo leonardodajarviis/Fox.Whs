@@ -93,6 +93,7 @@ public class SlittingProcess
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
+    [MaxLength(255)] public string? Notes { get; set; }
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];

@@ -23,6 +23,7 @@ public record CreateGrainMixingBlowingProcessDto
     /// </summary>
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt (Thổi)
@@ -52,6 +53,8 @@ public record UpdateGrainMixingBlowingProcessDto
     /// </summary>
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
+    
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt (Thổi)

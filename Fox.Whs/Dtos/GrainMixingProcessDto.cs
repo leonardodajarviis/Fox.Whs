@@ -29,6 +29,8 @@ public record CreateGrainMixingProcessDto
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
     public decimal TotalHoursWorked { get; set; }
+    
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt
@@ -63,6 +65,8 @@ public record UpdateGrainMixingProcessDto
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
     public decimal TotalHoursWorked { get; set; }
+    
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn pha hạt

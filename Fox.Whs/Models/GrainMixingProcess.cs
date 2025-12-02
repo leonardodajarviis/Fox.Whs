@@ -62,6 +62,7 @@ public class GrainMixingProcess
     [NotMapped]
     public string? ModifierName => Modifier?.FullName;
     public List<GrainMixingProcessLine> Lines { get; set; } = [];
+    [MaxLength(255)] public string? Notes { get; set; }
 
     [Timestamp]
     public byte[] RowVersion { get; set; } = [];

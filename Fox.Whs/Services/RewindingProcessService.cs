@@ -13,14 +13,14 @@ namespace Fox.Whs.Services;
 /// </summary>
 public class RewindingProcessService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext       _dbContext;
     private readonly UserContextService _userContextService;
 
     public RewindingProcessService(
         AppDbContext dbContext,
         UserContextService userContextService)
     {
-        _dbContext = dbContext;
+        _dbContext          = dbContext;
         _userContextService = userContextService;
     }
 
@@ -43,10 +43,10 @@ public class RewindingProcessService
 
         return new PaginationResponse<RewindingProcess>
         {
-            Results = result,
+            Results    = result,
             TotalCount = totalCount,
-            PageSize = pr.PageSize,
-            Page = pr.Page,
+            PageSize   = pr.PageSize,
+            Page       = pr.Page,
         };
     }
 
@@ -57,9 +57,9 @@ public class RewindingProcessService
             .Include(rp => rp.Modifier)
             .Include(rp => rp.ShiftLeader)
             .Include(rp => rp.Lines)
-                .ThenInclude(line => line.Worker)
+            .ThenInclude(line => line.Worker)
             .Include(rp => rp.Lines)
-                .ThenInclude(line => line.BusinessPartner)
+            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(rp => rp.Id == id);
 
         if (rewindingProcess == null)
@@ -117,12 +117,13 @@ public class RewindingProcessService
 
         var rewindingProcess = new RewindingProcess
         {
-            ShiftLeaderId = shiftLeaderId,
-            CreatorId = currentUserId,
-            ProductionDate = dto.ProductionDate,
-            IsDraft = dto.IsDraft,
+            ShiftLeaderId   = shiftLeaderId,
+            CreatorId       = currentUserId,
+            ProductionDate  = dto.ProductionDate,
+            IsDraft         = dto.IsDraft,
             ProductionShift = dto.ProductionShift,
-            Lines = lines
+            Notes           = dto.Notes,
+            Lines           = lines
         };
 
         // Tính toán tổng
@@ -162,12 +163,13 @@ public class RewindingProcessService
             .ToDictionaryAsync(po => po.DocEntry);
 
         // Cập nhật thông tin cơ bản
-        rewindingProcess.ProductionDate = dto.ProductionDate;
+        rewindingProcess.ProductionDate  = dto.ProductionDate;
         rewindingProcess.ProductionShift = dto.ProductionShift;
-        rewindingProcess.IsDraft = dto.IsDraft;
-        rewindingProcess.ModifiedAt = DateTime.Now;
-        rewindingProcess.ModifierId = currentUserId;
-        rewindingProcess.ShiftLeaderId = dto.ShiftLeaderId;
+        rewindingProcess.Notes           = dto.Notes;
+        rewindingProcess.IsDraft         = dto.IsDraft;
+        rewindingProcess.ModifiedAt      = DateTime.Now;
+        rewindingProcess.ModifierId      = currentUserId;
+        rewindingProcess.ShiftLeaderId   = dto.ShiftLeaderId;
 
         // Cập nhật lines
         UpdateLines(rewindingProcess, dto.Lines, existingProductionOrders);
@@ -178,7 +180,7 @@ public class RewindingProcessService
         if (!rewindingProcess.IsDraft)
         {
             var productOrderCompletedIds = rewindingProcess.Lines
-                .Where(l => l.Status == 1)
+                .Where(l => l.IsCompleted)
                 .Select(l => l.ProductionOrderId)
                 .Distinct()
                 .ToArray() ?? [];
@@ -241,36 +243,36 @@ public class RewindingProcessService
     {
         var line = new RewindingProcessLine
         {
-            ProductionOrderId = dto.ProductionOrderId,
-            ItemCode = itemCode,
-            CardCode = cardCode,
-            ProductType = productType,
-            ProductTypeName = productTypeName,
-            ProductionBatch = productionBatch,
-            Thickness = thickness,
-            SemiProductWidth = semiProductWidth,
-            RewindingMachine = dto.RewindingMachine,
-            WorkerId = dto.WorkerId,
-            RewindingSpeed = dto.RewindingSpeed,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
-            MachineStopMinutes = dto.MachineStopMinutes,
-            StopReason = dto.StopReason,
-            RollCount = dto.RollCount,
-            QuantityKg = dto.QuantityKg,
-            BoxCount = dto.BoxCount,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
-            ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason,
-            BlowingLossKg = dto.BlowingLossKg,
-            BlowingLossReason = dto.BlowingLossReason,
-            HumanLossKg = dto.HumanLossKg,
-            HumanLossReason = dto.HumanLossReason,
-            MachineLossKg = dto.MachineLossKg,
-            MachineLossReason = dto.MachineLossReason,
-            ExcessPO = dto.ExcessPO,
+            ProductionOrderId     = dto.ProductionOrderId,
+            ItemCode              = itemCode,
+            CardCode              = cardCode,
+            ProductType           = productType,
+            ProductTypeName       = productTypeName,
+            ProductionBatch       = productionBatch,
+            Thickness             = thickness,
+            SemiProductWidth      = semiProductWidth,
+            RewindingMachine      = dto.RewindingMachine,
+            WorkerId              = dto.WorkerId,
+            RewindingSpeed        = dto.RewindingSpeed,
+            StartTime             = dto.StartTime,
+            EndTime               = dto.EndTime,
+            MachineStopMinutes    = dto.MachineStopMinutes,
+            StopReason            = dto.StopReason,
+            RollCount             = dto.RollCount,
+            QuantityKg            = dto.QuantityKg,
+            BoxCount              = dto.BoxCount,
+            RequiredDate          = requiredDate,
+            IsCompleted           = dto.IsCompleted,
+            Status                = dto.Status,
+            ActualCompletionDate  = dto.ActualCompletionDate,
+            DelayReason           = dto.DelayReason,
+            BlowingLossKg         = dto.BlowingLossKg,
+            BlowingLossReason     = dto.BlowingLossReason,
+            HumanLossKg           = dto.HumanLossKg,
+            HumanLossReason       = dto.HumanLossReason,
+            MachineLossKg         = dto.MachineLossKg,
+            MachineLossReason     = dto.MachineLossReason,
+            ExcessPO              = dto.ExcessPO,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
         };
 
@@ -295,36 +297,36 @@ public class RewindingProcessService
     {
         var line = new RewindingProcessLine
         {
-            ProductionOrderId = dto.ProductionOrderId,
-            ItemCode = itemCode,
-            CardCode = cardCode,
-            ProductionBatch = productionBatch,
-            ProductType = productType,
-            ProductTypeName = productTypeName,
-            Thickness = thickness,
-            SemiProductWidth = semiProductWidth,
-            RewindingMachine = dto.RewindingMachine,
-            WorkerId = dto.WorkerId,
-            RewindingSpeed = dto.RewindingSpeed,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
-            MachineStopMinutes = dto.MachineStopMinutes,
-            StopReason = dto.StopReason,
-            RollCount = dto.RollCount,
-            QuantityKg = dto.QuantityKg,
-            BoxCount = dto.BoxCount,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
-            ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason,
-            BlowingLossKg = dto.BlowingLossKg,
-            BlowingLossReason = dto.BlowingLossReason,
-            HumanLossKg = dto.HumanLossKg,
-            HumanLossReason = dto.HumanLossReason,
-            MachineLossKg = dto.MachineLossKg,
-            MachineLossReason = dto.MachineLossReason,
-            ExcessPO = dto.ExcessPO,
+            ProductionOrderId     = dto.ProductionOrderId,
+            ItemCode              = itemCode,
+            CardCode              = cardCode,
+            ProductionBatch       = productionBatch,
+            ProductType           = productType,
+            ProductTypeName       = productTypeName,
+            Thickness             = thickness,
+            SemiProductWidth      = semiProductWidth,
+            RewindingMachine      = dto.RewindingMachine,
+            WorkerId              = dto.WorkerId,
+            RewindingSpeed        = dto.RewindingSpeed,
+            StartTime             = dto.StartTime,
+            EndTime               = dto.EndTime,
+            MachineStopMinutes    = dto.MachineStopMinutes,
+            StopReason            = dto.StopReason,
+            RollCount             = dto.RollCount,
+            QuantityKg            = dto.QuantityKg,
+            BoxCount              = dto.BoxCount,
+            RequiredDate          = requiredDate,
+            IsCompleted           = dto.IsCompleted,
+            Status                = dto.Status,
+            ActualCompletionDate  = dto.ActualCompletionDate,
+            DelayReason           = dto.DelayReason,
+            BlowingLossKg         = dto.BlowingLossKg,
+            BlowingLossReason     = dto.BlowingLossReason,
+            HumanLossKg           = dto.HumanLossKg,
+            HumanLossReason       = dto.HumanLossReason,
+            MachineLossKg         = dto.MachineLossKg,
+            MachineLossReason     = dto.MachineLossReason,
+            ExcessPO              = dto.ExcessPO,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
         };
 
@@ -413,8 +415,8 @@ public class RewindingProcessService
 
     private static void CalculateTotals(RewindingProcess rewindingProcess)
     {
-        rewindingProcess.TotalRewindingOutput = rewindingProcess.Lines.Sum(l => l.QuantityKg);
-        rewindingProcess.TotalBlowingStageMold = rewindingProcess.Lines.Sum(l => l.BlowingLossKg);
+        rewindingProcess.TotalRewindingOutput    = rewindingProcess.Lines.Sum(l => l.QuantityKg);
+        rewindingProcess.TotalBlowingStageMold   = rewindingProcess.Lines.Sum(l => l.BlowingLossKg);
         rewindingProcess.TotalRewindingStageMold = rewindingProcess.Lines.Sum(l => l.HumanLossKg + l.MachineLossKg);
     }
 

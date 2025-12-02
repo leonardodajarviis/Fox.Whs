@@ -26,6 +26,7 @@ public record CreatePrintingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn in
@@ -54,6 +55,8 @@ public record UpdatePrintingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+    
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn in

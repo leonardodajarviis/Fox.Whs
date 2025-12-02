@@ -31,9 +31,12 @@ builder.Services.AddScoped<GrainMixingBlowingProcessService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("AppDbConnection"),
-        sqlOptions => sqlOptions.CommandTimeout(30)
-    )
+            builder.Configuration.GetConnectionString("AppDbConnection")
+            ,
+            sqlOptions => sqlOptions.CommandTimeout(30)
+        )
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors()
 );
 
 
@@ -81,4 +84,3 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
-

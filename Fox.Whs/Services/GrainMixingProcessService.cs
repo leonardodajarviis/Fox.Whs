@@ -13,14 +13,14 @@ namespace Fox.Whs.Services;
 /// </summary>
 public class GrainMixingProcessService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext       _dbContext;
     private readonly UserContextService _userContextService;
 
     public GrainMixingProcessService(
         AppDbContext dbContext,
         UserContextService userContextService)
     {
-        _dbContext = dbContext;
+        _dbContext          = dbContext;
         _userContextService = userContextService;
     }
 
@@ -45,10 +45,10 @@ public class GrainMixingProcessService
 
         return new PaginationResponse<GrainMixingProcess>
         {
-            Results = result,
+            Results    = result,
             TotalCount = totalCount,
-            PageSize = pr.PageSize,
-            Page = pr.Page,
+            PageSize   = pr.PageSize,
+            Page       = pr.Page,
         };
     }
 
@@ -62,9 +62,9 @@ public class GrainMixingProcessService
             .Include(gm => gm.Creator)
             .Include(gm => gm.Modifier)
             .Include(gm => gm.Lines)
-                .ThenInclude(line => line.Worker)
+            .ThenInclude(line => line.Worker)
             .Include(gm => gm.Lines)
-                .ThenInclude(line => line.BusinessPartner)
+            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
         if (grainMixingProcess == null)
@@ -137,7 +137,8 @@ public class GrainMixingProcessService
         var lines = new List<GrainMixingProcessLine>();
         foreach (var lineDto in dto.Lines)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ??
+                throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
 
             var line = MapCreateToGrainMixingProcessLine(
                 lineDto,
@@ -150,12 +151,13 @@ public class GrainMixingProcessService
 
         var grainMixingProcess = new GrainMixingProcess
         {
-            CreatorId = currentUserId,
-            ProductionDate = dto.ProductionDate,
-            IsDraft = dto.IsDraft,
-            WorkerCount = dto.WorkerCount,
+            CreatorId        = currentUserId,
+            ProductionDate   = dto.ProductionDate,
+            IsDraft          = dto.IsDraft,
+            WorkerCount      = dto.WorkerCount,
+            Notes            = dto.Notes,
             TotalHoursWorked = dto.TotalHoursWorked,
-            Lines = lines
+            Lines            = lines
         };
 
         // Tính toán năng suất lao động
@@ -227,18 +229,19 @@ public class GrainMixingProcessService
         }
 
         // Cập nhật thông tin cơ bản
-        grainMixingProcess.ProductionDate = dto.ProductionDate;
-        grainMixingProcess.IsDraft = dto.IsDraft;
-        grainMixingProcess.WorkerCount = dto.WorkerCount;
+        grainMixingProcess.ProductionDate   = dto.ProductionDate;
+        grainMixingProcess.IsDraft          = dto.IsDraft;
+        grainMixingProcess.WorkerCount      = dto.WorkerCount;
         grainMixingProcess.TotalHoursWorked = dto.TotalHoursWorked;
-        grainMixingProcess.ModifierId = currentUserId;
-        grainMixingProcess.ModifiedAt = DateTime.Now;
+        grainMixingProcess.ModifierId       = currentUserId;
+        grainMixingProcess.Notes            = dto.Notes;
+        grainMixingProcess.ModifiedAt       = DateTime.Now;
 
         var productionOrderIds = dto.Lines
             .Select(l => l.ProductionOrderId)
             .Distinct()
             .ToList();
-        
+
         var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings.AsNoTracking()
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
@@ -295,82 +298,82 @@ public class GrainMixingProcessService
     {
         return new GrainMixingProcessLine
         {
-            ProductionOrderId = productOrderId,
-            ProductionBatch = productionBatch,
-            CardCode = dto.CardCode,
+            ProductionOrderId      = productOrderId,
+            ProductionBatch        = productionBatch,
+            CardCode               = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
-            MixtureType = dto.MixtureType,
-            Specification = dto.Specification,
-            WorkerId = dto.WorkerId,
-            MachineName = dto.MachineName,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
+            MixtureType            = dto.MixtureType,
+            Specification          = dto.Specification,
+            WorkerId               = dto.WorkerId,
+            MachineName            = dto.MachineName,
+            StartTime              = dto.StartTime,
+            EndTime                = dto.EndTime,
             // PP
-            PpTron = dto.PpTron,
-            PpHdNhot = dto.PpHdNhot,
-            PpLdpe = dto.PpLdpe,
-            PpDc = dto.PpDc,
+            PpTron     = dto.PpTron,
+            PpHdNhot   = dto.PpHdNhot,
+            PpLdpe     = dto.PpLdpe,
+            PpDc       = dto.PpDc,
             PpAdditive = dto.PpAdditive,
-            PpColor = dto.PpColor,
-            PpOther = dto.PpOther,
-            PpRit = dto.PpRit,
+            PpColor    = dto.PpColor,
+            PpOther    = dto.PpOther,
+            PpRit      = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
-            HdRecycled = dto.HdRecycled,
-            HdTalcol = dto.HdTalcol,
-            HdDc = dto.HdDc,
-            HdColor = dto.HdColor,
-            HdOther = dto.HdOther,
-            HdHd = dto.HdHd,
+            HdRecycled  = dto.HdRecycled,
+            HdTalcol    = dto.HdTalcol,
+            HdDc        = dto.HdDc,
+            HdColor     = dto.HdColor,
+            HdOther     = dto.HdOther,
+            HdHd        = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
-            PeTalcol = dto.PeTalcol,
-            PeColor = dto.PeColor,
-            PeOther = dto.PeOther,
-            PeLdpe = dto.PeLdpe,
-            PeLldpe = dto.PeLldpe,
+            PeTalcol   = dto.PeTalcol,
+            PeColor    = dto.PeColor,
+            PeOther    = dto.PeOther,
+            PeLdpe     = dto.PeLdpe,
+            PeLldpe    = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
-            PeDc = dto.PeDc,
+            PeDc       = dto.PeDc,
             // Màng co
-            ShrinkRe707 = dto.ShrinkRe707,
-            ShrinkSlip = dto.ShrinkSlip,
-            ShrinkStatic = dto.ShrinkStatic,
-            ShrinkDc = dto.ShrinkDc,
-            ShrinkTalcol = dto.ShrinkTalcol,
-            ShrinkOther = dto.ShrinkOther,
-            ShrinkLldpe = dto.ShrinkLldpe,
-            ShrinkLdpe = dto.ShrinkLdpe,
+            ShrinkRe707    = dto.ShrinkRe707,
+            ShrinkSlip     = dto.ShrinkSlip,
+            ShrinkStatic   = dto.ShrinkStatic,
+            ShrinkDc       = dto.ShrinkDc,
+            ShrinkTalcol   = dto.ShrinkTalcol,
+            ShrinkOther    = dto.ShrinkOther,
+            ShrinkLldpe    = dto.ShrinkLldpe,
+            ShrinkLdpe     = dto.ShrinkLdpe,
             ShrinkRecycled = dto.ShrinkRecycled,
-            ShrinkTangDai = dto.ShrinkTangDai,
+            ShrinkTangDai  = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
-            WrapGlue = dto.WrapGlue,
-            WrapColor = dto.WrapColor,
-            WrapDc = dto.WrapDc,
-            WrapLdpe = dto.WrapLdpe,
-            WrapLldpe = dto.WrapLldpe,
-            WrapSlip = dto.WrapSlip,
-            WrapAdditive = dto.WrapAdditive,
-            WrapOther = dto.WrapOther,
-            WrapTangDaiC6 = dto.WrapTangDaiC6,
-            WrapTangDaiC8 = dto.WrapTangDaiC8,
+            WrapGlue       = dto.WrapGlue,
+            WrapColor      = dto.WrapColor,
+            WrapDc         = dto.WrapDc,
+            WrapLdpe       = dto.WrapLdpe,
+            WrapLldpe      = dto.WrapLldpe,
+            WrapSlip       = dto.WrapSlip,
+            WrapAdditive   = dto.WrapAdditive,
+            WrapOther      = dto.WrapOther,
+            WrapTangDaiC6  = dto.WrapTangDaiC6,
+            WrapTangDaiC8  = dto.WrapTangDaiC8,
             // EVA
-            EvaPop3070 = dto.EvaPop3070,
-            EvaLdpe = dto.EvaLdpe,
-            EvaDc = dto.EvaDc,
-            EvaTalcol = dto.EvaTalcol,
-            EvaSlip = dto.EvaSlip,
+            EvaPop3070        = dto.EvaPop3070,
+            EvaLdpe           = dto.EvaLdpe,
+            EvaDc             = dto.EvaDc,
+            EvaTalcol         = dto.EvaTalcol,
+            EvaSlip           = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
-            EvaOther = dto.EvaOther,
-            EvaTgc = dto.EvaTgc,
+            EvaOther          = dto.EvaOther,
+            EvaTgc            = dto.EvaTgc,
             // Other fields
-            QuantityKg = dto.QuantityKg,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
+            QuantityKg           = dto.QuantityKg,
+            RequiredDate         = requiredDate,
+            IsCompleted          = dto.IsCompleted,
+            Status               = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason
+            DelayReason          = dto.DelayReason
         };
     }
 
@@ -383,82 +386,82 @@ public class GrainMixingProcessService
     {
         var line = new GrainMixingProcessLine
         {
-            ProductionOrderId = productionOrderId,
-            ProductionBatch = productionBatch,
-            CardCode = dto.CardCode,
+            ProductionOrderId      = productionOrderId,
+            ProductionBatch        = productionBatch,
+            CardCode               = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
-            MixtureType = dto.MixtureType,
-            Specification = dto.Specification,
-            WorkerId = dto.WorkerId,
-            MachineName = dto.MachineName,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
+            MixtureType            = dto.MixtureType,
+            Specification          = dto.Specification,
+            WorkerId               = dto.WorkerId,
+            MachineName            = dto.MachineName,
+            StartTime              = dto.StartTime,
+            EndTime                = dto.EndTime,
             // PP
-            PpTron = dto.PpTron,
-            PpHdNhot = dto.PpHdNhot,
-            PpLdpe = dto.PpLdpe,
-            PpDc = dto.PpDc,
+            PpTron     = dto.PpTron,
+            PpHdNhot   = dto.PpHdNhot,
+            PpLdpe     = dto.PpLdpe,
+            PpDc       = dto.PpDc,
             PpAdditive = dto.PpAdditive,
-            PpColor = dto.PpColor,
-            PpOther = dto.PpOther,
-            PpRit = dto.PpRit,
+            PpColor    = dto.PpColor,
+            PpOther    = dto.PpOther,
+            PpRit      = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
-            HdRecycled = dto.HdRecycled,
-            HdTalcol = dto.HdTalcol,
-            HdDc = dto.HdDc,
-            HdColor = dto.HdColor,
-            HdOther = dto.HdOther,
-            HdHd = dto.HdHd,
+            HdRecycled  = dto.HdRecycled,
+            HdTalcol    = dto.HdTalcol,
+            HdDc        = dto.HdDc,
+            HdColor     = dto.HdColor,
+            HdOther     = dto.HdOther,
+            HdHd        = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
-            PeTalcol = dto.PeTalcol,
-            PeColor = dto.PeColor,
-            PeOther = dto.PeOther,
-            PeLdpe = dto.PeLdpe,
-            PeLldpe = dto.PeLldpe,
+            PeTalcol   = dto.PeTalcol,
+            PeColor    = dto.PeColor,
+            PeOther    = dto.PeOther,
+            PeLdpe     = dto.PeLdpe,
+            PeLldpe    = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
-            PeDc = dto.PeDc,
+            PeDc       = dto.PeDc,
             // Màng co
-            ShrinkRe707 = dto.ShrinkRe707,
-            ShrinkSlip = dto.ShrinkSlip,
-            ShrinkStatic = dto.ShrinkStatic,
-            ShrinkDc = dto.ShrinkDc,
-            ShrinkTalcol = dto.ShrinkTalcol,
-            ShrinkOther = dto.ShrinkOther,
-            ShrinkLldpe = dto.ShrinkLldpe,
-            ShrinkLdpe = dto.ShrinkLdpe,
+            ShrinkRe707    = dto.ShrinkRe707,
+            ShrinkSlip     = dto.ShrinkSlip,
+            ShrinkStatic   = dto.ShrinkStatic,
+            ShrinkDc       = dto.ShrinkDc,
+            ShrinkTalcol   = dto.ShrinkTalcol,
+            ShrinkOther    = dto.ShrinkOther,
+            ShrinkLldpe    = dto.ShrinkLldpe,
+            ShrinkLdpe     = dto.ShrinkLdpe,
             ShrinkRecycled = dto.ShrinkRecycled,
-            ShrinkTangDai = dto.ShrinkTangDai,
+            ShrinkTangDai  = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
-            WrapGlue = dto.WrapGlue,
-            WrapColor = dto.WrapColor,
-            WrapDc = dto.WrapDc,
-            WrapLdpe = dto.WrapLdpe,
-            WrapLldpe = dto.WrapLldpe,
-            WrapSlip = dto.WrapSlip,
-            WrapAdditive = dto.WrapAdditive,
-            WrapOther = dto.WrapOther,
-            WrapTangDaiC6 = dto.WrapTangDaiC6,
-            WrapTangDaiC8 = dto.WrapTangDaiC8,
+            WrapGlue       = dto.WrapGlue,
+            WrapColor      = dto.WrapColor,
+            WrapDc         = dto.WrapDc,
+            WrapLdpe       = dto.WrapLdpe,
+            WrapLldpe      = dto.WrapLldpe,
+            WrapSlip       = dto.WrapSlip,
+            WrapAdditive   = dto.WrapAdditive,
+            WrapOther      = dto.WrapOther,
+            WrapTangDaiC6  = dto.WrapTangDaiC6,
+            WrapTangDaiC8  = dto.WrapTangDaiC8,
             // EVA
-            EvaPop3070 = dto.EvaPop3070,
-            EvaLdpe = dto.EvaLdpe,
-            EvaDc = dto.EvaDc,
-            EvaTalcol = dto.EvaTalcol,
-            EvaSlip = dto.EvaSlip,
+            EvaPop3070        = dto.EvaPop3070,
+            EvaLdpe           = dto.EvaLdpe,
+            EvaDc             = dto.EvaDc,
+            EvaTalcol         = dto.EvaTalcol,
+            EvaSlip           = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
-            EvaOther = dto.EvaOther,
-            EvaTgc = dto.EvaTgc,
+            EvaOther          = dto.EvaOther,
+            EvaTgc            = dto.EvaTgc,
             // Other fields
-            QuantityKg = dto.QuantityKg,
-            RequiredDate = requiredDate,
-            IsCompleted = dto.IsCompleted,
-            Status = dto.Status,
+            QuantityKg           = dto.QuantityKg,
+            RequiredDate         = requiredDate,
+            IsCompleted          = dto.IsCompleted,
+            Status               = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason = dto.DelayReason
+            DelayReason          = dto.DelayReason
         };
 
         if (existingId.HasValue)
@@ -473,7 +476,7 @@ public class GrainMixingProcessService
         GrainMixingProcess grainMixingProcess,
         List<UpdateGrainMixingProcessLineDto> lineDtos,
         Dictionary<int, ProductionOrderGrainMixing> existingProductionOrders
-        )
+    )
     {
         // Xóa các line không còn tồn tại trong DTO
         var dtoLineIds = lineDtos
@@ -494,7 +497,8 @@ public class GrainMixingProcessService
         // Cập nhật hoặc thêm mới các line
         foreach (var lineDto in lineDtos)
         {
-            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ?? throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ??
+                throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
@@ -503,7 +507,8 @@ public class GrainMixingProcessService
 
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed, lineDto.Id);
+                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
+                        productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed, lineDto.Id);
                     updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -511,7 +516,8 @@ public class GrainMixingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed);
+                var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
+                    productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed);
                 grainMixingProcess.Lines.Add(newLine);
             }
         }
@@ -520,7 +526,7 @@ public class GrainMixingProcessService
     private static void CalculateLaborProductivity(GrainMixingProcess grainMixingProcess)
     {
         var totalQuantity = grainMixingProcess.Lines.Sum(l => l.QuantityKg);
-        var totalHours = grainMixingProcess.TotalHoursWorked;
+        var totalHours    = grainMixingProcess.TotalHoursWorked;
 
         if (totalHours > 0 && grainMixingProcess.WorkerCount > 0)
         {

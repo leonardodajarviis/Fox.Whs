@@ -26,6 +26,7 @@ public record CreateBlowingProcessDto
     public string ProductionShift { get; set; } = null!;
 
     public int? ShiftLeaderId { get; set; }
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách công nhân thổi
@@ -66,6 +67,8 @@ public record UpdateBlowingProcessDto
     public string? ListOfWorkersText { get; set; }
 
     public int ShiftLeaderId { get; set; }
+
+    public string? Notes { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết công đoạn thổi
