@@ -7,8 +7,7 @@ namespace Fox.Whs.SapModels;
 [Table("@LPH_H"), ReadOnlyEntity]
 public class ProductionOrderGrainMixing
 {
-    [Column("DocEntry"), Key]
-    public int DocEntry { get; set; }
+    [Column("DocEntry"), Key] public int DocEntry { get; set; }
 
     /// <summary>
     /// Mã khách hàng
@@ -16,14 +15,13 @@ public class ProductionOrderGrainMixing
     [Column("U_KH")]
     public string? CardCode { get; set; }
 
-    [Column("U_PHASTATUS")]
-    public string? Status { get; set; }
+    [Column("U_PHASTATUS")] public string? Status { get; set; }
 
     /// <summary>
     /// Lô sản xuất
     /// </summary>
     [Column("U_LSX")]
-    public string? ProductionBatch { get; set; }
+    public DateTime? ProductionBatch { get; set; }
 
     /// <summary>
     /// Ngày cần hàng

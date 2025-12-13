@@ -4,6 +4,7 @@ using Fox.Whs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251203020156_addExressPOPcs")]
+    partial class addExressPOPcs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -538,12 +541,6 @@ namespace Fox.Whs.Migrations
                     b.Property<bool>("IsDraft")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ItemCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ItemName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -556,10 +553,6 @@ namespace Fox.Whs.Migrations
 
                     b.Property<DateTime>("ProductionDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductionShift")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -665,12 +658,6 @@ namespace Fox.Whs.Migrations
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ItemCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ItemName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MachineName")
                         .HasColumnType("nvarchar(max)");
@@ -2157,8 +2144,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("U_CATSLMIN");
 
-                    b.Property<int?>("CuttingQuantity")
-                        .HasColumnType("int")
+                    b.Property<decimal?>("CuttingQuantity")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("U_CATSC");
 
                     b.Property<string>("CuttingStatus")
@@ -2299,8 +2286,8 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("U_NCH");
 
-                    b.Property<DateTime?>("ProductionBatch")
-                        .HasColumnType("datetime2")
+                    b.Property<string>("ProductionBatch")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_LSX");
 
                     b.Property<string>("Status")

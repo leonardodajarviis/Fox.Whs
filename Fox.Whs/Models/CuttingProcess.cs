@@ -12,8 +12,7 @@ namespace Fox.Whs.Models;
 [Table("FoxWms_CuttingProcess")]
 public class CuttingProcess
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public int ShiftLeaderId { get; set; }
 
@@ -84,33 +83,27 @@ public class CuttingProcess
 
     public short CreatorId { get; set; }
 
-    [ForeignKey("CreatorId"), JsonIgnore]
-    public User? Creator { get; set; }
+    [ForeignKey("CreatorId"), JsonIgnore] public User? Creator { get; set; }
 
     public short? ModifierId { get; set; }
 
-    [ForeignKey("ModifierId"), JsonIgnore]
-    public User? Modifier { get; set; }
+    [ForeignKey("ModifierId"), JsonIgnore] public User? Modifier { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
     [MaxLength(255)] public string? Notes { get; set; }
 
-    [NotMapped]
-    public string? CreatorName => Creator?.FullName;
-    [NotMapped]
-    public string? ModifierName => Modifier?.FullName;
+    [NotMapped] public string? CreatorName => Creator?.FullName;
+    [NotMapped] public string? ModifierName => Modifier?.FullName;
     public List<CuttingProcessLine> Lines { get; set; } = [];
 
-    [Timestamp]
-    public byte[] RowVersion { get; set; } = [];
+    [Timestamp] public byte[] RowVersion { get; set; } = [];
 }
 
 [Table("FoxWms_CuttingProcessLine")]
 public class CuttingProcessLine
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public int ProductionOrderId { get; set; }
 
@@ -129,11 +122,9 @@ public class CuttingProcessLine
     /// </summary>
     public string? ProductionBatch { get; set; }
 
-    [MaxLength(15)]
-    public string? CardCode { get; set; }
+    [MaxLength(15)] public string? CardCode { get; set; }
 
-    [ForeignKey("CardCode"), JsonIgnore]
-    public BusinessPartner? BusinessPartner { get; set; }
+    [ForeignKey("CardCode"), JsonIgnore] public BusinessPartner? BusinessPartner { get; set; }
 
     /// <summary>
     /// Khách hàng
@@ -178,8 +169,7 @@ public class CuttingProcessLine
 
     public int? WorkerId { get; set; }
 
-    [ForeignKey("WorkerId"), JsonIgnore]
-    public Employee? Worker { get; set; }
+    [ForeignKey("WorkerId"), JsonIgnore] public Employee? Worker { get; set; }
 
     /// <summary>
     /// Tên công nhân in
@@ -351,6 +341,12 @@ public class CuttingProcessLine
     /// </summary>
     [Precision(18, 4)]
     public decimal ExcessPOCut { get; set; }
+
+    /// <summary>
+    /// Thừa PO - Hàng chiếc
+    /// </summary>
+    [Precision(18, 4)]
+    public decimal ExcessPOPsc { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

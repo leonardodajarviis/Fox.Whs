@@ -91,7 +91,7 @@ public class ProductionOrder
 
     [Column("U_THOIL")] public decimal? BlowingQuantity { get; set; }
 
-    [Column("U_CATSL")] public decimal? CuttingQuantity { get; set; }
+    // [Column("U_CATSL")] public decimal? CuttingQuantity { get; set; }
 
     [Column("U_CHIASL")] public decimal? SlittingQuantity { get; set; }
 
@@ -103,6 +103,7 @@ public class ProductionOrder
     #region Số lượng tối thiểu/tối đa của in, chia, cắt, thổi, tua
 
     [NotMapped] public decimal? QuantityProduced { get; set; }
+    [NotMapped] public decimal? QuantityPcs { get; set; }
 
     [Column("U_THOISLMAX")] public decimal? BlowingMaxQuantity { get; set; }
     [Column("U_THOISLMIN")] public decimal? BlowingMinQuantity { get; set; }
@@ -112,6 +113,7 @@ public class ProductionOrder
 
     [Column("U_CATSLMAX")] public decimal? CuttingMaxQuantity { get; set; }
     [Column("U_CATSLMIN")] public decimal? CuttingMinQuantity { get; set; }
+    [Column("U_CATSC")] public int? CuttingQuantity { get; set; }
 
     [Column("U_CHIASLMAX")] public decimal? SlittingMaxQuantity { get; set; }
     [Column("U_CHIASLMIN")] public decimal? SlittingMinQuantity { get; set; }

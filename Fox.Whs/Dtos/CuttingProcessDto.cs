@@ -24,6 +24,7 @@ public record CreateCuttingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
+
     public string? Notes { get; set; }
 
     public int? ShiftLeaderId { get; set; }
@@ -55,7 +56,7 @@ public record UpdateCuttingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
-    
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -264,6 +265,13 @@ public record CreateCuttingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal ExcessPOCut { get; set; }
+
+    /// <summary>
+    /// Thừa PO - Hàng chiếc
+    /// </summary>
+    [Range(0, double.MaxValue)]
+    public decimal ExcessPOPsc { get; set; }
+
 
     /// <summary>
     /// Xác nhận của kho BTP
@@ -488,6 +496,12 @@ public record UpdateCuttingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal ExcessPOCut { get; set; }
+
+    /// <summary>
+    /// Thừa PO - Hàng chiếc
+    /// </summary>
+    [Range(0, double.MaxValue)]
+    public decimal ExcessPOPsc { get; set; }
 
     /// <summary>
     /// Xác nhận của kho BTP

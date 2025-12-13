@@ -77,63 +77,80 @@ public class ProductionOrdersController : ControllerBase
 
         //----------------------------
 
-        var blowingProcessLines = await _dbContext.BlowingProcessLines.AsNoTracking()
-            .Where(x => x.Status == 1)
-            .Where(x => productionOrderIds.Contains(x.ProductionOrderId ?? 0))
-            .Select(x => new
-            {
-                Quantity = x.QuantityKg,
-                Id       = x.ProductionOrderId ?? 0
-            })
-            .ToListAsync();
+        var blowingProcessLines = type == "blowing"
+            ? await _dbContext.BlowingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1)
+                .Where(x => productionOrderIds.Contains(x.ProductionOrderId ?? 0))
+                .Select(x => new
+                {
+                    QuantityPcs = (decimal)0,
+                    Quantity    = x.QuantityKg,
+                    Id          = x.ProductionOrderId ?? 0
+                })
+                .ToListAsync()
+            : [];
 
-        var cuttingProcessLines = await _dbContext.CuttingProcessLines.AsNoTracking()
-            .Where(x => x.Status == 1)
-            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-            .Select(x => new
-            {
-                Quantity = x.PieceCount,
-                Id       = x.ProductionOrderId
-            })
-            .ToListAsync();
+        var cuttingProcessLines = type == "cutting"
+            ? await _dbContext.CuttingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1)
+                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new
+                {
+                    QuantityPcs = x.PieceCount,
+                    Quantity    = x.QuantityKg,
+                    Id          = x.ProductionOrderId
+                })
+                .ToListAsync()
+            : [];
 
-        var printingProcessLines = await _dbContext.PrintingProcessLines.AsNoTracking()
-            .Where(x => x.Status == 1)
-            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-            .Select(x => new
-            {
-                Quantity = x.QuantityKg ?? 0,
-                Id       = x.ProductionOrderId
-            })
-            .ToListAsync();
+        var printingProcessLines = type == "printing"
+            ? await _dbContext.PrintingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1)
+                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new
+                {
+                    QuantityPcs = (decimal)0,
+                    Quantity    = x.QuantityKg ?? 0,
+                    Id          = x.ProductionOrderId
+                })
+                .ToListAsync()
+            : [];
 
-        var rewindingProcessLines = await _dbContext.RewindingProcessLines.AsNoTracking()
-            .Where(x => x.Status == 1)
-            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-            .Select(x => new
-            {
-                Quantity = x.QuantityKg,
-                Id       = x.ProductionOrderId
-            })
-            .ToListAsync();
+        var rewindingProcessLines = type == "rewinding"
+            ? await _dbContext.RewindingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1)
+                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new
+                {
+                    QuantityPcs = (decimal)0,
+                    Quantity    = x.QuantityKg,
+                    Id          = x.ProductionOrderId
+                })
+                .ToListAsync()
+            : [];
 
-        var slittingProcessLines = await _dbContext.SlittingProcessLines.AsNoTracking()
-            .Where(x => x.Status == 1)
-            .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-            .Select(x => new
-            {
-                Quantity = x.QuantityKg,
-                Id       = x.ProductionOrderId
-            })
-            .ToListAsync();
+        var slittingProcessLines = type == "slitting"
+            ? await _dbContext.SlittingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1)
+                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new
+                {
+                    QuantityPcs = (decimal)0,
+                    Quantity    = x.QuantityKg,
+                    Id          = x.ProductionOrderId
+                })
+                .ToListAsync()
+            : [];
 
         var lines = blowingProcessLines.Concat(cuttingProcessLines).Concat(printingProcessLines)
             .Concat(rewindingProcessLines).Concat(slittingProcessLines);
 
         productionOrders.ForEach(p =>
         {
-            p.RemainingQuantity = p.Quantity() - lines.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
-            p.QuantityProduced  = lines.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
+            var enumerable = lines.ToList();
+            p.RemainingQuantity = p.Quantity() - enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
+            p.QuantityProduced  = enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
+            p.QuantityPcs       = enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.QuantityPcs);
         });
 
 

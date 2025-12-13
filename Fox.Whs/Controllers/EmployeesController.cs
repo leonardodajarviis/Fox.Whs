@@ -28,10 +28,12 @@ public class EmployeesController : ControllerBase
     /// </summary>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
+    /// <param name="search"></param>
     /// <returns>Danh sách Items</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<Employee>))]
-    public async Task<IActionResult> GetEmployees([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetEmployees([FromQuery] int page = 1, [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null)
     {
         if (page < 1)
         {
@@ -44,20 +46,27 @@ public class EmployeesController : ControllerBase
         }
 
 
-        var totalRecords = await _dbContext.Employees.AsNoTracking().CountAsync();
+        var query = _dbContext.Employees.AsNoTracking().AsQueryable();
 
-        var employees = await _dbContext.Employees.AsNoTracking()
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(x => x.LastName.Contains(search) || x.FirstName.Contains(search));
+        }
+
+
+        var totalRecords = await query.CountAsync();
+
+        var employees = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
         return Ok(new PaginationResponse<Employee>
         {
-            Page = page,
-            PageSize = pageSize,
+            Page       = page,
+            PageSize   = pageSize,
             TotalCount = totalRecords,
-            Results =  employees
+            Results    = employees
         });
     }
 }
-

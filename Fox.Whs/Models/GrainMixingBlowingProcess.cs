@@ -24,6 +24,15 @@ public class GrainMixingBlowingProcess
     /// Ngày sản xuất (ngày pha)
     /// </summary>
     public DateTime ProductionDate { get; set; }
+    
+    /// <summary>
+    /// Ca sản xuất
+    /// </summary>
+    public string ProductionShift { get; set; } = null!;
+ 
+    
+    public string? ItemCode { get; set; }
+    public string? ItemName { get; set; }
 
     /// <summary>
     /// Máy thổi
@@ -74,6 +83,10 @@ public class GrainMixingBlowingProcessLine
     /// Lô sản xuất
     /// </summary>
     public string? ProductionBatch { get; set; }
+    
+    
+    public string? ItemCode { get; set; }
+    public string? ItemName { get; set; }
 
     [MaxLength(15)]
     public string? CardCode { get; set; }

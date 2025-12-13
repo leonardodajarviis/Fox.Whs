@@ -121,7 +121,8 @@ public class CuttingProcessService
                 item.Thickness,
                 item.SemiProductWidth,
                 item.Size,
-                item.ColorCount);
+                item.ColorCount
+            );
 
             lines.Add(line);
         }
@@ -311,7 +312,8 @@ public class CuttingProcessService
             ExcessPOOver5Kg       = dto.ExcessPOOver5Kg,
             ExcessPOCut           = dto.ExcessPOCut,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
-            RemainingInventoryKg  = dto.RemainingInventoryKg
+            RemainingInventoryKg  = dto.RemainingInventoryKg,
+            ExcessPOPsc           = dto.ExcessPOPsc
         };
 
         // Tính toán tổng DC cho line
@@ -334,6 +336,7 @@ public class CuttingProcessService
         string? semiProductWidth,
         string? size,
         string? colorCount,
+        decimal? excessPoPcs,
         int? existingId = null
     )
     {
@@ -380,6 +383,7 @@ public class CuttingProcessService
             ExcessPOLess5Kg       = dto.ExcessPOLess5Kg,
             ExcessPOOver5Kg       = dto.ExcessPOOver5Kg,
             ExcessPOCut           = dto.ExcessPOCut,
+            ExcessPOPsc           = dto.ExcessPOPsc,
             BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
             RemainingInventoryKg  = dto.RemainingInventoryKg
         };
@@ -436,7 +440,7 @@ public class CuttingProcessService
                     var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode,
                         productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                         item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
-                        item.ColorCount, lineDto.Id);
+                        item.ColorCount, lineDto.ExcessPOPsc, lineDto.Id);
                     updatedLine.CuttingProcessId = existingLine.CuttingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -447,7 +451,7 @@ public class CuttingProcessService
                 var newLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode,
                     productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                     item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
-                    item.ColorCount);
+                    item.ColorCount, lineDto.ExcessPOPsc);
                 cuttingProcess.Lines.Add(newLine);
             }
         }

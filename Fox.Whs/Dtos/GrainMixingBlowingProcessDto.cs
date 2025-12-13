@@ -11,6 +11,11 @@ public record CreateGrainMixingBlowingProcessDto
     /// Bản nháp
     /// </summary>
     public bool IsDraft { get; set; }
+    /// <summary>
+    /// Ca sản xuất
+    /// </summary>
+    public string ProductionShift { get; set; } = null!;
+
 
     /// <summary>
     /// Ngày sản xuất (ngày pha)
@@ -23,6 +28,7 @@ public record CreateGrainMixingBlowingProcessDto
     /// </summary>
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -41,6 +47,11 @@ public record UpdateGrainMixingBlowingProcessDto
     /// </summary>
     public bool IsDraft { get; set; }
 
+    /// <summary>
+    /// Ca sản xuất
+    /// </summary>
+    public string ProductionShift { get; set; } = null!;
+
 
     /// <summary>
     /// Ngày sản xuất (ngày pha)
@@ -53,7 +64,7 @@ public record UpdateGrainMixingBlowingProcessDto
     /// </summary>
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
-    
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -67,6 +78,9 @@ public record UpdateGrainMixingBlowingProcessDto
 /// </summary>
 public record CreateGrainMixingBlowingProcessLineDto
 {
+    public string? ItemCode { get; set; }
+    public string? ItemName { get; set; }
+
     /// <summary>
     /// Lô sản xuất
     /// </summary>
@@ -227,6 +241,10 @@ public record UpdateGrainMixingBlowingProcessLineDto
     /// ID của line (null nếu tạo mới)
     /// </summary>
     public int? Id { get; set; }
+
+
+    public string? ItemCode { get; set; }
+    public string? ItemName { get; set; }
 
     /// <summary>
     /// Lô sản xuất

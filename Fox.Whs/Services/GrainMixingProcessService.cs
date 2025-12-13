@@ -143,7 +143,7 @@ public class GrainMixingProcessService
             var line = MapCreateToGrainMixingProcessLine(
                 lineDto,
                 lineDto.ProductionOrderId,
-                productionOrder.ProductionBatch ?? string.Empty,
+                productionOrder.ProductionBatch.ToString() ?? string.Empty,
                 productionOrder.DateOfNeed);
 
             lines.Add(line);
@@ -508,7 +508,7 @@ public class GrainMixingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
-                        productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed, lineDto.Id);
+                        productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id);
                     updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -517,7 +517,7 @@ public class GrainMixingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
-                    productionOrder.ProductionBatch ?? "", productionOrder.DateOfNeed);
+                    productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed);
                 grainMixingProcess.Lines.Add(newLine);
             }
         }
