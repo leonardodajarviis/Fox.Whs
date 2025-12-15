@@ -241,6 +241,10 @@ public class RewindingProcessService
         string? semiProductWidth
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new RewindingProcessLine
         {
             ProductionOrderId     = dto.ProductionOrderId,
@@ -295,6 +299,10 @@ public class RewindingProcessService
         int? existingId = null
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new RewindingProcessLine
         {
             ProductionOrderId     = dto.ProductionOrderId,

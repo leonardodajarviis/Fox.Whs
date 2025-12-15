@@ -244,6 +244,14 @@ public class SlittingProcessService
         string? colorCount
     )
     {
+        if (dto.ExcessPOPrinting < 0)
+        {
+            dto.ExcessPOPrinting = 0;
+        }
+        if (dto.ExcessPOSlitting < 0)
+        {
+            dto.ExcessPOSlitting = 0;
+        }
         var line = new SlittingProcessLine
         {
             ProductionOrderId = dto.ProductionOrderId,
@@ -311,6 +319,14 @@ public class SlittingProcessService
         int? existingId = null
     )
     {
+        if (dto.ExcessPOPrinting < 0)
+        {
+            dto.ExcessPOPrinting = 0;
+        }
+        if (dto.ExcessPOSlitting < 0)
+        {
+            dto.ExcessPOSlitting = 0;
+        }
         var line = new SlittingProcessLine
         {
             ProductionOrderId = dto.ProductionOrderId,

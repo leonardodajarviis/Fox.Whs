@@ -50,7 +50,7 @@ public class EmployeesController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(x => x.LastName.Contains(search) || x.FirstName.Contains(search));
+            query = query.Where(x => x.LastName!.Contains(search) || x.FirstName!.Contains(search));
         }
 
 

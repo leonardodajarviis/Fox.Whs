@@ -251,25 +251,25 @@ public record CreateCuttingProcessLineDto
     /// <summary>
     /// Thừa PO - Cuộn dưới 5kg
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOLess5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Cuộn trên 5kg
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOOver5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng cắt (Kg)
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOCut { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng chiếc
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOPsc { get; set; }
 
 
@@ -482,25 +482,25 @@ public record UpdateCuttingProcessLineDto
     /// <summary>
     /// Thừa PO - Cuộn dưới 5kg
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOLess5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Cuộn trên 5kg
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOOver5Kg { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng cắt (Kg)
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOCut { get; set; }
 
     /// <summary>
     /// Thừa PO - Hàng chiếc
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPOPsc { get; set; }
 
     /// <summary>

@@ -252,7 +252,7 @@ public record CreateBlowingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPO { get; set; }
 
     /// <summary>
@@ -467,7 +467,7 @@ public record UpdateBlowingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPO { get; set; }
 
     /// <summary>

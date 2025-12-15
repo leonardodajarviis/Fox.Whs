@@ -268,6 +268,10 @@ public class PrintingProcessService
         string? colorCount
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new PrintingProcessLine
         {
             ProductionOrderId        = dto.ProductionOrderId,
@@ -333,6 +337,10 @@ public class PrintingProcessService
         int? existingId = null
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new PrintingProcessLine
         {
             ProductionOrderId        = dto.ProductionOrderId,

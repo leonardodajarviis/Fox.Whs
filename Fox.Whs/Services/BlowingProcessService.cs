@@ -283,6 +283,10 @@ public class BlowingProcessService
         string? semiProductWidth
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new BlowingProcessLine
         {
             ProductionOrderId             = dto.ProductionOrderId,
@@ -348,6 +352,10 @@ public class BlowingProcessService
         int? existingId = null
     )
     {
+        if (dto.ExcessPO < 0)
+        {
+            dto.ExcessPO = 0;
+        }
         var line = new BlowingProcessLine
         {
             ProductionOrderId             = dto.ProductionOrderId,

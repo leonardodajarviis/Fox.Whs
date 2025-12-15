@@ -215,7 +215,7 @@ public record CreatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPO { get; set; }
 
     /// <summary>
@@ -410,7 +410,7 @@ public record UpdatePrintingProcessLineDto
     /// <summary>
     /// Thừa PO
     /// </summary>
-    [Range(0, double.MaxValue)]
+    // [Range(0, double.MaxValue)]
     public decimal ExcessPO { get; set; }
 
     /// <summary>

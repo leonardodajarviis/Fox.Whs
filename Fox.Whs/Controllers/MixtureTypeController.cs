@@ -29,8 +29,8 @@ public class MixtureTypeController : ControllerBase
     /// Lấy danh sách chủng loại pha
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public Task<IActionResult> GetAll()
     {
-        return Ok(value); 
+        return Task.FromResult<IActionResult>(Ok(value));
     }
 }

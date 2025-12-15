@@ -89,15 +89,23 @@ public class ProductionOrder
     [NotMapped]
     public decimal RemainingQuantity { get; set; }
 
-    [Column("U_THOIL")] public decimal? BlowingQuantity { get; set; }
+    [Column("U_THOIL")]
+    [Precision(18, 2)]
+    public decimal? BlowingQuantity { get; set; }
 
     // [Column("U_CATSL")] public decimal? CuttingQuantity { get; set; }
 
-    [Column("U_CHIASL")] public decimal? SlittingQuantity { get; set; }
+    [Column("U_CHIASL")]
+    [Precision(18, 2)]
+    public decimal? SlittingQuantity { get; set; }
 
-    [Column("U_INSL")] public decimal? PrintingQuantity { get; set; }
+    [Column("U_INSL")]
+    [Precision(18, 2)]
+    public decimal? PrintingQuantity { get; set; }
 
-    [Column("U_TUASL")] public decimal? RewindingQuantity { get; set; }
+    [Column("U_TUASL")]
+    [Precision(18, 2)]
+    public decimal? RewindingQuantity { get; set; }
 
 
     #region Số lượng tối thiểu/tối đa của in, chia, cắt, thổi, tua

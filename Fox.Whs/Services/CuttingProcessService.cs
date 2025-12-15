@@ -268,6 +268,11 @@ public class CuttingProcessService
         string? colorCount
     )
     {
+        if (dto.ExcessPOCut < 0)
+        {
+            dto.ExcessPOCut = 0;
+        }
+
         var line = new CuttingProcessLine
         {
             ProductionOrderId     = dto.ProductionOrderId,
@@ -340,6 +345,11 @@ public class CuttingProcessService
         int? existingId = null
     )
     {
+        if (dto.ExcessPOCut < 0)
+        {
+            dto.ExcessPOCut = 0;
+        }
+
         var line = new CuttingProcessLine
         {
             ProductionOrderId     = dto.ProductionOrderId,
