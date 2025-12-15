@@ -28,4 +28,7 @@ public class ProductionOrderGrainMixing
     /// </summary>
     [Column("U_NCH")]
     public DateTime? DateOfNeed { get; set; }
+
+    [Column("U_GC")]
+    public string? Notes { get; set; }
 }
