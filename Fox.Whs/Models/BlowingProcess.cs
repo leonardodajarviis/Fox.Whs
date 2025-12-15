@@ -28,7 +28,7 @@ public class BlowingProcess
     /// Tên trưởng ca
     /// </summary>
     [NotMapped]
-    public string? ShiftLeaderName => ShiftLeader?.FirstName;
+    public string? ShiftLeaderName => ShiftLeader?.FullName;
 
     /// <summary>
     /// Ngày sản xuất

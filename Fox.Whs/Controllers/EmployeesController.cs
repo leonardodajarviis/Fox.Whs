@@ -69,4 +69,24 @@ public class EmployeesController : ControllerBase
             Results    = employees
         });
     }
+
+    /// <summary>
+    /// Lấy Employees theo Id
+    /// </summary>
+    /// <param name="id">id</param>
+    /// <returns>Danh sách Items</returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
+    public async Task<IActionResult> GetEmployeeById([FromQuery] int id)
+    {
+
+        var employees = await _dbContext.Employees.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+
+        if (employees == null)
+        {
+            throw new NotFoundException($"Không tìm thấy nhân viên với id = {id}");
+        }
+
+        return Ok(employees);
+    }
 }
