@@ -29,7 +29,7 @@ public record CreateGrainMixingProcessDto
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
     public decimal TotalHoursWorked { get; set; }
-    
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ public record UpdateGrainMixingProcessDto
     /// </summary>
     [Range(0, double.MaxValue, ErrorMessage = "Số giờ làm việc phải lớn hơn hoặc bằng 0")]
     public decimal TotalHoursWorked { get; set; }
-    
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -232,6 +232,11 @@ public record CreateGrainMixingProcessLineDto
     /// </summary>
     [StringLength(500)]
     public string? DelayReason { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }
 
 /// <summary>
@@ -397,4 +402,9 @@ public record UpdateGrainMixingProcessLineDto
     /// </summary>
     [StringLength(500)]
     public string? DelayReason { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

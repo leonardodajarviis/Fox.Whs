@@ -29,7 +29,7 @@ public class RewindingProcess
     /// Tên trưởng ca
     /// </summary>
     [NotMapped]
-    public string? ShiftLeaderName => ShiftLeader?.FirstName;
+    public string? ShiftLeaderName => ShiftLeader?.FullName;
 
     /// <summary>
     /// Ngày sản xuất
@@ -155,7 +155,7 @@ public class RewindingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FirstName;
+    public string? WorkerName => Worker?.FullName;
 
     /// <summary>
     /// Tốc độ tua
@@ -280,4 +280,9 @@ public class RewindingProcessLine
     /// </summary>
     [Precision(18, 4)]
     public bool BtpWarehouseConfirmed { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

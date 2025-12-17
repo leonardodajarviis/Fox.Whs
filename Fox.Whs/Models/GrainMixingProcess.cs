@@ -121,7 +121,7 @@ public class GrainMixingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FirstName;
+    public string? WorkerName => Worker?.FullName;
 
     /// <summary>
     /// Tên máy pha
@@ -498,4 +498,9 @@ public class GrainMixingProcessLine
     /// Nguyên nhân chậm tiến độ
     /// </summary>
     public string? DelayReason { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

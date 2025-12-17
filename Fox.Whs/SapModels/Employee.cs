@@ -17,7 +17,7 @@ public class Employee
     [Column("firstName")]
 
     [NotMapped]
-    public string? FullName => $"{FirstName ?? ""} {MiddleName ?? ""} {LastName ?? ""}";
+    public string? FullName => $"{LastName ?? ""} {MiddleName ?? ""} {FirstName ?? ""}";
 
     public string? FirstName { get; set; }
 

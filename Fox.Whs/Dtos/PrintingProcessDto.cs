@@ -55,7 +55,7 @@ public record UpdatePrintingProcessDto
     [Required(ErrorMessage = "Ca sản xuất là bắt buộc")]
     [StringLength(50)]
     public string ProductionShift { get; set; } = null!;
-    
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -228,6 +228,11 @@ public record CreatePrintingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal PrintingStageInventoryKg { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }
 
 /// <summary>
@@ -423,4 +428,8 @@ public record UpdatePrintingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal PrintingStageInventoryKg { get; set; }
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

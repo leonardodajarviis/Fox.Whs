@@ -293,7 +293,8 @@ public class SlittingProcessService
             MachineLossReason = dto.MachineLossReason,
             ExcessPOPrinting = dto.ExcessPOPrinting,
             ExcessPOSlitting = dto.ExcessPOSlitting,
-            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
+            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
+            Note = dto.Note
         };
 
         // Tính toán tổng DC cho line
@@ -369,7 +370,8 @@ public class SlittingProcessService
             MachineLossReason = dto.MachineLossReason,
             ExcessPOPrinting = dto.ExcessPOPrinting,
             ExcessPOSlitting = dto.ExcessPOSlitting,
-            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
+            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
+            Note = dto.Note
         };
 
         if (existingId.HasValue)

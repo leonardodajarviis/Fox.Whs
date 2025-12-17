@@ -28,7 +28,7 @@ public class CuttingProcess
     /// Tên trưởng ca
     /// </summary>
     [NotMapped]
-    public string? ShiftLeaderName => ShiftLeader?.FirstName;
+    public string? ShiftLeaderName => ShiftLeader?.FullName;
 
     /// <summary>
     /// Ngày sản xuất
@@ -174,7 +174,7 @@ public class CuttingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FirstName;
+    public string? WorkerName => Worker?.FullName;
 
     /// <summary>
     /// Tốc độ cắt
@@ -358,4 +358,9 @@ public class CuttingProcessLine
     /// </summary>
     [Precision(18, 4)]
     public decimal RemainingInventoryKg { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note {get; set;}
 }

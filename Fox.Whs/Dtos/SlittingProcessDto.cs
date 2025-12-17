@@ -229,6 +229,11 @@ public record CreateSlittingProcessLineDto
     /// Xác nhận của kho BTP
     /// </summary>
     public bool BtpWarehouseConfirmed { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }
 
 /// <summary>
@@ -404,4 +409,9 @@ public record UpdateSlittingProcessLineDto
     /// Xác nhận của kho BTP
     /// </summary>
     public bool BtpWarehouseConfirmed { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

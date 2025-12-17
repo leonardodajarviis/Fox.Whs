@@ -113,21 +113,49 @@ public class ProductionOrder
     [NotMapped] public decimal? QuantityProduced { get; set; }
     [NotMapped] public decimal? QuantityPcs { get; set; }
 
-    [Column("U_THOISLMAX")] public decimal? BlowingMaxQuantity { get; set; }
-    [Column("U_THOISLMIN")] public decimal? BlowingMinQuantity { get; set; }
+    [Column("U_THOISLMAX")]
+    [Precision(18, 2)]
+    public decimal? BlowingMaxQuantity { get; set; }
 
-    [Column("U_INSLMIX")] public decimal? PrintingMaxQuantity { get; set; }
-    [Column("U_INSLMIN")] public decimal? PrinringMinQuantity { get; set; }
+    [Column("U_THOISLMIN")]
+    [Precision(18, 2)]
+    public decimal? BlowingMinQuantity { get; set; }
 
-    [Column("U_CATSLMAX")] public decimal? CuttingMaxQuantity { get; set; }
-    [Column("U_CATSLMIN")] public decimal? CuttingMinQuantity { get; set; }
-    [Column("U_CATSC")] public int? CuttingQuantity { get; set; }
+    [Column("U_INSLMIX")]
+    [Precision(18, 2)]
+    public decimal? PrintingMaxQuantity { get; set; }
 
-    [Column("U_CHIASLMAX")] public decimal? SlittingMaxQuantity { get; set; }
-    [Column("U_CHIASLMIN")] public decimal? SlittingMinQuantity { get; set; }
+    [Column("U_INSLMIN")]
+    [Precision(18, 2)]
+    public decimal? PrinringMinQuantity { get; set; }
 
-    [Column("U_TUASLMAX")] public decimal? RewindingMaxQuantity { get; set; }
-    [Column("U_TUASLMIN")] public decimal? RewindingMinQuantity { get; set; }
+    [Column("U_CATSLMAX")]
+    [Precision(18, 2)]
+    public decimal? CuttingMaxQuantity { get; set; }
+
+    [Column("U_CATSLMIN")]
+    [Precision(18, 2)]
+    public decimal? CuttingMinQuantity { get; set; }
+
+    [Column("U_CATSC")]
+    [Precision(18, 2)]
+    public int? CuttingQuantity { get; set; }
+
+    [Column("U_CHIASLMAX")]
+    [Precision(18, 2)]
+    public decimal? SlittingMaxQuantity { get; set; }
+
+    [Column("U_CHIASLMIN")]
+    [Precision(18, 2)]
+    public decimal? SlittingMinQuantity { get; set; }
+
+    [Column("U_TUASLMAX")]
+    [Precision(18, 2)]
+    public decimal? RewindingMaxQuantity { get; set; }
+
+    [Column("U_TUASLMIN")]
+    [Precision(18, 2)]
+    public decimal? RewindingMinQuantity { get; set; }
 
     #endregion
 

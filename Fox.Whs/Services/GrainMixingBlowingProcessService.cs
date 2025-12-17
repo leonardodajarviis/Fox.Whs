@@ -13,14 +13,14 @@ namespace Fox.Whs.Services;
 /// </summary>
 public class GrainMixingBlowingProcessService
 {
-    private readonly AppDbContext       _dbContext;
+    private readonly AppDbContext _dbContext;
     private readonly UserContextService _userContextService;
 
     public GrainMixingBlowingProcessService(
         AppDbContext dbContext,
         UserContextService userContextService)
     {
-        _dbContext          = dbContext;
+        _dbContext = dbContext;
         _userContextService = userContextService;
     }
 
@@ -45,10 +45,10 @@ public class GrainMixingBlowingProcessService
 
         return new PaginationResponse<GrainMixingBlowingProcess>
         {
-            Results    = result,
+            Results = result,
             TotalCount = totalCount,
-            PageSize   = pr.PageSize,
-            Page       = pr.Page,
+            PageSize = pr.PageSize,
+            Page = pr.Page,
         };
     }
 
@@ -152,13 +152,13 @@ public class GrainMixingBlowingProcessService
 
         var grainMixingBlowingProcess = new GrainMixingBlowingProcess
         {
-            CreatorId       = currentUserId,
+            CreatorId = currentUserId,
             ProductionShift = dto.ProductionShift,
-            ProductionDate  = dto.ProductionDate,
-            IsDraft         = dto.IsDraft,
-            BlowingMachine  = dto.BlowingMachine,
-            Notes           = dto.Notes,
-            Lines           = lines
+            ProductionDate = dto.ProductionDate,
+            IsDraft = dto.IsDraft,
+            BlowingMachine = dto.BlowingMachine,
+            Notes = dto.Notes,
+            Lines = lines
         };
 
         _dbContext.GrainMixingBlowingProcesses.Add(grainMixingBlowingProcess);
@@ -228,14 +228,14 @@ public class GrainMixingBlowingProcessService
 
 
         // Cập nhật thông tin cơ bản
-        grainMixingBlowingProcess.ProductionDate  = dto.ProductionDate;
+        grainMixingBlowingProcess.ProductionDate = dto.ProductionDate;
         grainMixingBlowingProcess.ProductionShift = dto.ProductionShift;
-        grainMixingBlowingProcess.IsDraft         = dto.IsDraft;
-        grainMixingBlowingProcess.IsDraft         = dto.IsDraft;
-        grainMixingBlowingProcess.BlowingMachine  = dto.BlowingMachine;
-        grainMixingBlowingProcess.Notes           = dto.Notes;
-        grainMixingBlowingProcess.ModifierId      = currentUserId;
-        grainMixingBlowingProcess.ModifiedAt      = DateTime.Now;
+        grainMixingBlowingProcess.IsDraft = dto.IsDraft;
+        grainMixingBlowingProcess.IsDraft = dto.IsDraft;
+        grainMixingBlowingProcess.BlowingMachine = dto.BlowingMachine;
+        grainMixingBlowingProcess.Notes = dto.Notes;
+        grainMixingBlowingProcess.ModifierId = currentUserId;
+        grainMixingBlowingProcess.ModifiedAt = DateTime.Now;
 
         var productionOrderIds = dto.Lines
             .Select(l => l.ProductionOrderId)
@@ -295,84 +295,85 @@ public class GrainMixingBlowingProcessService
     {
         return new GrainMixingBlowingProcessLine
         {
-            ItemCode               = dto.ItemCode,
-            ItemName               = dto.ItemName,
-            ProductionOrderId      = productOrderId,
-            ProductionBatch        = productionBatch,
-            CardCode               = dto.CardCode,
+            ItemCode = dto.ItemCode,
+            ItemName = dto.ItemName,
+            ProductionOrderId = productOrderId,
+            ProductionBatch = productionBatch,
+            CardCode = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
-            MixtureType            = dto.MixtureType,
-            Specification          = dto.Specification,
-            WorkerId               = dto.WorkerId,
-            MachineName            = dto.MachineName,
-            StartTime              = dto.StartTime,
-            EndTime                = dto.EndTime,
+            MixtureType = dto.MixtureType,
+            Specification = dto.Specification,
+            WorkerId = dto.WorkerId,
+            MachineName = dto.MachineName,
+            StartTime = dto.StartTime,
+            EndTime = dto.EndTime,
             // PP
-            PpTron     = dto.PpTron,
-            PpHdNhot   = dto.PpHdNhot,
-            PpLdpe     = dto.PpLdpe,
-            PpDc       = dto.PpDc,
+            PpTron = dto.PpTron,
+            PpHdNhot = dto.PpHdNhot,
+            PpLdpe = dto.PpLdpe,
+            PpDc = dto.PpDc,
             PpAdditive = dto.PpAdditive,
-            PpColor    = dto.PpColor,
-            PpOther    = dto.PpOther,
-            PpRit      = dto.PpRit,
+            PpColor = dto.PpColor,
+            PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
-            HdRecycled  = dto.HdRecycled,
-            HdTalcol    = dto.HdTalcol,
-            HdDc        = dto.HdDc,
-            HdColor     = dto.HdColor,
-            HdOther     = dto.HdOther,
-            HdHd        = dto.HdHd,
+            HdRecycled = dto.HdRecycled,
+            HdTalcol = dto.HdTalcol,
+            HdDc = dto.HdDc,
+            HdColor = dto.HdColor,
+            HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
-            PeTalcol   = dto.PeTalcol,
-            PeColor    = dto.PeColor,
-            PeOther    = dto.PeOther,
-            PeLdpe     = dto.PeLdpe,
-            PeLldpe    = dto.PeLldpe,
+            PeTalcol = dto.PeTalcol,
+            PeColor = dto.PeColor,
+            PeOther = dto.PeOther,
+            PeLdpe = dto.PeLdpe,
+            PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
-            PeDc       = dto.PeDc,
+            PeDc = dto.PeDc,
             // Màng co
-            ShrinkRe707    = dto.ShrinkRe707,
-            ShrinkSlip     = dto.ShrinkSlip,
-            ShrinkStatic   = dto.ShrinkStatic,
-            ShrinkDc       = dto.ShrinkDc,
-            ShrinkTalcol   = dto.ShrinkTalcol,
-            ShrinkOther    = dto.ShrinkOther,
-            ShrinkLldpe    = dto.ShrinkLldpe,
-            ShrinkLdpe     = dto.ShrinkLdpe,
+            ShrinkRe707 = dto.ShrinkRe707,
+            ShrinkSlip = dto.ShrinkSlip,
+            ShrinkStatic = dto.ShrinkStatic,
+            ShrinkDc = dto.ShrinkDc,
+            ShrinkTalcol = dto.ShrinkTalcol,
+            ShrinkOther = dto.ShrinkOther,
+            ShrinkLldpe = dto.ShrinkLldpe,
+            ShrinkLdpe = dto.ShrinkLdpe,
             ShrinkRecycled = dto.ShrinkRecycled,
-            ShrinkTangDai  = dto.ShrinkTangDai,
+            ShrinkTangDai = dto.ShrinkTangDai,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
-            WrapGlue       = dto.WrapGlue,
-            WrapColor      = dto.WrapColor,
-            WrapDc         = dto.WrapDc,
-            WrapLdpe       = dto.WrapLdpe,
-            WrapLldpe      = dto.WrapLldpe,
-            WrapSlip       = dto.WrapSlip,
-            WrapAdditive   = dto.WrapAdditive,
-            WrapOther      = dto.WrapOther,
-            WrapTangDaiC6  = dto.WrapTangDaiC6,
-            WrapTangDaiC8  = dto.WrapTangDaiC8,
+            WrapGlue = dto.WrapGlue,
+            WrapColor = dto.WrapColor,
+            WrapDc = dto.WrapDc,
+            WrapLdpe = dto.WrapLdpe,
+            WrapLldpe = dto.WrapLldpe,
+            WrapSlip = dto.WrapSlip,
+            WrapAdditive = dto.WrapAdditive,
+            WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
-            EvaPop3070        = dto.EvaPop3070,
-            EvaLdpe           = dto.EvaLdpe,
-            EvaDc             = dto.EvaDc,
-            EvaTalcol         = dto.EvaTalcol,
-            EvaSlip           = dto.EvaSlip,
+            EvaPop3070 = dto.EvaPop3070,
+            EvaLdpe = dto.EvaLdpe,
+            EvaDc = dto.EvaDc,
+            EvaTalcol = dto.EvaTalcol,
+            EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
-            EvaOther          = dto.EvaOther,
-            EvaTgc            = dto.EvaTgc,
+            EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
-            QuantityKg           = dto.QuantityKg,
-            RequiredDate         = requiredDate,
-            IsCompleted          = dto.IsCompleted,
-            Status               = dto.Status,
+            QuantityKg = dto.QuantityKg,
+            RequiredDate = requiredDate,
+            IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason          = dto.DelayReason
+            DelayReason = dto.DelayReason,
+            Note = dto.Note
         };
     }
 
@@ -385,84 +386,85 @@ public class GrainMixingBlowingProcessService
     {
         var line = new GrainMixingBlowingProcessLine
         {
-            ItemCode               = dto.ItemCode,
-            ItemName               = dto.ItemName,
-            ProductionOrderId      = productionOrderId,
-            ProductionBatch        = productionBatch,
-            CardCode               = dto.CardCode,
+            ItemCode = dto.ItemCode,
+            ItemName = dto.ItemName,
+            ProductionOrderId = productionOrderId,
+            ProductionBatch = productionBatch,
+            CardCode = dto.CardCode,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
-            MixtureType            = dto.MixtureType,
-            Specification          = dto.Specification,
-            WorkerId               = dto.WorkerId,
-            MachineName            = dto.MachineName,
-            StartTime              = dto.StartTime,
-            EndTime                = dto.EndTime,
+            MixtureType = dto.MixtureType,
+            Specification = dto.Specification,
+            WorkerId = dto.WorkerId,
+            MachineName = dto.MachineName,
+            StartTime = dto.StartTime,
+            EndTime = dto.EndTime,
             // PP
-            PpTron     = dto.PpTron,
-            PpHdNhot   = dto.PpHdNhot,
-            PpLdpe     = dto.PpLdpe,
-            PpDc       = dto.PpDc,
+            PpTron = dto.PpTron,
+            PpHdNhot = dto.PpHdNhot,
+            PpLdpe = dto.PpLdpe,
+            PpDc = dto.PpDc,
             PpAdditive = dto.PpAdditive,
-            PpColor    = dto.PpColor,
-            PpOther    = dto.PpOther,
-            PpRit      = dto.PpRit,
+            PpColor = dto.PpColor,
+            PpOther = dto.PpOther,
+            PpRit = dto.PpRit,
             // HD
             HdLldpe2320 = dto.HdLldpe2320,
-            HdRecycled  = dto.HdRecycled,
-            HdTalcol    = dto.HdTalcol,
-            HdDc        = dto.HdDc,
-            HdColor     = dto.HdColor,
-            HdOther     = dto.HdOther,
-            HdHd        = dto.HdHd,
+            HdRecycled = dto.HdRecycled,
+            HdTalcol = dto.HdTalcol,
+            HdDc = dto.HdDc,
+            HdColor = dto.HdColor,
+            HdOther = dto.HdOther,
+            HdHd = dto.HdHd,
             // PE
             PeAdditive = dto.PeAdditive,
-            PeTalcol   = dto.PeTalcol,
-            PeColor    = dto.PeColor,
-            PeOther    = dto.PeOther,
-            PeLdpe     = dto.PeLdpe,
-            PeLldpe    = dto.PeLldpe,
+            PeTalcol = dto.PeTalcol,
+            PeColor = dto.PeColor,
+            PeOther = dto.PeOther,
+            PeLdpe = dto.PeLdpe,
+            PeLldpe = dto.PeLldpe,
             PeRecycled = dto.PeRecycled,
-            PeDc       = dto.PeDc,
+            PeDc = dto.PeDc,
             // Màng co
-            ShrinkRe707    = dto.ShrinkRe707,
-            ShrinkSlip     = dto.ShrinkSlip,
-            ShrinkStatic   = dto.ShrinkStatic,
-            ShrinkDc       = dto.ShrinkDc,
-            ShrinkLdpe     = dto.ShrinkLdpe,
-            ShrinkLldpe    = dto.ShrinkLldpe,
+            ShrinkRe707 = dto.ShrinkRe707,
+            ShrinkSlip = dto.ShrinkSlip,
+            ShrinkStatic = dto.ShrinkStatic,
+            ShrinkDc = dto.ShrinkDc,
+            ShrinkLdpe = dto.ShrinkLdpe,
+            ShrinkLldpe = dto.ShrinkLldpe,
             ShrinkRecycled = dto.ShrinkRecycled,
-            ShrinkTangDai  = dto.ShrinkTangDai,
-            ShrinkTalcol   = dto.ShrinkTalcol,
-            ShrinkOther    = dto.ShrinkOther,
+            ShrinkTangDai = dto.ShrinkTangDai,
+            ShrinkTalcol = dto.ShrinkTalcol,
+            ShrinkOther = dto.ShrinkOther,
             // Màng chít
             WrapRecycledCa = dto.WrapRecycledCa,
             WrapRecycledCb = dto.WrapRecycledCb,
-            WrapGlue       = dto.WrapGlue,
-            WrapColor      = dto.WrapColor,
-            WrapDc         = dto.WrapDc,
-            WrapLdpe       = dto.WrapLdpe,
-            WrapLldpe      = dto.WrapLldpe,
-            WrapSlip       = dto.WrapSlip,
-            WrapAdditive   = dto.WrapAdditive,
-            WrapOther      = dto.WrapOther,
-            WrapTangDaiC6  = dto.WrapTangDaiC6,
-            WrapTangDaiC8  = dto.WrapTangDaiC8,
+            WrapGlue = dto.WrapGlue,
+            WrapColor = dto.WrapColor,
+            WrapDc = dto.WrapDc,
+            WrapLdpe = dto.WrapLdpe,
+            WrapLldpe = dto.WrapLldpe,
+            WrapSlip = dto.WrapSlip,
+            WrapAdditive = dto.WrapAdditive,
+            WrapOther = dto.WrapOther,
+            WrapTangDaiC6 = dto.WrapTangDaiC6,
+            WrapTangDaiC8 = dto.WrapTangDaiC8,
             // EVA
-            EvaPop3070        = dto.EvaPop3070,
-            EvaLdpe           = dto.EvaLdpe,
-            EvaDc             = dto.EvaDc,
-            EvaTalcol         = dto.EvaTalcol,
-            EvaSlip           = dto.EvaSlip,
+            EvaPop3070 = dto.EvaPop3070,
+            EvaLdpe = dto.EvaLdpe,
+            EvaDc = dto.EvaDc,
+            EvaTalcol = dto.EvaTalcol,
+            EvaSlip = dto.EvaSlip,
             EvaStaticAdditive = dto.EvaStaticAdditive,
-            EvaOther          = dto.EvaOther,
-            EvaTgc            = dto.EvaTgc,
+            EvaOther = dto.EvaOther,
+            EvaTgc = dto.EvaTgc,
             // Other fields
-            QuantityKg           = dto.QuantityKg,
-            RequiredDate         = requiredDate,
-            IsCompleted          = dto.IsCompleted,
-            Status               = dto.Status,
+            QuantityKg = dto.QuantityKg,
+            RequiredDate = requiredDate,
+            IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
             ActualCompletionDate = dto.ActualCompletionDate,
-            DelayReason          = dto.DelayReason
+            DelayReason = dto.DelayReason,
+            Note = dto.Note
         };
 
         if (existingId.HasValue)

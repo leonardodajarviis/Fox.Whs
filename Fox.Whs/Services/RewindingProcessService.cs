@@ -277,7 +277,8 @@ public class RewindingProcessService
             MachineLossKg         = dto.MachineLossKg,
             MachineLossReason     = dto.MachineLossReason,
             ExcessPO              = dto.ExcessPO,
-            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
+            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
+            Note = dto.Note
         };
 
         // Tính toán tổng DC cho line
@@ -335,7 +336,8 @@ public class RewindingProcessService
             MachineLossKg         = dto.MachineLossKg,
             MachineLossReason     = dto.MachineLossReason,
             ExcessPO              = dto.ExcessPO,
-            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed
+            BtpWarehouseConfirmed = dto.BtpWarehouseConfirmed,
+            Note = dto.Note
         };
 
         if (existingId.HasValue)

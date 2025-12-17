@@ -21,7 +21,7 @@ public class PrintingProcessService
         AppDbContext dbContext,
         UserContextService userContextService)
     {
-        _dbContext          = dbContext;
+        _dbContext = dbContext;
         _userContextService = userContextService;
     }
 
@@ -44,10 +44,10 @@ public class PrintingProcessService
 
         return new PaginationResponse<PrintingProcess>
         {
-            Results    = result,
+            Results = result,
             TotalCount = totalCount,
-            PageSize   = pr.PageSize,
-            Page       = pr.Page,
+            PageSize = pr.PageSize,
+            Page = pr.Page,
         };
     }
 
@@ -129,13 +129,13 @@ public class PrintingProcessService
 
         var printingProcess = new PrintingProcess
         {
-            ProductionDate  = dto.ProductionDate,
-            IsDraft         = dto.IsDraft,
-            ShiftLeaderId   = shiftLeaderId,
+            ProductionDate = dto.ProductionDate,
+            IsDraft = dto.IsDraft,
+            ShiftLeaderId = shiftLeaderId,
             ProductionShift = dto.ProductionShift,
-            CreatorId       = currentUserId,
-            Notes           = dto.Notes,
-            Lines           = lines
+            CreatorId = currentUserId,
+            Notes = dto.Notes,
+            Lines = lines
         };
 
         // Tính toán tổng
@@ -186,13 +186,13 @@ public class PrintingProcessService
             .ToDictionaryAsync(po => po.DocEntry);
 
         // Cập nhật thông tin cơ bản
-        printingProcess.ProductionDate  = dto.ProductionDate;
+        printingProcess.ProductionDate = dto.ProductionDate;
         printingProcess.ProductionShift = dto.ProductionShift;
-        printingProcess.IsDraft         = dto.IsDraft;
-        printingProcess.ShiftLeaderId   = dto.ShiftLeaderId;
-        printingProcess.Notes           = dto.Notes;
-        printingProcess.ModifierId      = currentUserId;
-        printingProcess.ModifiedAt      = DateTime.Now;
+        printingProcess.IsDraft = dto.IsDraft;
+        printingProcess.ShiftLeaderId = dto.ShiftLeaderId;
+        printingProcess.Notes = dto.Notes;
+        printingProcess.ModifierId = currentUserId;
+        printingProcess.ModifiedAt = DateTime.Now;
 
         // Cập nhật lines
         UpdateLines(printingProcess, dto.Lines, existingProductionOrders);
@@ -274,49 +274,50 @@ public class PrintingProcessService
         }
         var line = new PrintingProcessLine
         {
-            ProductionOrderId        = dto.ProductionOrderId,
-            ItemCode                 = itemCode,
-            CardCode                 = cardCode,
-            ProductionBatch          = productionBatch,
-            ProductType              = productType,
-            ProductTypeName          = productTypeName,
-            Thickness                = thickness,
-            SemiProductWidth         = semiProductWidth,
-            PrintPatternName         = printPatternName,
-            ColorCount               = colorCount,
-            PrintingMachine          = dto.PrintingMachine,
-            WorkerId                 = dto.WorkerId,
-            PrintingSpeed            = dto.PrintingSpeed,
-            StartTime                = dto.StartTime,
-            EndTime                  = dto.EndTime,
-            MachineStopMinutes       = dto.MachineStopMinutes,
-            StopReason               = dto.StopReason,
-            RollCount                = dto.RollCount,
-            PieceCount               = dto.PieceCount,
-            QuantityKg               = dto.QuantityKg,
-            RequiredDate             = requiredDate,
-            IsCompleted              = dto.IsCompleted,
-            Status                   = dto.Status,
-            ActualCompletionDate     = dto.ActualCompletionDate,
-            DelayReason              = dto.DelayReason,
-            ProcessingLossKg         = dto.ProcessingLossKg,
-            ProcessingLossReason     = dto.ProcessingLossReason,
-            BlowingLossKg            = dto.BlowingLossKg,
-            BlowingLossReason        = dto.BlowingLossReason,
-            OppRollHeadKg            = dto.OppRollHeadKg,
-            OppRollHeadReason        = dto.OppRollHeadReason,
-            HumanLossKg              = dto.HumanLossKg,
-            HumanLossReason          = dto.HumanLossReason,
-            MachineLossKg            = dto.MachineLossKg,
-            MachineLossReason        = dto.MachineLossReason,
-            ExcessPO                 = dto.ExcessPO,
+            ProductionOrderId = dto.ProductionOrderId,
+            ItemCode = itemCode,
+            CardCode = cardCode,
+            ProductionBatch = productionBatch,
+            ProductType = productType,
+            ProductTypeName = productTypeName,
+            Thickness = thickness,
+            SemiProductWidth = semiProductWidth,
+            PrintPatternName = printPatternName,
+            ColorCount = colorCount,
+            PrintingMachine = dto.PrintingMachine,
+            WorkerId = dto.WorkerId,
+            PrintingSpeed = dto.PrintingSpeed,
+            StartTime = dto.StartTime,
+            EndTime = dto.EndTime,
+            MachineStopMinutes = dto.MachineStopMinutes,
+            StopReason = dto.StopReason,
+            RollCount = dto.RollCount,
+            PieceCount = dto.PieceCount,
+            QuantityKg = dto.QuantityKg,
+            RequiredDate = requiredDate,
+            IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
+            ActualCompletionDate = dto.ActualCompletionDate,
+            DelayReason = dto.DelayReason,
+            ProcessingLossKg = dto.ProcessingLossKg,
+            ProcessingLossReason = dto.ProcessingLossReason,
+            BlowingLossKg = dto.BlowingLossKg,
+            BlowingLossReason = dto.BlowingLossReason,
+            OppRollHeadKg = dto.OppRollHeadKg,
+            OppRollHeadReason = dto.OppRollHeadReason,
+            HumanLossKg = dto.HumanLossKg,
+            HumanLossReason = dto.HumanLossReason,
+            MachineLossKg = dto.MachineLossKg,
+            MachineLossReason = dto.MachineLossReason,
+            ExcessPO = dto.ExcessPO,
             BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
-            PrintingStageInventoryKg = dto.PrintingStageInventoryKg
+            PrintingStageInventoryKg = dto.PrintingStageInventoryKg,
+            Note = dto.Note
         };
 
         // Tính toán tổng DC cho line
         line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
-            line.OppRollHeadKg                   + line.HumanLossKg   +
+            line.OppRollHeadKg + line.HumanLossKg +
             line.MachineLossKg;
 
         return line;
@@ -343,44 +344,45 @@ public class PrintingProcessService
         }
         var line = new PrintingProcessLine
         {
-            ProductionOrderId        = dto.ProductionOrderId,
-            ItemCode                 = itemCode,
-            CardCode                 = cardCode,
-            ProductionBatch          = productionBatch,
-            ProductType              = productType,
-            ProductTypeName          = productTypeName,
-            Thickness                = thickness,
-            SemiProductWidth         = semiProductWidth,
-            PrintPatternName         = printPatternName,
-            ColorCount               = colorCount,
-            PrintingMachine          = dto.PrintingMachine,
-            WorkerId                 = dto.WorkerId,
-            PrintingSpeed            = dto.PrintingSpeed,
-            StartTime                = dto.StartTime,
-            EndTime                  = dto.EndTime,
-            MachineStopMinutes       = dto.MachineStopMinutes,
-            StopReason               = dto.StopReason,
-            RollCount                = dto.RollCount,
-            PieceCount               = dto.PieceCount,
-            QuantityKg               = dto.QuantityKg,
-            RequiredDate             = requiredDate,
-            IsCompleted              = dto.IsCompleted,
-            Status                   = dto.Status,
-            ActualCompletionDate     = dto.ActualCompletionDate,
-            DelayReason              = dto.DelayReason,
-            ProcessingLossKg         = dto.ProcessingLossKg,
-            ProcessingLossReason     = dto.ProcessingLossReason,
-            BlowingLossKg            = dto.BlowingLossKg,
-            BlowingLossReason        = dto.BlowingLossReason,
-            OppRollHeadKg            = dto.OppRollHeadKg,
-            OppRollHeadReason        = dto.OppRollHeadReason,
-            HumanLossKg              = dto.HumanLossKg,
-            HumanLossReason          = dto.HumanLossReason,
-            MachineLossKg            = dto.MachineLossKg,
-            MachineLossReason        = dto.MachineLossReason,
-            ExcessPO                 = dto.ExcessPO,
+            ProductionOrderId = dto.ProductionOrderId,
+            ItemCode = itemCode,
+            CardCode = cardCode,
+            ProductionBatch = productionBatch,
+            ProductType = productType,
+            ProductTypeName = productTypeName,
+            Thickness = thickness,
+            SemiProductWidth = semiProductWidth,
+            PrintPatternName = printPatternName,
+            ColorCount = colorCount,
+            PrintingMachine = dto.PrintingMachine,
+            WorkerId = dto.WorkerId,
+            PrintingSpeed = dto.PrintingSpeed,
+            StartTime = dto.StartTime,
+            EndTime = dto.EndTime,
+            MachineStopMinutes = dto.MachineStopMinutes,
+            StopReason = dto.StopReason,
+            RollCount = dto.RollCount,
+            PieceCount = dto.PieceCount,
+            QuantityKg = dto.QuantityKg,
+            RequiredDate = requiredDate,
+            IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
+            ActualCompletionDate = dto.ActualCompletionDate,
+            DelayReason = dto.DelayReason,
+            ProcessingLossKg = dto.ProcessingLossKg,
+            ProcessingLossReason = dto.ProcessingLossReason,
+            BlowingLossKg = dto.BlowingLossKg,
+            BlowingLossReason = dto.BlowingLossReason,
+            OppRollHeadKg = dto.OppRollHeadKg,
+            OppRollHeadReason = dto.OppRollHeadReason,
+            HumanLossKg = dto.HumanLossKg,
+            HumanLossReason = dto.HumanLossReason,
+            MachineLossKg = dto.MachineLossKg,
+            MachineLossReason = dto.MachineLossReason,
+            ExcessPO = dto.ExcessPO,
             BtpWarehouseConfirmation = dto.BtpWarehouseConfirmation,
-            PrintingStageInventoryKg = dto.PrintingStageInventoryKg
+            PrintingStageInventoryKg = dto.PrintingStageInventoryKg,
+            Note = dto.Note
         };
 
         if (existingId.HasValue)
@@ -390,7 +392,7 @@ public class PrintingProcessService
 
         // Tính toán tổng DC cho line
         line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
-            line.OppRollHeadKg                   + line.HumanLossKg   +
+            line.OppRollHeadKg + line.HumanLossKg +
             line.MachineLossKg;
 
         return line;
@@ -472,8 +474,8 @@ public class PrintingProcessService
 
     private static void CalculateTotals(PrintingProcess printingProcess)
     {
-        printingProcess.TotalPrintingOutput   = printingProcess.Lines.Sum(l => l.QuantityKg ?? 0);
-        printingProcess.TotalProcessingMold   = printingProcess.Lines.Sum(l => l.ProcessingLossKg);
+        printingProcess.TotalPrintingOutput = printingProcess.Lines.Sum(l => l.QuantityKg ?? 0);
+        printingProcess.TotalProcessingMold = printingProcess.Lines.Sum(l => l.ProcessingLossKg);
         printingProcess.TotalBlowingStageMold = printingProcess.Lines.Sum(l => l.BlowingLossKg);
         printingProcess.TotalPrintingStageMold =
             printingProcess.Lines.Sum(l => l.OppRollHeadKg + l.HumanLossKg + l.MachineLossKg);

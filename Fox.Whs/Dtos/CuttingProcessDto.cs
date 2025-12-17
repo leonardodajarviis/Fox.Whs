@@ -283,6 +283,7 @@ public record CreateCuttingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal RemainingInventoryKg { get; set; }
+    public string? Note {get; set;}
 }
 
 /// <summary>
@@ -513,4 +514,6 @@ public record UpdateCuttingProcessLineDto
     /// </summary>
     [Range(0, double.MaxValue)]
     public decimal RemainingInventoryKg { get; set; }
+
+    public string? Note { get; set; }
 }

@@ -75,9 +75,9 @@ public class EmployeesController : ControllerBase
     /// </summary>
     /// <param name="id">id</param>
     /// <returns>Danh sách Items</returns>
-    [HttpGet]
+    [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
-    public async Task<IActionResult> GetEmployeeById([FromQuery] int id)
+    public async Task<IActionResult> GetEmployeeById(int id)
     {
 
         var employees = await _dbContext.Employees.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();

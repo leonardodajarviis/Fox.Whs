@@ -188,6 +188,11 @@ public record CreateRewindingProcessLineDto
     /// Xác nhận của kho BTP
     /// </summary>
     public bool BtpWarehouseConfirmed { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }
 
 /// <summary>
@@ -320,4 +325,9 @@ public record UpdateRewindingProcessLineDto
     /// Xác nhận của kho BTP
     /// </summary>
     public bool BtpWarehouseConfirmed { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string? Note { get; set; }
 }

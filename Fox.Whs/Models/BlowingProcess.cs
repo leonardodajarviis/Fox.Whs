@@ -166,7 +166,7 @@ public class BlowingProcessLine
     /// Tên công nhân thổi
     /// </summary>
     [NotMapped]
-    public string? WorkerName => Worker?.FirstName;
+    public string? WorkerName => Worker?.FullName;
 
     /// <summary>
     /// Tốc độ thổi (kg/giờ)

@@ -230,6 +230,8 @@ public record CreateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(500)]
     public string? DelayReason { get; set; }
+
+    public string? Note {get; set;}
 }
 
 /// <summary>
@@ -395,4 +397,6 @@ public record UpdateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(500)]
     public string? DelayReason { get; set; }
+
+    public string? Note {get; set;}
 }

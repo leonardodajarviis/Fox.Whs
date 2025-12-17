@@ -123,7 +123,7 @@ public class GrainMixingBlowingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FirstName;
+    public string? WorkerName => Worker?.FullName;
 
     /// <summary>
     /// Tên máy pha
@@ -500,4 +500,6 @@ public class GrainMixingBlowingProcessLine
     /// Nguyên nhân chậm tiến độ
     /// </summary>
     public string? DelayReason { get; set; }
+
+    public string? Note {get; set;}
 }
