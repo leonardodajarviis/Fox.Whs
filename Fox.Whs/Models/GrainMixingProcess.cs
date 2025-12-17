@@ -128,6 +128,13 @@ public class GrainMixingProcessLine
     /// </summary>
     public string? MachineName { get; set; }
 
+    public string? MixingMachine { get; set; }
+
+    /// <summary>
+    /// Tên máy pha
+    /// </summary>
+    public string? MixingMachineName { get; set; }
+
     /// <summary>
     /// Thời gian bắt đầu pha
     /// </summary>

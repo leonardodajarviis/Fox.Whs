@@ -33,12 +33,17 @@ public class SlittingProcessService
 
         var totalCount = await query.CountAsync();
 
+        if (pr.Include == "lines")
+        {
+            query = query.Include(bp => bp.Lines);
+        }
+
         var result = await query
             .Include(sp => sp.Creator)
             .Include(sp => sp.Modifier)
             .Include(sp => sp.ShiftLeader)
+            .OrderByDescending(sp => sp.Id)
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(sp => sp.ProductionDate)
             .ToListAsync();
 
         return new PaginationResponse<SlittingProcess>
@@ -265,6 +270,7 @@ public class SlittingProcessService
             PrintPatternName = printPatternName,
             ColorCount = colorCount,
             SlittingMachine = dto.SlittingMachine,
+            SlittingMachineName = dto.SlittingMachineName,
             WorkerId = dto.WorkerId,
             SlittingSpeed = dto.SlittingSpeed,
             StartTime = dto.StartTime,
@@ -286,6 +292,7 @@ public class SlittingProcessService
             PrintingLossKg = dto.PrintingLossKg,
             PrintingLossReason = dto.PrintingLossReason,
             PrintingMachine = dto.PrintingMachine,
+            PrintingMachineName = dto.PrintingMachineName,
             CutViaKg = dto.CutViaKg,
             HumanLossKg = dto.HumanLossKg,
             HumanLossReason = dto.HumanLossReason,
@@ -341,6 +348,7 @@ public class SlittingProcessService
             PrintPatternName = printPatternName,
             ColorCount = colorCount,
             SlittingMachine = dto.SlittingMachine,
+            SlittingMachineName = dto.SlittingMachineName,
             WorkerId = dto.WorkerId,
             SlittingSpeed = dto.SlittingSpeed,
             StartTime = dto.StartTime,
@@ -363,6 +371,7 @@ public class SlittingProcessService
             PrintingLossKg = dto.PrintingLossKg,
             PrintingLossReason = dto.PrintingLossReason,
             PrintingMachine = dto.PrintingMachine,
+            PrintingMachineName = dto.PrintingMachineName, 
             CutViaKg = dto.CutViaKg,
             HumanLossKg = dto.HumanLossKg,
             HumanLossReason = dto.HumanLossReason,

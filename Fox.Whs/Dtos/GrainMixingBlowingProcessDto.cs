@@ -29,6 +29,8 @@ public record CreateGrainMixingBlowingProcessDto
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
 
+    public string? BlowingMachineName { get; set; }
+
     public string? Notes { get; set; }
 
     /// <summary>
@@ -64,6 +66,8 @@ public record UpdateGrainMixingBlowingProcessDto
     /// </summary>
     [StringLength(100)]
     public string? BlowingMachine { get; set; }
+
+    public string? BlowingMachineName { get; set; }
 
     public string? Notes { get; set; }
 
@@ -123,6 +127,9 @@ public record CreateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? MachineName { get; set; }
+
+    public string? MixingMachine { get; set; }
+    public string? MixingMachineName { get; set; }
 
     /// <summary>
     /// Thời gian bắt đầu pha
@@ -290,6 +297,9 @@ public record UpdateGrainMixingBlowingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? MachineName { get; set; }
+
+    public string? MixingMachine { get; set; }
+    public string? MixingMachineName { get; set; }
 
     /// <summary>
     /// Thời gian bắt đầu pha

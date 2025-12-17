@@ -80,6 +80,8 @@ public record CreatePrintingProcessLineDto
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
 
+    public string? PrintingMachineName { get; set; }
+
     /// <summary>
     /// ID công nhân in
     /// </summary>
@@ -279,6 +281,9 @@ public record UpdatePrintingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
+
 
     /// <summary>
     /// ID công nhân in

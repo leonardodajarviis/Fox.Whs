@@ -127,10 +127,3 @@ public class AppDbContext : DbContext
     }
     // public async Task<OrderResponse> GetEnumerableAsync(List)
 }
-
-public class OrderResponse
-{
-    public decimal QuantityPcs { get; set; }
-    public decimal Quantity { get; set; }
-    public decimal Id { get; set; }
-}

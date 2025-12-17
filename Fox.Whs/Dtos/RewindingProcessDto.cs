@@ -79,6 +79,8 @@ public record CreateRewindingProcessLineDto
     [StringLength(50)]
     public string? RewindingMachine { get; set; }
 
+    public string? RewindingMachineName { get; set; }
+
     /// <summary>
     /// ID công nhân tua
     /// </summary>
@@ -215,6 +217,8 @@ public record UpdateRewindingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? RewindingMachine { get; set; }
+
+    public string? RewindingMachineName { get; set; }
 
     /// <summary>
     /// ID công nhân tua

@@ -167,6 +167,11 @@ public class CuttingProcessLine
     /// </summary>
     public string? CuttingMachine { get; set; }
 
+    /// <summary>
+    /// Tên máy cắt
+    /// </summary>
+    public string? CuttingMachineName { get; set; }
+
     public int? WorkerId { get; set; }
 
     [ForeignKey("WorkerId"), JsonIgnore] public Employee? Worker { get; set; }
@@ -289,6 +294,8 @@ public class CuttingProcessLine
     /// Số máy in
     /// </summary>
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Chuyển hàng (Kg)

@@ -147,6 +147,11 @@ public class RewindingProcessLine
     /// </summary>
     public string? RewindingMachine { get; set; }
 
+    /// <summary>
+    /// Tên máy tua
+    /// </summary>
+    public string? RewindingMachineName { get; set; }
+
     public int? WorkerId { get; set; }
 
     [ForeignKey("WorkerId"), JsonIgnore]

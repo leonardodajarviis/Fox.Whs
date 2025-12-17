@@ -77,6 +77,8 @@ public record CreateSlittingProcessLineDto
     [StringLength(50)]
     public string? SlittingMachine { get; set; }
 
+    public string? SlittingMachineName { get; set; }
+
     /// <summary>
     /// ID công nhân chia
     /// </summary>
@@ -187,6 +189,8 @@ public record CreateSlittingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Cắt via (Kg)
@@ -257,6 +261,8 @@ public record UpdateSlittingProcessLineDto
     [StringLength(50)]
     public string? SlittingMachine { get; set; }
 
+    public string? SlittingMachineName { get; set; }
+
     /// <summary>
     /// ID công nhân chia
     /// </summary>
@@ -367,6 +373,8 @@ public record UpdateSlittingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Cắt via (Kg)

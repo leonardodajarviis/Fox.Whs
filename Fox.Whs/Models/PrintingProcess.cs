@@ -166,6 +166,11 @@ public class PrintingProcessLine
     /// </summary>
     public string? PrintingMachine { get; set; }
 
+    /// <summary>
+    /// Tên máy in
+    /// </summary>
+    public string? PrintingMachineName { get; set; }
+
     public int? WorkerId { get; set; }
 
     [ForeignKey("WorkerId"), JsonIgnore]

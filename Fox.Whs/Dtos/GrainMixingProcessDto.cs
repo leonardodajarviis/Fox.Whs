@@ -126,6 +126,9 @@ public record CreateGrainMixingProcessLineDto
     [StringLength(100)]
     public string? MachineName { get; set; }
 
+    public string? MixingMachine { get; set; }
+    public string? MixingMachineName { get; set; }
+
     /// <summary>
     /// Thời gian bắt đầu pha
     /// </summary>
@@ -295,6 +298,9 @@ public record UpdateGrainMixingProcessLineDto
     /// </summary>
     [StringLength(100)]
     public string? MachineName { get; set; }
+
+    public string? MixingMachine { get; set; }
+    public string? MixingMachineName { get; set; }
 
     /// <summary>
     /// Thời gian bắt đầu pha

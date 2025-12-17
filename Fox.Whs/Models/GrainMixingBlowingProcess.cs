@@ -40,6 +40,11 @@ public class GrainMixingBlowingProcess
     public string? BlowingMachine { get; set; }
 
     /// <summary>
+    /// Tên máy thổi
+    /// </summary>
+    public string? BlowingMachineName { get; set; }
+
+    /// <summary>
     /// Trạng thái
     /// </summary>
     public int Status { get; set; }
@@ -129,6 +134,13 @@ public class GrainMixingBlowingProcessLine
     /// Tên máy pha
     /// </summary>
     public string? MachineName { get; set; }
+
+    public string? MixingMachine { get; set; }
+
+    /// <summary>
+    /// Tên máy pha
+    /// </summary>
+    public string? MixingMachineName { get; set; }
 
     /// <summary>
     /// Thời gian bắt đầu pha

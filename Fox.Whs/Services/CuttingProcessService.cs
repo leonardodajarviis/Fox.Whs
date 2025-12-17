@@ -34,12 +34,17 @@ public class CuttingProcessService
 
         var totalCount = await query.CountAsync();
 
+        if (pr.Include == "lines")
+        {
+            query = query.Include(bp => bp.Lines);
+        }
+
         var result = await query
             .Include(cp => cp.ShiftLeader)
             .Include(pp => pp.Creator)
             .Include(pp => pp.Modifier)
+            .OrderByDescending(cp => cp.Id)
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(cp => cp.ProductionDate)
             .ToListAsync();
 
         return new PaginationResponse<CuttingProcess>
@@ -286,6 +291,7 @@ public class CuttingProcessService
             Size = size,
             ColorCount = colorCount,
             CuttingMachine = dto.CuttingMachine,
+            CuttingMachineName = dto.CuttingMachineName,
             WorkerId = dto.WorkerId,
             CuttingSpeed = dto.CuttingSpeed,
             StartTime = dto.StartTime,
@@ -308,6 +314,7 @@ public class CuttingProcessService
             PrintingLossKg = dto.PrintingLossKg,
             PrintingLossReason = dto.PrintingLossReason,
             PrintingMachine = dto.PrintingMachine,
+            PrintingMachineName = dto.PrintingMachineName,
             TransferKg = dto.TransferKg,
             HumanLossKg = dto.HumanLossKg,
             HumanLossReason = dto.HumanLossReason,

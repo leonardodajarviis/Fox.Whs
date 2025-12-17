@@ -34,12 +34,17 @@ public class PrintingProcessService
 
         var totalCount = await query.CountAsync();
 
+        if (pr.Include == "lines")
+        {
+            query = query.Include(bp => bp.Lines);
+        }
+
         var result = await query
             .Include(cp => cp.ShiftLeader)
             .Include(pp => pp.Creator)
             .Include(pp => pp.Modifier)
+            .OrderByDescending(sp => sp.Id)
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(pp => pp.ProductionDate)
             .ToListAsync();
 
         return new PaginationResponse<PrintingProcess>
@@ -285,6 +290,7 @@ public class PrintingProcessService
             PrintPatternName = printPatternName,
             ColorCount = colorCount,
             PrintingMachine = dto.PrintingMachine,
+            PrintingMachineName = dto.PrintingMachineName,
             WorkerId = dto.WorkerId,
             PrintingSpeed = dto.PrintingSpeed,
             StartTime = dto.StartTime,
@@ -355,6 +361,7 @@ public class PrintingProcessService
             PrintPatternName = printPatternName,
             ColorCount = colorCount,
             PrintingMachine = dto.PrintingMachine,
+            PrintingMachineName = dto.PrintingMachineName,
             WorkerId = dto.WorkerId,
             PrintingSpeed = dto.PrintingSpeed,
             StartTime = dto.StartTime,

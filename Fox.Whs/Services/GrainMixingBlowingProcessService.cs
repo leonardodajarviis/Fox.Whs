@@ -36,11 +36,16 @@ public class GrainMixingBlowingProcessService
 
         var totalCount = await query.CountAsync();
 
+        if (pr.Include == "lines")
+        {
+            query = query.Include(bp => bp.Lines);
+        }
+
         var result = await query
             .Include(gm => gm.Creator)
             .Include(gm => gm.Modifier)
+            .OrderByDescending(gm => gm.Id)
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(gm => gm.ProductionDate)
             .ToListAsync();
 
         return new PaginationResponse<GrainMixingBlowingProcess>
@@ -157,6 +162,7 @@ public class GrainMixingBlowingProcessService
             ProductionDate = dto.ProductionDate,
             IsDraft = dto.IsDraft,
             BlowingMachine = dto.BlowingMachine,
+            BlowingMachineName = dto.BlowingMachineName,
             Notes = dto.Notes,
             Lines = lines
         };
@@ -233,6 +239,7 @@ public class GrainMixingBlowingProcessService
         grainMixingBlowingProcess.IsDraft = dto.IsDraft;
         grainMixingBlowingProcess.IsDraft = dto.IsDraft;
         grainMixingBlowingProcess.BlowingMachine = dto.BlowingMachine;
+        grainMixingBlowingProcess.BlowingMachineName = dto.BlowingMachineName;
         grainMixingBlowingProcess.Notes = dto.Notes;
         grainMixingBlowingProcess.ModifierId = currentUserId;
         grainMixingBlowingProcess.ModifiedAt = DateTime.Now;
@@ -305,6 +312,8 @@ public class GrainMixingBlowingProcessService
             Specification = dto.Specification,
             WorkerId = dto.WorkerId,
             MachineName = dto.MachineName,
+            MixingMachine = dto.MixingMachine,
+            MixingMachineName = dto.MixingMachineName,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
             // PP
@@ -396,6 +405,8 @@ public class GrainMixingBlowingProcessService
             Specification = dto.Specification,
             WorkerId = dto.WorkerId,
             MachineName = dto.MachineName,
+            MixingMachine = dto.MixingMachine,
+            MixingMachineName = dto.MixingMachineName,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
             // PP

@@ -23,6 +23,8 @@ public class ProductionOrdersController : ControllerBase
         _dbContext = sapDbContext;
     }
 
+    private record ProcessLine(decimal QuantityPcs, decimal Quantity, int Id);
+
     /// <summary>
     /// Lấy danh sách Production Orders với phân trang
     /// </summary>
@@ -75,82 +77,19 @@ public class ProductionOrdersController : ControllerBase
                 p.IsSlitting        == "Y")
             .Select(p => p.DocEntry);
 
-        //----------------------------
+        var lines = await GetProcessLinesByTypeAsync(type, productionOrderIds);
 
-        var blowingProcessLines = type == "blowing"
-            ? await _dbContext.BlowingProcessLines.AsNoTracking()
-                .Where(x => x.Status == 1)
-                .Where(x => productionOrderIds.Contains(x.ProductionOrderId ?? 0))
-                .Select(x => new
-                {
-                    QuantityPcs = (decimal)0,
-                    Quantity    = x.QuantityKg,
-                    Id          = x.ProductionOrderId ?? 0
-                })
-                .ToListAsync()
-            : [];
-
-        var cuttingProcessLines = type == "cutting"
-            ? await _dbContext.CuttingProcessLines.AsNoTracking()
-                .Where(x => x.Status == 1)
-                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-                .Select(x => new
-                {
-                    QuantityPcs = x.PieceCount,
-                    Quantity    = x.QuantityKg,
-                    Id          = x.ProductionOrderId
-                })
-                .ToListAsync()
-            : [];
-
-        var printingProcessLines = type == "printing"
-            ? await _dbContext.PrintingProcessLines.AsNoTracking()
-                .Where(x => x.Status == 1)
-                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-                .Select(x => new
-                {
-                    QuantityPcs = (decimal)0,
-                    Quantity    = x.QuantityKg ?? 0,
-                    Id          = x.ProductionOrderId
-                })
-                .ToListAsync()
-            : [];
-
-        var rewindingProcessLines = type == "rewinding"
-            ? await _dbContext.RewindingProcessLines.AsNoTracking()
-                .Where(x => x.Status == 1)
-                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-                .Select(x => new
-                {
-                    QuantityPcs = (decimal)0,
-                    Quantity    = x.QuantityKg,
-                    Id          = x.ProductionOrderId
-                })
-                .ToListAsync()
-            : [];
-
-        var slittingProcessLines = type == "slitting"
-            ? await _dbContext.SlittingProcessLines.AsNoTracking()
-                .Where(x => x.Status == 1)
-                .Where(x => productionOrderIds.Contains(x.ProductionOrderId))
-                .Select(x => new
-                {
-                    QuantityPcs = (decimal)0,
-                    Quantity    = x.QuantityKg,
-                    Id          = x.ProductionOrderId
-                })
-                .ToListAsync()
-            : [];
-
-        var lines = blowingProcessLines.Concat(cuttingProcessLines).Concat(printingProcessLines)
-            .Concat(rewindingProcessLines).Concat(slittingProcessLines);
+        var linesLookup = lines.ToLookup(l => l.Id);
 
         productionOrders.ForEach(p =>
         {
-            var enumerable = lines.ToList();
-            p.RemainingQuantity = p.Quantity() - enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
-            p.QuantityProduced  = enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.Quantity);
-            p.QuantityPcs       = enumerable.Where(l => l.Id == p.DocEntry).Sum(l => l.QuantityPcs);
+            var orderLines = linesLookup[p.DocEntry];
+            var totalQuantity = orderLines.Sum(l => l.Quantity);
+            var totalQuantityPcs = orderLines.Sum(l => l.QuantityPcs);
+
+            p.QuantityProduced = totalQuantity;
+            p.QuantityPcs = totalQuantityPcs;
+            p.RemainingQuantity = p.Quantity() - totalQuantity;
         });
 
 
@@ -161,6 +100,41 @@ public class ProductionOrdersController : ControllerBase
             TotalCount = totalRecords,
             Results    = productionOrders
         });
+    }
+
+    private async Task<List<ProcessLine>> GetProcessLinesByTypeAsync(
+        string? type,
+        IEnumerable<int> productionOrderIds)
+    {
+        return type switch
+        {
+            "blowing" => await _dbContext.BlowingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1 && productionOrderIds.Contains(x.ProductionOrderId ?? 0))
+                .Select(x => new ProcessLine(0m, x.QuantityKg, x.ProductionOrderId ?? 0))
+                .ToListAsync(),
+
+            "cutting" => await _dbContext.CuttingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1 && productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new ProcessLine(x.PieceCount, x.QuantityKg, x.ProductionOrderId))
+                .ToListAsync(),
+
+            "printing" => await _dbContext.PrintingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1 && productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new ProcessLine(0m, x.QuantityKg ?? 0, x.ProductionOrderId))
+                .ToListAsync(),
+
+            "rewinding" => await _dbContext.RewindingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1 && productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new ProcessLine(0m, x.QuantityKg, x.ProductionOrderId))
+                .ToListAsync(),
+
+            "slitting" => await _dbContext.SlittingProcessLines.AsNoTracking()
+                .Where(x => x.Status == 1 && productionOrderIds.Contains(x.ProductionOrderId))
+                .Select(x => new ProcessLine(0m, x.QuantityKg, x.ProductionOrderId))
+                .ToListAsync(),
+
+            _ => []
+        };
     }
 
     private static IQueryable<ProductionOrder> ApplyFilterProductionOrderType(

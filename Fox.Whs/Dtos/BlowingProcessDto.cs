@@ -95,6 +95,11 @@ public record CreateBlowingProcessLineDto
     public string? BlowingMachine { get; set; }
 
     /// <summary>
+    /// Tên máy thổi
+    /// </summary>
+    public string? BlowingMachineName { get; set; }
+
+    /// <summary>
     /// ID công nhân thổi
     /// </summary>
     public int? WorkerId { get; set; }
@@ -313,6 +318,11 @@ public record UpdateBlowingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? BlowingMachine { get; set; }
+
+    /// <summary>
+    /// Tên máy thổi
+    /// </summary>
+    public string? BlowingMachineName { get; set; }
 
     /// <summary>
     /// ID công nhân thổi

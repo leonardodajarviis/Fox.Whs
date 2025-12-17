@@ -93,6 +93,8 @@ public record CreateCuttingProcessLineDto
     [StringLength(50)]
     public string? CuttingMachine { get; set; }
 
+    public string? CuttingMachineName { get; set; }
+
     /// <summary>
     /// ID công nhân cắt
     /// </summary>
@@ -217,6 +219,8 @@ public record CreateCuttingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Chuyển hàng (Kg)
@@ -326,6 +330,11 @@ public record UpdateCuttingProcessLineDto
     public string? CuttingMachine { get; set; }
 
     /// <summary>
+    /// Tên máy cắt
+    /// </summary>
+    public string? CuttingMachineName { get; set; }
+
+    /// <summary>
     /// ID công nhân cắt
     /// </summary>
     public int? WorkerId { get; set; }
@@ -449,6 +458,8 @@ public record UpdateCuttingProcessLineDto
     /// </summary>
     [StringLength(50)]
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Chuyển hàng (Kg)

@@ -158,6 +158,11 @@ public class BlowingProcessLine
     /// </summary>
     public string? BlowingMachine { get; set; }
 
+    /// <summary>
+    /// Tên máy thổi
+    /// </summary>
+    public string? BlowingMachineName { get; set; }
+
     [JsonIgnore] [ForeignKey("WorkerId")] public Employee? Worker { get; set; }
 
     public int? WorkerId { get; set; }

@@ -36,11 +36,16 @@ public class GrainMixingProcessService
 
         var totalCount = await query.CountAsync();
 
+        if (pr.Include == "lines")
+        {
+            query = query.Include(bp => bp.Lines);
+        }
+
         var result = await query
             .Include(gm => gm.Creator)
             .Include(gm => gm.Modifier)
+            .OrderByDescending(gm => gm.Id)
             .ApplyOrderingAndPaging(pr)
-            .OrderByDescending(gm => gm.ProductionDate)
             .ToListAsync();
 
         return new PaginationResponse<GrainMixingProcess>
@@ -306,6 +311,8 @@ public class GrainMixingProcessService
             Specification = dto.Specification,
             WorkerId = dto.WorkerId,
             MachineName = dto.MachineName,
+            MixingMachine = dto.MixingMachine,
+            MixingMachineName = dto.MixingMachineName,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
             // PP
@@ -395,6 +402,8 @@ public class GrainMixingProcessService
             Specification = dto.Specification,
             WorkerId = dto.WorkerId,
             MachineName = dto.MachineName,
+            MixingMachine = dto.MixingMachine,
+            MixingMachineName = dto.MixingMachineName,
             StartTime = dto.StartTime,
             EndTime = dto.EndTime,
             // PP

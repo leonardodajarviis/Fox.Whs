@@ -174,6 +174,11 @@ public class SlittingProcessLine
     /// </summary>
     public string? SlittingMachine { get; set; } = null!;
 
+    /// <summary>
+    /// Tên máy chia
+    /// </summary>
+    public string? SlittingMachineName { get; set; }
+
     public int? WorkerId { get; set; }
 
     [ForeignKey("WorkerId"), JsonIgnore]
@@ -301,6 +306,8 @@ public class SlittingProcessLine
     /// Số máy in
     /// </summary>
     public string? PrintingMachine { get; set; }
+
+    public string? PrintingMachineName { get; set; }
 
     /// <summary>
     /// Cắt via (Kg)
