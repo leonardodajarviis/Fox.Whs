@@ -35,7 +35,7 @@ public class SlittingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
         }
 
         var result = await query
@@ -371,7 +371,7 @@ public class SlittingProcessService
             PrintingLossKg = dto.PrintingLossKg,
             PrintingLossReason = dto.PrintingLossReason,
             PrintingMachine = dto.PrintingMachine,
-            PrintingMachineName = dto.PrintingMachineName, 
+            PrintingMachineName = dto.PrintingMachineName,
             CutViaKg = dto.CutViaKg,
             HumanLossKg = dto.HumanLossKg,
             HumanLossReason = dto.HumanLossReason,
