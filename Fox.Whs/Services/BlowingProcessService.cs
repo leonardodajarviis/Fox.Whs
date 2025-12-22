@@ -67,6 +67,8 @@ public class BlowingProcessService
             .Include(bp => bp.ShiftLeader)
             .Include(bp => bp.Lines)
             .ThenInclude(line => line.Worker)
+            .Include(bp => bp.Lines)
+            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(bp => bp.Id == id);
 
         if (blowingProcess == null)

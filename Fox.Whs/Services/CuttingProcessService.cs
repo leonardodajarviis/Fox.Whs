@@ -37,6 +37,8 @@ public class CuttingProcessService
         if (pr.Include == "lines")
         {
             query = query
+                .Include(cp => cp.Lines)
+                .ThenInclude(line => line.BusinessPartner)
                 .Include(bp => bp.Lines)
                 .ThenInclude(bp => bp.Worker);
         }

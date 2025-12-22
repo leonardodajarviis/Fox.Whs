@@ -38,7 +38,9 @@ public class GrainMixingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker)
+                .Include(gm => gm.Lines)
+                .ThenInclude(line => line.BusinessPartner) ;
         }
 
         var result = await query

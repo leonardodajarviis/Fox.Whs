@@ -36,7 +36,8 @@ public class PrintingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker).Include(x => x.Lines)
+                .ThenInclude(line => line.BusinessPartner);
         }
 
         var result = await query

@@ -35,7 +35,7 @@ public class RewindingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker).Include(x => x.Lines).ThenInclude(x => x.BusinessPartner);
         }
 
         var result = await query
