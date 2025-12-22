@@ -139,9 +139,20 @@ public class GrainMixingBlowingProcessService
             .Distinct()
             .ToList();
 
-        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings
+        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings.AsNoTracking()
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
+
+        var itemCodes = dto.Lines.Select(l => l.ItemCode).Distinct().ToList();
+
+        var existingItems = await _dbContext.Items.AsNoTracking()
+            .Where(i => itemCodes.Contains(i.ItemCode))
+            .ToDictionaryAsync(i => i.ItemCode);
+
+        if (existingItems == null)
+        {
+            throw new NotFoundException("Không tìm thấy Item nào phù hợp với các mã hàng đã cung cấp");
+        }
 
         var lines = new List<GrainMixingBlowingProcessLine>();
         foreach (var lineDto in dto.Lines)
@@ -149,8 +160,12 @@ public class GrainMixingBlowingProcessService
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ??
                 throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
 
+            var item = existingItems!.GetValueOrDefault(lineDto.ItemCode) ??
+                throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
+
             var line = MapCreateToGrainMixingBlowingProcessLine(
                 lineDto,
+                item.ItemName,
                 lineDto.ProductionOrderId,
                 productionOrder.ProductionBatch.ToString() ?? string.Empty,
                 productionOrder.DateOfNeed);
@@ -257,8 +272,18 @@ public class GrainMixingBlowingProcessService
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
+        var itemCodes = dto.Lines.Select(l => l.ItemCode).Distinct().ToList();
+        var existingItems = await _dbContext.Items.AsNoTracking()
+            .Where(i => itemCodes.Contains(i.ItemCode))
+            .ToDictionaryAsync(i => i.ItemCode);
+
+        if (existingItems == null)
+        {
+            throw new NotFoundException("Không tìm thấy Item nào phù hợp với các mã hàng đã cung cấp");
+        }
+
         // Cập nhật lines
-        UpdateLines(grainMixingBlowingProcess, dto.Lines, existingProductionOrders);
+        UpdateLines(grainMixingBlowingProcess, existingItems, dto.Lines, existingProductionOrders);
 
         if (!grainMixingBlowingProcess.IsDraft)
         {
@@ -302,12 +327,12 @@ public class GrainMixingBlowingProcessService
     #region Private Methods
 
     private static GrainMixingBlowingProcessLine MapCreateToGrainMixingBlowingProcessLine(
-        CreateGrainMixingBlowingProcessLineDto dto, int productOrderId, string productionBatch, DateTime? requiredDate)
+        CreateGrainMixingBlowingProcessLineDto dto, string? itemName, int productOrderId, string productionBatch, DateTime? requiredDate)
     {
         return new GrainMixingBlowingProcessLine
         {
             ItemCode = dto.ItemCode,
-            ItemName = dto.ItemName,
+            ItemName = itemName,
             ProductionOrderId = productOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
@@ -392,6 +417,7 @@ public class GrainMixingBlowingProcessService
 
     private static GrainMixingBlowingProcessLine MapUpdateToGrainMixingBlowingProcessLine(
         UpdateGrainMixingBlowingProcessLineDto dto,
+        string? itemName,
         int productionOrderId,
         string productionBatch,
         DateTime? requiredDate,
@@ -400,7 +426,7 @@ public class GrainMixingBlowingProcessService
         var line = new GrainMixingBlowingProcessLine
         {
             ItemCode = dto.ItemCode,
-            ItemName = dto.ItemName,
+            ItemName = itemName,
             ProductionOrderId = productionOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
@@ -492,6 +518,7 @@ public class GrainMixingBlowingProcessService
 
     private void UpdateLines(
         GrainMixingBlowingProcess grainMixingBlowingProcess,
+        Dictionary<string, Item>? items,
         List<UpdateGrainMixingBlowingProcessLineDto> lineDtos,
         Dictionary<int, ProductionOrderGrainMixing> existingProductionOrders
     )
@@ -517,6 +544,9 @@ public class GrainMixingBlowingProcessService
         {
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ??
                 throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            
+            var item = items!.GetValueOrDefault(lineDto.ItemCode) ??
+                throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
             if (lineDto.Id.HasValue)
             {
                 // Cập nhật line hiện có
@@ -525,7 +555,7 @@ public class GrainMixingBlowingProcessService
 
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, productionOrder.DocEntry,
+                    var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
                         productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id);
                     updatedLine.GrainMixingBlowingProcessId = existingLine.GrainMixingBlowingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
@@ -534,7 +564,7 @@ public class GrainMixingBlowingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, productionOrder.DocEntry,
+                var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
                     productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed);
                 grainMixingBlowingProcess.Lines.Add(newLine);
             }

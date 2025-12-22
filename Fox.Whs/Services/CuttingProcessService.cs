@@ -122,6 +122,7 @@ public class CuttingProcessService
             var line = MapCreateToCuttingProcessLine(
                 lineDto,
                 productionOrder.ItemCode,
+                productionOrder.ProdName,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedCutting,
@@ -266,6 +267,7 @@ public class CuttingProcessService
     private static CuttingProcessLine MapCreateToCuttingProcessLine(
         CreateCuttingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -286,6 +288,7 @@ public class CuttingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -344,6 +347,7 @@ public class CuttingProcessService
     private static CuttingProcessLine MapUpdateToCuttingProcessLine(
         UpdateCuttingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -366,6 +370,7 @@ public class CuttingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -460,7 +465,7 @@ public class CuttingProcessService
                 var existingLine = cuttingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode,
+                    var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder.ProdName,
                         productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                         item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
                         item.ColorCount, lineDto.ExcessPOPsc, lineDto.Id);
@@ -471,7 +476,7 @@ public class CuttingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode,
+                var newLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder.ProdName,
                     productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                     item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
                     item.ColorCount, lineDto.ExcessPOPsc);

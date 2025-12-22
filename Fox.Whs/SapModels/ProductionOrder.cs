@@ -18,6 +18,12 @@ public class ProductionOrder
     [Column("ItemCode")]
     public string ItemCode { get; set; } = null!;
 
+    /// <summary>
+    /// Tên hàng sản xuất
+    /// </summary>
+    [Column("ProdName")]
+    public string? ProdName {get; set;}
+
     [Column("U_IN")] public string? IsPrinting { get; set; }
 
     [Column("U_INSTATUS")] public string? PrintingStatus { get; set; }

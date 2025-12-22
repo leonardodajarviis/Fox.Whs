@@ -109,6 +109,7 @@ public class RewindingProcessService
             var line = MapCreateToRewindingProcessLine(
                 lineDto,
                 productionOrder.ItemCode,
+                productionOrder.ProdName,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedRewinding, // RequiredDate sẽ lấy từ DTO hoặc để null
@@ -237,6 +238,7 @@ public class RewindingProcessService
     private static RewindingProcessLine MapCreateToRewindingProcessLine(
         CreateRewindingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -254,6 +256,7 @@ public class RewindingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -296,6 +299,7 @@ public class RewindingProcessService
     private static RewindingProcessLine MapUpdateToRewindingProcessLine(
         UpdateRewindingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -314,6 +318,7 @@ public class RewindingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -398,6 +403,7 @@ public class RewindingProcessService
                     var updatedLine = MapUpdateToRewindingProcessLine(
                         lineDto,
                         productionOrder.ItemCode,
+                        productionOrder.ProdName,
                         productionOrder?.CardCode,
                         productionOrder?.ProductionBatch,
                         null, // RequiredDate sẽ lấy từ DTO hoặc để null
@@ -417,6 +423,7 @@ public class RewindingProcessService
                 var newLine = MapUpdateToRewindingProcessLine(
                     lineDto,
                     productionOrder.ItemCode,
+                    productionOrder.ProdName,
                     productionOrder?.CardCode,
                     productionOrder?.ProductionBatch,
                     null, // RequiredDate sẽ lấy từ DTO hoặc để null

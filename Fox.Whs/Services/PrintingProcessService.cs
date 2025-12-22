@@ -120,6 +120,7 @@ public class PrintingProcessService
             var line = MapCreateToPrintingProcessLine(
                 lineDto,
                 productionOrder.ItemCode,
+                productionOrder.ProdName,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedPrinting,
@@ -263,6 +264,7 @@ public class PrintingProcessService
     private static PrintingProcessLine MapCreateToPrintingProcessLine(
         CreatePrintingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -282,6 +284,7 @@ public class PrintingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -333,6 +336,7 @@ public class PrintingProcessService
     private static PrintingProcessLine MapUpdateToPrintingProcessLine(
         UpdatePrintingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -353,6 +357,7 @@ public class PrintingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -445,6 +450,7 @@ public class PrintingProcessService
                     var updatedLine = MapUpdateToPrintingProcessLine(
                         lineDto,
                         productionOrder.ItemCode,
+                        productionOrder.ProdName,
                         productionOrder?.CardCode,
                         productionOrder?.ProductionBatch,
                         productionOrder?.DateOfNeedPrinting,
@@ -466,6 +472,7 @@ public class PrintingProcessService
                 var newLine = MapUpdateToPrintingProcessLine(
                     lineDto,
                     productionOrder.ItemCode,
+                    productionOrder.ProdName,
                     productionOrder?.CardCode,
                     productionOrder?.ProductionBatch,
                     productionOrder?.DateOfNeedPrinting,

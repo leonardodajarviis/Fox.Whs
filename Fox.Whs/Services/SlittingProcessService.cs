@@ -110,6 +110,7 @@ public class SlittingProcessService
             var line = MapCreateToSlittingProcessLine(
                 lineDto,
                 productionOrder.ItemCode,
+                productionOrder.ProdName,
                 productionOrder?.CardCode ?? string.Empty,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedSlitting,
@@ -239,6 +240,7 @@ public class SlittingProcessService
     private static SlittingProcessLine MapCreateToSlittingProcessLine(
         CreateSlittingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -262,6 +264,7 @@ public class SlittingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -316,6 +319,7 @@ public class SlittingProcessService
     private static SlittingProcessLine MapUpdateToSlittingProcessLine(
         UpdateSlittingProcessLineDto dto,
         string itemCode,
+        string? itemName,
         string? cardCode,
         string? productionBatch,
         DateTime? requiredDate,
@@ -340,6 +344,7 @@ public class SlittingProcessService
         {
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
+            ItemName = itemName,
             CardCode = cardCode,
             ProductionBatch = productionBatch,
             ProductType = productType,
@@ -437,6 +442,7 @@ public class SlittingProcessService
                     var updatedLine = MapUpdateToSlittingProcessLine(
                         lineDto,
                         productionOrder.ItemCode,
+                        productionOrder.ProdName,
                         productionOrder?.CardCode,
                         productionOrder?.ProductionBatch,
                         productionOrder?.DateOfNeedSlitting,
@@ -458,6 +464,7 @@ public class SlittingProcessService
                 var newLine = MapUpdateToSlittingProcessLine(
                     lineDto,
                     productionOrder.ItemCode,
+                    productionOrder.ProdName,
                     productionOrder?.CardCode,
                     productionOrder?.ProductionBatch,
                     productionOrder?.DateOfNeedSlitting,
@@ -478,8 +485,8 @@ public class SlittingProcessService
         slittingProcess.TotalSlittingOutput = slittingProcess.Lines.Sum(l => l.QuantityKg);
         slittingProcess.TotalProcessingMold = slittingProcess.Lines.Sum(l => l.ProcessingLossKg);
         slittingProcess.TotalBlowingStageMold = slittingProcess.Lines.Sum(l => l.BlowingLossKg);
-        slittingProcess.TotalPrintingStageMold = slittingProcess.Lines.Sum(l => l.PrintingLossKg + l.CutViaKg);
-        slittingProcess.TotalSlittingStageMold = slittingProcess.Lines.Sum(l => l.HumanLossKg + l.MachineLossKg);
+        slittingProcess.TotalPrintingStageMold = slittingProcess.Lines.Sum(l => l.PrintingLossKg);
+        slittingProcess.TotalSlittingStageMold = slittingProcess.Lines.Sum(l => l.HumanLossKg + l.MachineLossKg + l.CutViaKg);
     }
 
     #endregion

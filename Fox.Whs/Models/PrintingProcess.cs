@@ -115,6 +115,11 @@ public class PrintingProcessLine
     public string ItemCode { get; set; } = null!;
 
     /// <summary>
+    /// Tên hàng sản xuất
+    /// </summary>
+    public string? ItemName { get; set; }
+
+    /// <summary>
     /// Lô sản xuất
     /// </summary>
     public string? ProductionBatch { get; set; }
