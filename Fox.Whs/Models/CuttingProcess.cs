@@ -374,5 +374,5 @@ public class CuttingProcessLine
     /// <summary>
     /// Ghi chú
     /// </summary>
-    public string? Note {get; set;}
+    public string? Note { get; set; }
 }

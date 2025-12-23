@@ -268,7 +268,7 @@ public class GrainMixingBlowingProcessService
             .Distinct()
             .ToList();
 
-        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings.AsNoTracking()
+        var existingProductionOrders = await _dbContext.ProductionOrders.AsNoTracking()
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -517,7 +517,7 @@ public class GrainMixingBlowingProcessService
         GrainMixingBlowingProcess grainMixingBlowingProcess,
         Dictionary<string, Item>? items,
         List<UpdateGrainMixingBlowingProcessLineDto> lineDtos,
-        Dictionary<int, ProductionOrderGrainMixing> existingProductionOrders
+        Dictionary<int, ProductionOrder> existingProductionOrders
     )
     {
         // Xóa các line không còn tồn tại trong DTO
@@ -553,7 +553,7 @@ public class GrainMixingBlowingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
-                        productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id);
+                        productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing, lineDto.Id);
                     updatedLine.GrainMixingBlowingProcessId = existingLine.GrainMixingBlowingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -562,7 +562,7 @@ public class GrainMixingBlowingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
-                    productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed);
+                    productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing);
                 grainMixingBlowingProcess.Lines.Add(newLine);
             }
         }
