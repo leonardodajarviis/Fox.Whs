@@ -139,7 +139,7 @@ public class GrainMixingBlowingProcessService
             .Distinct()
             .ToList();
 
-        var existingProductionOrders = await _dbContext.ProductionOrderGrainMixings.AsNoTracking()
+        var existingProductionOrders = await _dbContext.ProductionOrders.AsNoTracking()
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -167,8 +167,8 @@ public class GrainMixingBlowingProcessService
                 lineDto,
                 item.ItemName,
                 lineDto.ProductionOrderId,
-                productionOrder.ProductionBatch.ToString() ?? string.Empty,
-                productionOrder.DateOfNeed);
+                productionOrder.ProductionBatch?.ToString() ?? string.Empty,
+                productionOrder.DateOfNeedBlowing);
 
             lines.Add(line);
         }
@@ -285,20 +285,17 @@ public class GrainMixingBlowingProcessService
         // Cập nhật lines
         UpdateLines(grainMixingBlowingProcess, existingItems, dto.Lines, existingProductionOrders);
 
-        if (!grainMixingBlowingProcess.IsDraft)
+        if (grainMixingBlowingProcess.Lines.All(l => l.Status == 1))
         {
-            if (grainMixingBlowingProcess.Lines.All(l => l.Status == 1))
-            {
-                grainMixingBlowingProcess.Status = 1; // Hoàn thành
-            }
-            else if (grainMixingBlowingProcess.Lines.Any(l => l.Status == 1))
-            {
-                grainMixingBlowingProcess.Status = 2; // Đang tiến hành
-            }
-            else if (grainMixingBlowingProcess.Lines.All(l => l.Status == 0))
-            {
-                grainMixingBlowingProcess.Status = 0;
-            }
+            grainMixingBlowingProcess.Status = 1; // Hoàn thành
+        }
+        else if (grainMixingBlowingProcess.Lines.Any(l => l.Status == 1))
+        {
+            grainMixingBlowingProcess.Status = 2; // Đang tiến hành
+        }
+        else if (grainMixingBlowingProcess.Lines.All(l => l.Status == 0))
+        {
+            grainMixingBlowingProcess.Status = 0;
         }
 
         await _dbContext.SaveChangesAsync();
@@ -544,7 +541,7 @@ public class GrainMixingBlowingProcessService
         {
             var productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId) ??
                 throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
-            
+
             var item = items!.GetValueOrDefault(lineDto.ItemCode) ??
                 throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
             if (lineDto.Id.HasValue)

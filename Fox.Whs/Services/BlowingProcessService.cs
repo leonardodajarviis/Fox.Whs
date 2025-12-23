@@ -231,31 +231,28 @@ public class BlowingProcessService
         // Tính toán lại tổng
         CalculateTotals(blowingProcess);
 
-        if (!blowingProcess.IsDraft)
+        var productOrderCompletedIds = blowingProcess.Lines
+            .Where(l => l.IsCompleted && l.ProductionOrderId != null)
+            .Select(l => l.ProductionOrderId!.Value)
+            .Distinct()
+            .ToArray() ?? [];
+
+        if (productOrderCompletedIds.Length > 0)
         {
-            var productOrderCompletedIds = blowingProcess.Lines
-                .Where(l => l.IsCompleted && l.ProductionOrderId != null)
-                .Select(l => l.ProductionOrderId!.Value)
-                .Distinct()
-                .ToArray() ?? [];
+            await _dbContext.UpdateStatusProductionOrderSapAsync("U_THOISTATUS", productOrderCompletedIds);
+        }
 
-            if (productOrderCompletedIds.Length > 0)
-            {
-                await _dbContext.UpdateStatusProductionOrderSapAsync("U_THOISTATUS", productOrderCompletedIds);
-            }
-
-            if (blowingProcess.Lines.All(l => l.Status == 1))
-            {
-                blowingProcess.Status = 1; // Hoàn thành
-            }
-            else if (blowingProcess.Lines.Any(l => l.Status == 1))
-            {
-                blowingProcess.Status = 2; // Đang tiến hành
-            }
-            else if (blowingProcess.Lines.All(l => l.Status == 0))
-            {
-                blowingProcess.Status = 0;
-            }
+        if (blowingProcess.Lines.All(l => l.Status == 1))
+        {
+            blowingProcess.Status = 1; // Hoàn thành
+        }
+        else if (blowingProcess.Lines.Any(l => l.Status == 1))
+        {
+            blowingProcess.Status = 2; // Đang tiến hành
+        }
+        else if (blowingProcess.Lines.All(l => l.Status == 0))
+        {
+            blowingProcess.Status = 0;
         }
 
         await _dbContext.SaveChangesAsync();

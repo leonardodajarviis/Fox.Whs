@@ -185,31 +185,28 @@ public class SlittingProcessService
         // Tính toán lại tổng
         CalculateTotals(slittingProcess);
 
-        if (!slittingProcess.IsDraft)
+        var productOrderCompletedIds = slittingProcess.Lines
+            .Where(l => l.IsCompleted)
+            .Select(l => l.ProductionOrderId)
+            .Distinct()
+            .ToArray() ?? [];
+
+        if (productOrderCompletedIds.Length > 0)
         {
-            var productOrderCompletedIds = slittingProcess.Lines
-                .Where(l => l.IsCompleted)
-                .Select(l => l.ProductionOrderId)
-                .Distinct()
-                .ToArray() ?? [];
+            await _dbContext.UpdateStatusProductionOrderSapAsync("U_CHIASTATUS", productOrderCompletedIds);
+        }
 
-            if (productOrderCompletedIds.Length > 0)
-            {
-                await _dbContext.UpdateStatusProductionOrderSapAsync("U_CHIASTATUS", productOrderCompletedIds);
-            }
-
-            if (slittingProcess.Lines.All(l => l.Status == 1))
-            {
-                slittingProcess.Status = 1; // Hoàn thành
-            }
-            else if (slittingProcess.Lines.Any(l => l.Status == 1))
-            {
-                slittingProcess.Status = 2; // Đang tiến hành
-            }
-            else if (slittingProcess.Lines.All(l => l.Status == 0))
-            {
-                slittingProcess.Status = 0;
-            }
+        if (slittingProcess.Lines.All(l => l.Status == 1))
+        {
+            slittingProcess.Status = 1; // Hoàn thành
+        }
+        else if (slittingProcess.Lines.Any(l => l.Status == 1))
+        {
+            slittingProcess.Status = 2; // Đang tiến hành
+        }
+        else if (slittingProcess.Lines.All(l => l.Status == 0))
+        {
+            slittingProcess.Status = 0;
         }
 
         await _dbContext.SaveChangesAsync();

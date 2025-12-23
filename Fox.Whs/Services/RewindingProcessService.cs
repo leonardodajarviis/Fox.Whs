@@ -183,31 +183,28 @@ public class RewindingProcessService
         // Tính toán lại tổng
         CalculateTotals(rewindingProcess);
 
-        if (!rewindingProcess.IsDraft)
+        var productOrderCompletedIds = rewindingProcess.Lines
+            .Where(l => l.IsCompleted)
+            .Select(l => l.ProductionOrderId)
+            .Distinct()
+            .ToArray() ?? [];
+
+        if (productOrderCompletedIds.Length > 0)
         {
-            var productOrderCompletedIds = rewindingProcess.Lines
-                .Where(l => l.IsCompleted)
-                .Select(l => l.ProductionOrderId)
-                .Distinct()
-                .ToArray() ?? [];
+            await _dbContext.UpdateStatusProductionOrderSapAsync("U_TUASTATUS", productOrderCompletedIds);
+        }
 
-            if (productOrderCompletedIds.Length > 0)
-            {
-                await _dbContext.UpdateStatusProductionOrderSapAsync("U_TUASTATUS", productOrderCompletedIds);
-            }
-
-            if (rewindingProcess.Lines.All(l => l.Status == 1))
-            {
-                rewindingProcess.Status = 1; // Hoàn thành
-            }
-            else if (rewindingProcess.Lines.Any(l => l.Status == 1))
-            {
-                rewindingProcess.Status = 2; // Đang tiến hành
-            }
-            else if (rewindingProcess.Lines.All(l => l.Status == 0))
-            {
-                rewindingProcess.Status = 0;
-            }
+        if (rewindingProcess.Lines.All(l => l.Status == 1))
+        {
+            rewindingProcess.Status = 1; // Hoàn thành
+        }
+        else if (rewindingProcess.Lines.Any(l => l.Status == 1))
+        {
+            rewindingProcess.Status = 2; // Đang tiến hành
+        }
+        else if (rewindingProcess.Lines.All(l => l.Status == 0))
+        {
+            rewindingProcess.Status = 0;
         }
 
         await _dbContext.SaveChangesAsync();

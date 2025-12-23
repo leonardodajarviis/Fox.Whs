@@ -40,7 +40,7 @@ public class GrainMixingProcessService
         {
             query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker)
                 .Include(gm => gm.Lines)
-                .ThenInclude(line => line.BusinessPartner) ;
+                .ThenInclude(line => line.BusinessPartner);
         }
 
         var result = await query
@@ -259,20 +259,17 @@ public class GrainMixingProcessService
         // Tính toán lại năng suất lao động
         CalculateLaborProductivity(grainMixingProcess);
 
-        if (!grainMixingProcess.IsDraft)
+        if (grainMixingProcess.Lines.All(l => l.Status == 1))
         {
-            if (grainMixingProcess.Lines.All(l => l.Status == 1))
-            {
-                grainMixingProcess.Status = 1; // Hoàn thành
-            }
-            else if (grainMixingProcess.Lines.Any(l => l.Status == 1))
-            {
-                grainMixingProcess.Status = 2; // Đang tiến hành
-            }
-            else if (grainMixingProcess.Lines.All(l => l.Status == 0))
-            {
-                grainMixingProcess.Status = 0;
-            }
+            grainMixingProcess.Status = 1; // Hoàn thành
+        }
+        else if (grainMixingProcess.Lines.Any(l => l.Status == 1))
+        {
+            grainMixingProcess.Status = 2; // Đang tiến hành
+        }
+        else if (grainMixingProcess.Lines.All(l => l.Status == 0))
+        {
+            grainMixingProcess.Status = 0;
         }
 
         await _dbContext.SaveChangesAsync();
