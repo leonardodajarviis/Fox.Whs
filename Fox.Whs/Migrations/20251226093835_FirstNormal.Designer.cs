@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251216073552_ThemNote")]
-    partial class ThemNote
+    [Migration("20251226093835_FirstNormal")]
+    partial class FirstNormal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,6 +115,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("BlowingMachine")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BlowingMachineName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("BlowingProcessId")
                         .HasColumnType("int");
 
@@ -159,6 +162,9 @@ namespace Fox.Whs.Migrations
 
                     b.Property<string>("ItemCode")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MachineErrorKg")
@@ -379,6 +385,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("CuttingMachine")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CuttingMachineName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CuttingProcessId")
                         .HasColumnType("int");
 
@@ -426,6 +435,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -452,6 +464,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrintingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrintingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ProcessingLossKg")
@@ -533,6 +548,9 @@ namespace Fox.Whs.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BlowingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlowingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -682,6 +700,12 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MaterialIssueVoucherNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MixingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MixingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MixtureType")
@@ -1030,6 +1054,12 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("MaterialIssueVoucherNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MixingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MixingMachineName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MixtureType")
                         .HasColumnType("nvarchar(max)");
 
@@ -1349,6 +1379,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1377,6 +1410,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrintingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrintingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PrintingProcessId")
@@ -1568,6 +1604,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1602,6 +1641,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RewindingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RewindingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RewindingProcessId")
@@ -1790,6 +1832,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1819,6 +1864,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrintingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrintingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ProcessingLossKg")
@@ -1855,6 +1903,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SlittingMachine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SlittingMachineName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SlittingProcessId")
@@ -2258,6 +2309,10 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("PrintingStatus")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_INSTATUS");
+
+                    b.Property<string>("ProdName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ProdName");
 
                     b.Property<string>("ProductionBatch")
                         .HasColumnType("nvarchar(max)")

@@ -35,8 +35,7 @@ public class SlittingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker).Include(x => x.Lines)
-                .ThenInclude(line => line.BusinessPartner);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
         }
 
         var result = await query
@@ -64,8 +63,6 @@ public class SlittingProcessService
             .Include(sp => sp.ShiftLeader)
             .Include(sp => sp.Lines)
                 .ThenInclude(line => line.Worker)
-            .Include(sp => sp.Lines)
-                .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(sp => sp.Id == id);
 
         if (slittingProcess == null)
@@ -95,6 +92,7 @@ public class SlittingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -111,7 +109,8 @@ public class SlittingProcessService
                 lineDto,
                 productionOrder.ItemCode,
                 productionOrder.ProdName,
-                productionOrder?.CardCode ?? string.Empty,
+                productionOrder?.CardCode,
+                productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedSlitting,
                 item.ProductType,
@@ -168,6 +167,7 @@ public class SlittingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -239,6 +239,7 @@ public class SlittingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -263,6 +264,7 @@ public class SlittingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductType = productType,
             ProductTypeName = productTypeName,
             ProductionBatch = productionBatch,
@@ -318,6 +320,7 @@ public class SlittingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -343,6 +346,7 @@ public class SlittingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -441,6 +445,7 @@ public class SlittingProcessService
                         productionOrder.ItemCode,
                         productionOrder.ProdName,
                         productionOrder?.CardCode,
+                        productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch,
                         productionOrder?.DateOfNeedSlitting,
                         item.ProductType,
@@ -463,6 +468,7 @@ public class SlittingProcessService
                     productionOrder.ItemCode,
                     productionOrder.ProdName,
                     productionOrder?.CardCode,
+                    productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch,
                     productionOrder?.DateOfNeedSlitting,
                     item.ProductType,

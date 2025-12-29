@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251222021840_9DayAgo")]
-    partial class _9DayAgo
+    [Migration("20251226135606_HelloBro")]
+    partial class HelloBro
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,8 +68,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -131,6 +134,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("CardCode")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DelayReason")
                         .HasColumnType("nvarchar(max)");
@@ -258,11 +264,12 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BlowingProcessId");
-
-                    b.HasIndex("CardCode");
 
                     b.HasIndex("WorkerId");
 
@@ -309,8 +316,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -380,6 +390,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ColorCount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CuttingMachine")
@@ -528,9 +541,10 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CardCode");
+                    b.HasKey("Id");
 
                     b.HasIndex("CuttingProcessId");
 
@@ -617,6 +631,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("CardCode")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DelayReason")
                         .HasColumnType("nvarchar(max)");
@@ -843,6 +860,9 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("WrapAdditive")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -892,8 +912,6 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CardCode");
 
                     b.HasIndex("GrainMixingBlowingProcessId");
 
@@ -975,6 +993,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("CardCode")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DelayReason")
                         .HasColumnType("nvarchar(max)");
@@ -1195,6 +1216,9 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("WrapAdditive")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -1245,8 +1269,6 @@ namespace Fox.Whs.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CardCode");
-
                     b.HasIndex("GrainMixingProcessId");
 
                     b.HasIndex("WorkerId");
@@ -1294,8 +1316,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1353,6 +1378,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ColorCount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DelayReason")
@@ -1476,9 +1504,10 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CardCode");
+                    b.HasKey("Id");
 
                     b.HasIndex("PrintingProcessId");
 
@@ -1521,8 +1550,11 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1579,6 +1611,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("CardCode")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DelayReason")
                         .HasColumnType("nvarchar(max)");
@@ -1679,9 +1714,10 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CardCode");
+                    b.HasKey("Id");
 
                     b.HasIndex("RewindingProcessId");
 
@@ -1730,8 +1766,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1798,6 +1837,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ColorCount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("CutViaKg")
@@ -1934,9 +1976,10 @@ namespace Fox.Whs.Migrations
                     b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("WorkerOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CardCode");
+                    b.HasKey("Id");
 
                     b.HasIndex("SlittingProcessId");
 
@@ -2535,9 +2578,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2554,17 +2595,11 @@ namespace Fox.Whs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
 
                     b.Navigation("BlowingProcess");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("Worker");
                 });
@@ -2583,9 +2618,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2596,10 +2629,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.CuttingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.CuttingProcess", "CuttingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("CuttingProcessId")
@@ -2609,8 +2638,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("CuttingProcess");
 
@@ -2636,10 +2663,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.GrainMixingBlowingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.GrainMixingBlowingProcess", "GrainMixingBlowingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("GrainMixingBlowingProcessId")
@@ -2649,8 +2672,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("GrainMixingBlowingProcess");
 
@@ -2676,10 +2697,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.GrainMixingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.GrainMixingProcess", "GrainMixingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("GrainMixingProcessId")
@@ -2689,8 +2706,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("GrainMixingProcess");
 
@@ -2711,9 +2726,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2724,10 +2737,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.PrintingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.PrintingProcess", "PrintingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("PrintingProcessId")
@@ -2737,8 +2746,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("PrintingProcess");
 
@@ -2759,9 +2766,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2772,10 +2777,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.RewindingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.RewindingProcess", "RewindingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("RewindingProcessId")
@@ -2785,8 +2786,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("RewindingProcess");
 
@@ -2807,9 +2806,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2820,10 +2817,6 @@ namespace Fox.Whs.Migrations
 
             modelBuilder.Entity("Fox.Whs.Models.SlittingProcessLine", b =>
                 {
-                    b.HasOne("Fox.Whs.SapModels.BusinessPartner", "BusinessPartner")
-                        .WithMany()
-                        .HasForeignKey("CardCode");
-
                     b.HasOne("Fox.Whs.Models.SlittingProcess", "SlittingProcess")
                         .WithMany("Lines")
                         .HasForeignKey("SlittingProcessId")
@@ -2833,8 +2826,6 @@ namespace Fox.Whs.Migrations
                     b.HasOne("Fox.Whs.SapModels.Employee", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId");
-
-                    b.Navigation("BusinessPartner");
 
                     b.Navigation("SlittingProcess");
 

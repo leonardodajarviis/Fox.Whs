@@ -35,7 +35,7 @@ public class RewindingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker).Include(x => x.Lines).ThenInclude(x => x.BusinessPartner);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
         }
 
         var result = await query
@@ -63,8 +63,6 @@ public class RewindingProcessService
             .Include(rp => rp.ShiftLeader)
             .Include(rp => rp.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(rp => rp.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(rp => rp.Id == id);
 
         if (rewindingProcess == null)
@@ -94,6 +92,7 @@ public class RewindingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -110,7 +109,8 @@ public class RewindingProcessService
                 lineDto,
                 productionOrder.ItemCode,
                 productionOrder.ProdName,
-                productionOrder?.CardCode ?? string.Empty,
+                productionOrder?.CardCode,
+                productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedRewinding, // RequiredDate sẽ lấy từ DTO hoặc để null
                 item.ProductType,
@@ -165,6 +165,7 @@ public class RewindingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -237,6 +238,7 @@ public class RewindingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -255,6 +257,7 @@ public class RewindingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductType = productType,
             ProductTypeName = productTypeName,
             ProductionBatch = productionBatch,
@@ -298,6 +301,7 @@ public class RewindingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -317,6 +321,7 @@ public class RewindingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -402,6 +407,7 @@ public class RewindingProcessService
                         productionOrder.ItemCode,
                         productionOrder.ProdName,
                         productionOrder?.CardCode,
+                        productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch,
                         null, // RequiredDate sẽ lấy từ DTO hoặc để null
                         item.ProductType,
@@ -422,6 +428,7 @@ public class RewindingProcessService
                     productionOrder.ItemCode,
                     productionOrder.ProdName,
                     productionOrder?.CardCode,
+                    productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch,
                     null, // RequiredDate sẽ lấy từ DTO hoặc để null
                     item.ProductType,

@@ -37,8 +37,6 @@ public class CuttingProcessService
         if (pr.Include == "lines")
         {
             query = query
-                .Include(cp => cp.Lines)
-                .ThenInclude(line => line.BusinessPartner)
                 .Include(bp => bp.Lines)
                 .ThenInclude(bp => bp.Worker);
         }
@@ -68,8 +66,6 @@ public class CuttingProcessService
             .Include(pp => pp.Modifier)
             .Include(cp => cp.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(cp => cp.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(cp => cp.Id == id);
 
         if (cuttingProcess == null)
@@ -108,6 +104,7 @@ public class CuttingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -123,7 +120,8 @@ public class CuttingProcessService
                 lineDto,
                 productionOrder.ItemCode,
                 productionOrder.ProdName,
-                productionOrder?.CardCode ?? string.Empty,
+                productionOrder?.CardCode,
+                productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedCutting,
                 item.ProductType,
@@ -194,6 +192,7 @@ public class CuttingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -266,6 +265,7 @@ public class CuttingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -287,6 +287,7 @@ public class CuttingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -346,6 +347,7 @@ public class CuttingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -463,7 +465,7 @@ public class CuttingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder.ProdName,
-                        productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
+                        productionOrder?.CardCode, productionOrder?.CustomerName, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                         item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
                         item.ColorCount, lineDto.ExcessPOPsc, lineDto.Id);
                     updatedLine.CuttingProcessId = existingLine.CuttingProcessId; // Giữ nguyên khóa ngoại
@@ -474,7 +476,7 @@ public class CuttingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder.ProdName,
-                    productionOrder?.CardCode, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
+                    productionOrder?.CardCode, productionOrder?.CustomerName, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                     item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
                     item.ColorCount, lineDto.ExcessPOPsc);
                 cuttingProcess.Lines.Add(newLine);

@@ -24,13 +24,13 @@ public class GrainMixingBlowingProcess
     /// Ngày sản xuất (ngày pha)
     /// </summary>
     public DateTime ProductionDate { get; set; }
-    
+
     /// <summary>
     /// Ca sản xuất
     /// </summary>
     public string ProductionShift { get; set; } = null!;
- 
-    
+
+
     public string? ItemCode { get; set; }
     public string? ItemName { get; set; }
 
@@ -88,22 +88,19 @@ public class GrainMixingBlowingProcessLine
     /// Lô sản xuất
     /// </summary>
     public string? ProductionBatch { get; set; }
-    
-    
+
+
     public string? ItemCode { get; set; }
     public string? ItemName { get; set; }
 
     [MaxLength(15)]
     public string? CardCode { get; set; }
 
-    [ForeignKey("CardCode"), JsonIgnore]
-    public BusinessPartner? BusinessPartner { get; set; }
 
     /// <summary>
     /// Khách hàng
     /// </summary>
-    [NotMapped]
-    public string? CustomerName => BusinessPartner?.CardName;
+    public string? CustomerName { get; set; }
 
     /// <summary>
     /// Số phiếu lĩnh vật tư
@@ -128,7 +125,9 @@ public class GrainMixingBlowingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FullName;
+    [NotMapped]
+    public string? WorkerName => WorkerId == null ? WorkerOriginalName : Worker?.FullName;
+    public string? WorkerOriginalName { get; set; }
 
     /// <summary>
     /// Tên máy pha
@@ -513,5 +512,5 @@ public class GrainMixingBlowingProcessLine
     /// </summary>
     public string? DelayReason { get; set; }
 
-    public string? Note {get; set;}
+    public string? Note { get; set; }
 }

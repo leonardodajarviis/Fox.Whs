@@ -36,8 +36,7 @@ public class PrintingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker).Include(x => x.Lines)
-                .ThenInclude(line => line.BusinessPartner);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
         }
 
         var result = await query
@@ -65,8 +64,6 @@ public class PrintingProcessService
             .Include(pp => pp.Modifier)
             .Include(pp => pp.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(pp => pp.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(pp => pp.Id == id);
 
         if (printingProcess == null)
@@ -106,6 +103,7 @@ public class PrintingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -121,7 +119,8 @@ public class PrintingProcessService
                 lineDto,
                 productionOrder.ItemCode,
                 productionOrder.ProdName,
-                productionOrder?.CardCode ?? string.Empty,
+                productionOrder?.CardCode,
+                productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedPrinting,
                 item.ProductType,
@@ -189,6 +188,7 @@ public class PrintingProcessService
 
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -263,6 +263,7 @@ public class PrintingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -283,6 +284,7 @@ public class PrintingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -335,6 +337,7 @@ public class PrintingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -356,6 +359,7 @@ public class PrintingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -449,6 +453,7 @@ public class PrintingProcessService
                         productionOrder.ItemCode,
                         productionOrder.ProdName,
                         productionOrder?.CardCode,
+                        productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch,
                         productionOrder?.DateOfNeedPrinting,
                         item.ProductType,
@@ -471,6 +476,7 @@ public class PrintingProcessService
                     productionOrder.ItemCode,
                     productionOrder.ProdName,
                     productionOrder?.CardCode,
+                    productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch,
                     productionOrder?.DateOfNeedPrinting,
                     item.ProductType,

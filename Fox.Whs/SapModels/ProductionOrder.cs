@@ -200,4 +200,6 @@ public class ProductionOrder
     [ForeignKey("ItemCode")] public Item? ItemDetail { get; set; }
 
     [ForeignKey("CardCode")] public BusinessPartner? BusinessPartnerDetail { get; set; }
+
+    public string? CustomerName => BusinessPartnerDetail?.CardName;
 }

@@ -38,9 +38,7 @@ public class GrainMixingProcessService
 
         if (pr.Include == "lines")
         {
-            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker)
-                .Include(gm => gm.Lines)
-                .ThenInclude(line => line.BusinessPartner);
+            query = query.Include(bp => bp.Lines).ThenInclude(x => x.Worker);
         }
 
         var result = await query
@@ -70,8 +68,6 @@ public class GrainMixingProcessService
             .Include(gm => gm.Modifier)
             .Include(gm => gm.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(gm => gm.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
         if (grainMixingProcess == null)
@@ -118,18 +114,26 @@ public class GrainMixingProcessService
             .Distinct()
             .ToList();
 
+        var existingCustomer = await _dbContext.BusinessPartners
+            .Where(bp => cardCodes.Contains(bp.CardCode))
+            .ToListAsync();
+
+        var existingCardCodes = existingCustomer.Select(x => x.CardCode).ToList();
+
         if (cardCodes.Any())
         {
-            var existingCardCodes = await _dbContext.BusinessPartners
-                .Where(bp => cardCodes.Contains(bp.CardCode))
-                .Select(bp => bp.CardCode)
-                .ToListAsync();
 
             var missingCardCodes = cardCodes.Except(existingCardCodes).ToList();
             if (missingCardCodes.Any())
             {
                 throw new NotFoundException($"Không tìm thấy khách hàng với mã: {string.Join(", ", missingCardCodes)}");
             }
+        }
+
+        var dictCustomer = existingCustomer.ToDictionary(x => x.CardCode, x => x.CardName);
+        if (dictCustomer is null)
+        {
+            throw new BadRequestException("Không tìm thấy khách hàng nào.");
         }
 
         var productionOrderIds = dto.Lines
@@ -150,6 +154,7 @@ public class GrainMixingProcessService
             var line = MapCreateToGrainMixingProcessLine(
                 lineDto,
                 lineDto.ProductionOrderId,
+                dictCustomer!.GetValueOrDefault(lineDto.CardCode),
                 productionOrder.ProductionBatch.ToString() ?? string.Empty,
                 productionOrder.DateOfNeed);
 
@@ -221,12 +226,13 @@ public class GrainMixingProcessService
             .Distinct()
             .ToList();
 
+        var existingCustomer = await _dbContext.BusinessPartners
+            .Where(bp => cardCodes.Contains(bp.CardCode))
+            .ToListAsync();
+
         if (cardCodes.Any())
         {
-            var existingCardCodes = await _dbContext.BusinessPartners
-                .Where(bp => cardCodes.Contains(bp.CardCode))
-                .Select(bp => bp.CardCode)
-                .ToListAsync();
+            var existingCardCodes = existingCustomer.Select(x => x.CardCode).ToList();
 
             var missingCardCodes = cardCodes.Except(existingCardCodes).ToList();
             if (missingCardCodes.Any())
@@ -234,6 +240,8 @@ public class GrainMixingProcessService
                 throw new NotFoundException($"Không tìm thấy khách hàng với mã: {string.Join(", ", missingCardCodes)}");
             }
         }
+
+        var dictCustomer = existingCustomer.ToDictionary(x => x.CardCode, x => x.CardName);
 
         // Cập nhật thông tin cơ bản
         grainMixingProcess.ProductionDate = dto.ProductionDate;
@@ -254,7 +262,7 @@ public class GrainMixingProcessService
             .ToDictionaryAsync(po => po.DocEntry);
 
         // Cập nhật lines
-        UpdateLines(grainMixingProcess, dto.Lines, existingProductionOrders);
+        UpdateLines(grainMixingProcess, dto.Lines, dictCustomer, existingProductionOrders);
 
         // Tính toán lại năng suất lao động
         CalculateLaborProductivity(grainMixingProcess);
@@ -298,13 +306,14 @@ public class GrainMixingProcessService
     #region Private Methods
 
     private static GrainMixingProcessLine MapCreateToGrainMixingProcessLine(
-        CreateGrainMixingProcessLineDto dto, int productOrderId, string productionBatch, DateTime? requiredDate)
+        CreateGrainMixingProcessLineDto dto, int productOrderId, string? customerName, string productionBatch, DateTime? requiredDate)
     {
         return new GrainMixingProcessLine
         {
             ProductionOrderId = productOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
+            CustomerName = customerName,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
             Specification = dto.Specification,
@@ -387,6 +396,7 @@ public class GrainMixingProcessService
     private static GrainMixingProcessLine MapUpdateToGrainMixingProcessLine(
         UpdateGrainMixingProcessLineDto dto,
         int productionOrderId,
+        string? customerName,
         string productionBatch,
         DateTime? requiredDate,
         int? existingId = null)
@@ -396,6 +406,7 @@ public class GrainMixingProcessService
             ProductionOrderId = productionOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
+            CustomerName = customerName,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
             Specification = dto.Specification,
@@ -485,6 +496,7 @@ public class GrainMixingProcessService
     private void UpdateLines(
         GrainMixingProcess grainMixingProcess,
         List<UpdateGrainMixingProcessLineDto> lineDtos,
+        Dictionary<string, string?>? dictCustomer,
         Dictionary<int, ProductionOrderGrainMixing> existingProductionOrders
     )
     {
@@ -517,8 +529,9 @@ public class GrainMixingProcessService
 
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
+                    var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, dictCustomer!.GetValueOrDefault(lineDto.CardCode),
                         productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id);
+
                     updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }
@@ -526,7 +539,7 @@ public class GrainMixingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry,
+                var newLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, dictCustomer!.GetValueOrDefault(lineDto.CardCode),
                     productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed);
                 grainMixingProcess.Lines.Add(newLine);
             }

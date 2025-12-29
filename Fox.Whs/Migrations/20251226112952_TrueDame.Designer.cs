@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fox.Whs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251217075736_NormalChangele")]
-    partial class NormalChangele
+    [Migration("20251226112952_TrueDame")]
+    partial class TrueDame
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,8 +68,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -164,6 +167,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineErrorKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -179,6 +185,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OtherErrorKg")
@@ -306,8 +315,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -432,6 +444,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -444,6 +459,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PieceCount")
@@ -706,6 +724,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PeAdditive")
@@ -1060,6 +1081,9 @@ namespace Fox.Whs.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OrginalWorkerName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("PeAdditive")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -1288,8 +1312,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1373,6 +1400,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1392,6 +1422,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("OppRollHeadReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PieceCount")
@@ -1512,8 +1545,11 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1595,6 +1631,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1607,6 +1646,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductType")
@@ -1718,8 +1760,11 @@ namespace Fox.Whs.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("ShiftLeaderId")
+                    b.Property<int?>("ShiftLeaderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShiftLeaderOriginalName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -1820,6 +1865,9 @@ namespace Fox.Whs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("MachineLossKg")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -1832,6 +1880,9 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrginalWorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PieceCount")
@@ -2295,6 +2346,10 @@ namespace Fox.Whs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_INSTATUS");
 
+                    b.Property<string>("ProdName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ProdName");
+
                     b.Property<string>("ProductionBatch")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("U_LOSX");
@@ -2516,9 +2571,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2564,9 +2617,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2692,9 +2743,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2740,9 +2789,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 
@@ -2788,9 +2835,7 @@ namespace Fox.Whs.Migrations
 
                     b.HasOne("Fox.Whs.SapModels.Employee", "ShiftLeader")
                         .WithMany()
-                        .HasForeignKey("ShiftLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftLeaderId");
 
                     b.Navigation("Creator");
 

@@ -39,9 +39,7 @@ public class BlowingProcessService
         {
             query = query
                 .Include(bp => bp.Lines)
-                .ThenInclude(bp => bp.Worker)
-                .Include(bp => bp.Lines)
-                .ThenInclude(bp => bp.BusinessPartner);
+                .ThenInclude(bp => bp.Worker);
         }
 
         var result = await query
@@ -69,8 +67,6 @@ public class BlowingProcessService
             .Include(bp => bp.ShiftLeader)
             .Include(bp => bp.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(bp => bp.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(bp => bp.Id == id);
 
         if (blowingProcess == null)
@@ -113,6 +109,7 @@ public class BlowingProcessService
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
+            .Include(po => po.BusinessPartnerDetail)
             .ToDictionaryAsync(po => po.DocEntry);
 
         var itemCodes = dto.Lines
@@ -144,6 +141,7 @@ public class BlowingProcessService
                 item.ItemCode,
                 productionOrder?.ProdName,
                 productionOrder?.CardCode,
+                productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
                 productionOrder?.DateOfNeedBlowing,
                 item.ProductType,
@@ -211,6 +209,7 @@ public class BlowingProcessService
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
             .ThenInclude(po => po!.ProductTypeInfo)
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -286,6 +285,7 @@ public class BlowingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -303,6 +303,7 @@ public class BlowingProcessService
             ProductionOrderId = dto.ProductionOrderId,
             ItemCode = itemCode,
             CardCode = cardCode,
+            CustomerName = customerName,
             ItemName = itemName,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -357,6 +358,7 @@ public class BlowingProcessService
         string itemCode,
         string? itemName,
         string? cardCode,
+        string? customerName,
         string? productionBatch,
         DateTime? requiredDate,
         string? productType,
@@ -376,6 +378,7 @@ public class BlowingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
@@ -482,7 +485,7 @@ public class BlowingProcessService
                 var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.ProdName, productionOrder?.CardCode,
+                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.ProdName, productionOrder?.CardCode, productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
                         item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
@@ -492,7 +495,8 @@ public class BlowingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.ProductionBatch, productionOrder?.CardCode,
+                var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode,
+                    productionOrder?.ProdName, productionOrder?.CardCode, productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
                     item.ProductTypeName, item.Thickness, item.SemiProductWidth);
                 blowingProcess.Lines.Add(newLine);

@@ -15,7 +15,7 @@ public class SlittingProcess
     [Key]
     public int Id { get; set; }
 
-    public int ShiftLeaderId { get; set; }
+    public int? ShiftLeaderId { get; set; }
 
     [ForeignKey("ShiftLeaderId"), JsonIgnore]
     public Employee? ShiftLeader { get; set; }
@@ -29,7 +29,9 @@ public class SlittingProcess
     /// Tên trưởng ca
     /// </summary>
     [NotMapped]
-    public string? ShiftLeaderName => ShiftLeader?.FullName;
+    public string? ShiftLeaderName => ShiftLeaderId == null ? ShiftLeaderOriginalName : ShiftLeader?.FullName;
+
+    public string? ShiftLeaderOriginalName { get; set; }
 
     /// <summary>
     /// Ngày sản xuất
@@ -135,14 +137,10 @@ public class SlittingProcessLine
     [MaxLength(15)]
     public string? CardCode { get; set; }
 
-    [ForeignKey("CardCode"), JsonIgnore]
-    public BusinessPartner? BusinessPartner { get; set; }
-
     /// <summary>
     /// Khách hàng
     /// </summary>
-    [NotMapped]
-    public string? CustomerName => BusinessPartner?.CardName;
+    public string? CustomerName { get; set; }
 
     /// <summary>
     /// Chủng loại
@@ -192,7 +190,10 @@ public class SlittingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FullName;
+    [NotMapped]
+    public string? WorkerName => WorkerId == null ? WorkerOriginalName : Worker?.FullName;
+
+    public string? WorkerOriginalName { get; set; }
 
     /// <summary>
     /// Tốc độ chia

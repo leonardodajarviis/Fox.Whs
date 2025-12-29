@@ -89,14 +89,10 @@ public class GrainMixingProcessLine
     [MaxLength(15)]
     public string? CardCode { get; set; }
 
-    [ForeignKey("CardCode"), JsonIgnore]
-    public BusinessPartner? BusinessPartner { get; set; }
-
     /// <summary>
     /// Khách hàng
     /// </summary>
-    [NotMapped]
-    public string? CustomerName => BusinessPartner?.CardName;
+    public string? CustomerName { get; set; }
 
     /// <summary>
     /// Số phiếu lĩnh vật tư
@@ -121,7 +117,10 @@ public class GrainMixingProcessLine
     /// <summary>
     /// Tên công nhân in
     /// </summary>
-    public string? WorkerName => Worker?.FullName;
+    [NotMapped]
+    public string? WorkerName => WorkerId == null ? WorkerOriginalName : Worker?.FullName;
+
+    public string? WorkerOriginalName { get; set; }
 
     /// <summary>
     /// Tên máy pha

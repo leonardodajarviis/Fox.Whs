@@ -39,8 +39,6 @@ public class GrainMixingBlowingProcessService
         if (pr.Include == "lines")
         {
             query = query
-                    .Include(cp => cp.Lines)
-                    .ThenInclude(line => line.BusinessPartner)
                     .Include(bp => bp.Lines)
                     .ThenInclude(bp => bp.Worker);
         }
@@ -72,8 +70,6 @@ public class GrainMixingBlowingProcessService
             .Include(gm => gm.Modifier)
             .Include(gm => gm.Lines)
             .ThenInclude(line => line.Worker)
-            .Include(gm => gm.Lines)
-            .ThenInclude(line => line.BusinessPartner)
             .FirstOrDefaultAsync(gm => gm.Id == id);
 
         if (grainMixingBlowingProcess == null)
@@ -140,6 +136,7 @@ public class GrainMixingBlowingProcessService
             .ToList();
 
         var existingProductionOrders = await _dbContext.ProductionOrders.AsNoTracking()
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -166,6 +163,7 @@ public class GrainMixingBlowingProcessService
             var line = MapCreateToGrainMixingBlowingProcessLine(
                 lineDto,
                 item.ItemName,
+                productionOrder.CustomerName,
                 lineDto.ProductionOrderId,
                 productionOrder.ProductionBatch?.ToString() ?? string.Empty,
                 productionOrder.DateOfNeedBlowing);
@@ -269,6 +267,7 @@ public class GrainMixingBlowingProcessService
             .ToList();
 
         var existingProductionOrders = await _dbContext.ProductionOrders.AsNoTracking()
+            .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);
 
@@ -324,7 +323,7 @@ public class GrainMixingBlowingProcessService
     #region Private Methods
 
     private static GrainMixingBlowingProcessLine MapCreateToGrainMixingBlowingProcessLine(
-        CreateGrainMixingBlowingProcessLineDto dto, string? itemName, int productOrderId, string productionBatch, DateTime? requiredDate)
+        CreateGrainMixingBlowingProcessLineDto dto, string? itemName, string? customerName, int productOrderId, string productionBatch, DateTime? requiredDate)
     {
         return new GrainMixingBlowingProcessLine
         {
@@ -333,6 +332,7 @@ public class GrainMixingBlowingProcessService
             ProductionOrderId = productOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
+            CustomerName = customerName,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
             Specification = dto.Specification,
@@ -415,6 +415,7 @@ public class GrainMixingBlowingProcessService
     private static GrainMixingBlowingProcessLine MapUpdateToGrainMixingBlowingProcessLine(
         UpdateGrainMixingBlowingProcessLineDto dto,
         string? itemName,
+        string? customerName,
         int productionOrderId,
         string productionBatch,
         DateTime? requiredDate,
@@ -427,6 +428,7 @@ public class GrainMixingBlowingProcessService
             ProductionOrderId = productionOrderId,
             ProductionBatch = productionBatch,
             CardCode = dto.CardCode,
+            CustomerName = customerName,
             MaterialIssueVoucherNo = dto.MaterialIssueVoucherNo,
             MixtureType = dto.MixtureType,
             Specification = dto.Specification,
@@ -552,7 +554,7 @@ public class GrainMixingBlowingProcessService
 
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
+                    var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.CustomerName, productionOrder.DocEntry,
                         productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing, lineDto.Id);
                     updatedLine.GrainMixingBlowingProcessId = existingLine.GrainMixingBlowingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
@@ -561,7 +563,7 @@ public class GrainMixingBlowingProcessService
             else
             {
                 // Thêm line mới
-                var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.DocEntry,
+                var newLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.CustomerName, productionOrder.DocEntry,
                     productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing);
                 grainMixingBlowingProcess.Lines.Add(newLine);
             }
