@@ -226,15 +226,20 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `CuttingProcessId`      | int           | NO   | ID công đoạn cắt                   | FK -> FoxWms_CuttingProcesses |
 | `ProductionOrderId`     | int           | NO   | ID lệnh sản xuất SAP               |                               |
 | `ItemCode`              | nvarchar(50)  | NO   | Mã hàng                            |                               |
+| `ItemName`              | nvarchar(max) | YES  | Tên hàng sản xuất                  |                               |
 | `ProductionBatch`       | nvarchar(100) | YES  | Lô sản xuất                        |                               |
 | `CardCode`              | nvarchar(15)  | YES  | Mã khách hàng                      | FK -> BusinessPartners        |
+| `CustomerName`          | nvarchar(max) | YES  | Tên khách hàng                     |                               |
 | `ProductType`           | nvarchar(100) | YES  | Chủng loại                         |                               |
+| `ProductTypeName`       | nvarchar(max) | YES  | Tên chủng loại                     |                               |
 | `Thickness`             | nvarchar(50)  | YES  | Độ dày / 1 lá                      |                               |
 | `SemiProductWidth`      | nvarchar(50)  | YES  | Khổ màng BTP                       |                               |
 | `Size`                  | nvarchar(100) | YES  | Kích thước                         |                               |
 | `ColorCount`            | nvarchar(50)  | YES  | Số màu in                          |                               |
 | `CuttingMachine`        | nvarchar(50)  | YES  | Máy cắt                            |                               |
+| `CuttingMachineName`    | nvarchar(max) | YES  | Tên máy cắt                        |                               |
 | `WorkerId`              | int           | YES  | ID công nhân cắt                   | FK -> Employees               |
+| `WorkerOriginalName`    | nvarchar(max) | YES  | Tên gốc công nhân                  |                               |
 | `CuttingSpeed`          | decimal(18,4) | NO   | Tốc độ cắt                         |                               |
 | `StartTime`             | datetime      | YES  | Thời gian bắt đầu cắt              |                               |
 | `EndTime`               | datetime      | YES  | Thời gian kết thúc cắt             |                               |
@@ -256,6 +261,7 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `PrintingLossKg`        | decimal(18,4) | NO   | DC do công đoạn in (kg)            |                               |
 | `PrintingLossReason`    | nvarchar(500) | YES  | DC do công đoạn in - nguyên nhân   |                               |
 | `PrintingMachine`       | nvarchar(50)  | YES  | Số máy in                          |                               |
+| `PrintingMachineName`   | nvarchar(max) | YES  | Tên máy in                         |                               |
 | `TransferKg`            | decimal(18,4) | NO   | Chuyển hàng (kg)                   |                               |
 | `HumanLossKg`           | decimal(18,4) | NO   | DC do cắt dán - Con người (kg)     |                               |
 | `HumanLossReason`       | nvarchar(500) | YES  | DC - Nguyên nhân con người         |                               |
@@ -265,8 +271,10 @@ Lưu trữ chi tiết từng sản phẩm trong công đoạn cắt.
 | `ExcessPOLess5Kg`       | decimal(18,4) | NO   | Thừa PO - Cuộn dưới 5kg            |                               |
 | `ExcessPOOver5Kg`       | decimal(18,4) | NO   | Thừa PO - Cuộn trên 5kg            |                               |
 | `ExcessPOCut`           | decimal(18,4) | NO   | Thừa PO - Hàng cắt (kg)            |                               |
+| `ExcessPOPsc`           | decimal(18,4) | NO   | Thừa PO - Hàng chiếc               |                               |
 | `BtpWarehouseConfirmed` | bit           | YES  | Xác nhận của kho BTP               | Default: NULL                 |
 | `RemainingInventoryKg`  | decimal(18,4) | NO   | Tồn (kg)                           |                               |
+| `Note`                  | nvarchar(max) | YES  | Ghi chú                            |                               |
 
 ---
 
