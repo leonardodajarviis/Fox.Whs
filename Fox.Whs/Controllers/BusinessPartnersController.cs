@@ -26,12 +26,13 @@ public class BusinessPartnersController : ControllerBase
     /// <summary>
     /// Lấy danh sách Business Partners với phân trang
     /// </summary>
+    /// <param name="search"></param>
     /// <param name="page">Số trang (mặc định: 1)</param>
     /// <param name="pageSize">Số bản ghi trên mỗi trang (mặc định: 10)</param>
     /// <returns>Danh sách Business Partners</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<BusinessPartner>))]
-    public async Task<IActionResult> GetBusinessPartners([FromQuery] string search, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetBusinessPartners([FromQuery] string? search, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
         {
