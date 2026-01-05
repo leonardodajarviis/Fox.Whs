@@ -188,6 +188,7 @@ public class PrintingProcessService
 
         var existingProductionOrders = await _dbContext.ProductionOrders
             .Include(po => po.ItemDetail)
+            .ThenInclude(po => po!.ProductTypeInfo)
             .Include(po => po.BusinessPartnerDetail)
             .Where(po => productionOrderIds.Contains(po.DocEntry))
             .ToDictionaryAsync(po => po.DocEntry);

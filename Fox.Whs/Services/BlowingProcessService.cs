@@ -139,7 +139,7 @@ public class BlowingProcessService
             var line = MapCreateToBlowingProcessLine(
                 lineDto,
                 item.ItemCode,
-                productionOrder?.ProdName,
+                item.ItemName,
                 productionOrder?.CardCode,
                 productionOrder?.CustomerName,
                 productionOrder?.ProductionBatch,
@@ -485,7 +485,7 @@ public class BlowingProcessService
                 var existingLine = blowingProcess.Lines.FirstOrDefault(l => l.Id == lineDto.Id.Value);
                 if (existingLine != null)
                 {
-                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, productionOrder?.ProdName, productionOrder?.CardCode, productionOrder?.CustomerName,
+                    var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, item.ItemName, productionOrder?.CardCode, productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
                         item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
                     updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
@@ -496,7 +496,7 @@ public class BlowingProcessService
             {
                 // Thêm line mới
                 var newLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode,
-                    productionOrder?.ProdName, productionOrder?.CardCode, productionOrder?.CustomerName,
+                    item.ItemName, productionOrder?.CardCode, productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
                     item.ProductTypeName, item.Thickness, item.SemiProductWidth);
                 blowingProcess.Lines.Add(newLine);

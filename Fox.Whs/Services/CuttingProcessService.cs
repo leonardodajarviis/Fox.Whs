@@ -371,6 +371,7 @@ public class CuttingProcessService
             ItemCode = itemCode,
             ItemName = itemName,
             CardCode = cardCode,
+            CustomerName = customerName,
             ProductionBatch = productionBatch,
             ProductType = productType,
             ProductTypeName = productTypeName,
