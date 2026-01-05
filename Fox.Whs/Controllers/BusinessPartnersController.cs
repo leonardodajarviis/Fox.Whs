@@ -31,7 +31,7 @@ public class BusinessPartnersController : ControllerBase
     /// <returns>Danh sách Business Partners</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<BusinessPartner>))]
-    public async Task<IActionResult> GetBusinessPartners([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetBusinessPartners([FromQuery] string search, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (page < 1)
         {
@@ -44,9 +44,15 @@ public class BusinessPartnersController : ControllerBase
         }
 
 
-        var totalRecords = await _dbContext.BusinessPartners.AsNoTracking().CountAsync();
+        var query = _dbContext.BusinessPartners.AsNoTracking().AsQueryable();
+        if (!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(bp => bp.CardCode.Contains(search) || bp.CardName!.Contains(search));
+        }
 
-        var businessPartners = await _dbContext.BusinessPartners.AsNoTracking()
+        var totalRecords = await query.CountAsync();
+
+        var businessPartners = await query
             .OrderBy(bp => bp.CardCode)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
