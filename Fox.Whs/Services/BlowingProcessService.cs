@@ -133,6 +133,14 @@ public class BlowingProcessService
                     throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
             }
 
+            if (productionOrder is not null)
+            {
+                if (lineDto.ItemCode != productionOrder?.ItemCode)
+                {
+                    throw new BadRequestException($"Mã Item trong line ({lineDto.ItemCode}) không khớp với mã Item của Lô sản xuất ({productionOrder?.ProductionBatch})");
+                }
+            }
+
             var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ??
                 throw new NotFoundException($"Không tìm thấy Item với mã: {lineDto.ItemCode}");
 
@@ -473,6 +481,14 @@ public class BlowingProcessService
             {
                 productionOrder = existingProductionOrders.GetValueOrDefault(lineDto.ProductionOrderId.Value) ??
                     throw new NotFoundException($"Không tìm thấy Production Order với ID: {lineDto.ProductionOrderId}");
+            }
+
+            if (productionOrder is not null)
+            {
+                if (lineDto.ItemCode != productionOrder?.ItemCode)
+                {
+                    throw new BadRequestException($"Mã Item trong line ({lineDto.ItemCode}) không khớp với mã Item của Lô sản xuất ({productionOrder?.ProductionBatch})");
+                }
             }
 
             var item = existingItems.GetValueOrDefault(lineDto.ItemCode ?? "<>") ??
