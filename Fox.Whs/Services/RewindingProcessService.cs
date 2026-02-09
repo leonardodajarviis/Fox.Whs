@@ -409,7 +409,7 @@ public class RewindingProcessService
                         productionOrder?.CardCode,
                         productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch,
-                        null, // RequiredDate sẽ lấy từ DTO hoặc để null
+                        productionOrder?.DateOfNeedRewinding, // RequiredDate sẽ lấy từ DTO hoặc để null
                         item.ProductType,
                         item.ProductTypeName,
                         item.Thickness,
@@ -430,7 +430,7 @@ public class RewindingProcessService
                     productionOrder?.CardCode,
                     productionOrder?.CustomerName,
                     productionOrder?.ProductionBatch,
-                    null, // RequiredDate sẽ lấy từ DTO hoặc để null
+                    productionOrder?.DateOfNeedRewinding, // RequiredDate sẽ lấy từ DTO hoặc để null
                     item.ProductType,
                     item.ProductTypeName,
                     item.Thickness,

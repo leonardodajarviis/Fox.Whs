@@ -118,6 +118,7 @@ public class BlowingProcessService
             .ToList();
 
         var existingItems = await _dbContext.Items
+            .Include(i => i.ProductTypeInfo)
             .Where(i => itemCodes.Contains(i.ItemCode))
             .Distinct()
             .ToDictionaryAsync(i => i.ItemCode);
@@ -469,6 +470,7 @@ public class BlowingProcessService
             .ToList();
 
         var existingItems = _dbContext.Items
+            .Include(i => i.ProductTypeInfo)
             .Where(i => itemCodes.Contains(i.ItemCode))
             .Distinct()
             .ToDictionary(i => i.ItemCode);
