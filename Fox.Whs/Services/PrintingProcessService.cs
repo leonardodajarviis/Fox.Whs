@@ -307,6 +307,7 @@ public class PrintingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -347,7 +348,8 @@ public class PrintingProcessService
         string? semiProductWidth,
         string? printPatternName,
         string? colorCount,
-        int? existingId = null
+        int? existingId = null,
+        DateTime? approvedAt = null
     )
     {
         if (dto.ExcessPO < 0)
@@ -382,6 +384,7 @@ public class PrintingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -463,7 +466,8 @@ public class PrintingProcessService
                         item.SemiProductWidth,
                         item.PrintPatternName,
                         item.ColorCount,
-                        lineDto.Id);
+                        lineDto.Id,
+                        existingLine.ApprovedAt);
 
                     updatedLine.PrintingProcessId = existingLine.PrintingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);

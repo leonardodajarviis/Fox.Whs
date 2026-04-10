@@ -255,6 +255,11 @@ public class CuttingProcessLine
     public int Status { get; set; }
 
     /// <summary>
+    /// Thời gian được duyệt
+    /// </summary>
+    public DateTime? ApprovedAt { get; set; }
+
+    /// <summary>
     /// Ngày hoàn thành thực tế (QLSX)
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }

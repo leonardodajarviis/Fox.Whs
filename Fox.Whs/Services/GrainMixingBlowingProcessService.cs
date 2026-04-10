@@ -406,6 +406,7 @@ public class GrainMixingBlowingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             Note = dto.Note
@@ -419,7 +420,8 @@ public class GrainMixingBlowingProcessService
         int productionOrderId,
         string productionBatch,
         DateTime? requiredDate,
-        int? existingId = null)
+        int? existingId = null,
+        DateTime? approvedAt = null)
     {
         var line = new GrainMixingBlowingProcessLine
         {
@@ -502,6 +504,7 @@ public class GrainMixingBlowingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             Note = dto.Note
@@ -555,7 +558,7 @@ public class GrainMixingBlowingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingBlowingProcessLine(lineDto, item.ItemName, productionOrder.CustomerName, productionOrder.DocEntry,
-                        productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing, lineDto.Id);
+                        productionOrder.ProductionBatch?.ToString() ?? "", productionOrder.DateOfNeedBlowing, lineDto.Id, existingLine.ApprovedAt);
                     updatedLine.GrainMixingBlowingProcessId = existingLine.GrainMixingBlowingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }

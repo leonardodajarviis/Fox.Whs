@@ -310,6 +310,7 @@ public class CuttingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -357,7 +358,8 @@ public class CuttingProcessService
         string? size,
         string? colorCount,
         decimal? excessPoPcs,
-        int? existingId = null
+        int? existingId = null,
+        DateTime? approvedAt = null
     )
     {
         if (dto.ExcessPOCut < 0)
@@ -393,6 +395,7 @@ public class CuttingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -468,7 +471,7 @@ public class CuttingProcessService
                     var updatedLine = MapUpdateToCuttingProcessLine(lineDto, productionOrder.ItemCode, productionOrder.ProdName,
                         productionOrder?.CardCode, productionOrder?.CustomerName, productionOrder?.ProductionBatch, productionOrder?.DateOfNeedCutting,
                         item.ProductType, item.ProductTypeName, item.Thickness, item.SemiProductWidth, item.Size,
-                        item.ColorCount, lineDto.ExcessPOPsc, lineDto.Id);
+                        item.ColorCount, lineDto.ExcessPOPsc, lineDto.Id, existingLine.ApprovedAt);
                     updatedLine.CuttingProcessId = existingLine.CuttingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }

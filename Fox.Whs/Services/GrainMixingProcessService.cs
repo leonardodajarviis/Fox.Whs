@@ -387,6 +387,7 @@ public class GrainMixingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             Note = dto.Note
@@ -399,7 +400,8 @@ public class GrainMixingProcessService
         string? customerName,
         string productionBatch,
         DateTime? requiredDate,
-        int? existingId = null)
+        int? existingId = null,
+        DateTime? approvedAt = null)
     {
         var line = new GrainMixingProcessLine
         {
@@ -480,6 +482,7 @@ public class GrainMixingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             Note = dto.Note
@@ -530,7 +533,7 @@ public class GrainMixingProcessService
                 if (existingLine != null)
                 {
                     var updatedLine = MapUpdateToGrainMixingProcessLine(lineDto, productionOrder.DocEntry, dictCustomer!.GetValueOrDefault(lineDto.CardCode),
-                        productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id);
+                        productionOrder.ProductionBatch.ToString() ?? "", productionOrder.DateOfNeed, lineDto.Id, existingLine.ApprovedAt);
 
                     updatedLine.GrainMixingProcessId = existingLine.GrainMixingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);

@@ -286,6 +286,8 @@ public class SlittingProcessService
             BoxCount = dto.BoxCount,
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
+            Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -329,7 +331,8 @@ public class SlittingProcessService
         string? semiProductWidth,
         string? printPatternName,
         string? colorCount,
-        int? existingId = null
+        int? existingId = null,
+        DateTime? approvedAt = null
     )
     {
         if (dto.ExcessPOPrinting < 0)
@@ -369,6 +372,7 @@ public class SlittingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             ProcessingLossKg = dto.ProcessingLossKg,
@@ -454,7 +458,8 @@ public class SlittingProcessService
                         item.SemiProductWidth,
                         item.PrintPatternName,
                         item.ColorCount,
-                        lineDto.Id);
+                        lineDto.Id,
+                        existingLine.ApprovedAt);
 
                     updatedLine.SlittingProcessId = existingLine.SlittingProcessId;
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);

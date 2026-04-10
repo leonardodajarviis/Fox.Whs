@@ -277,6 +277,7 @@ public class RewindingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             BlowingLossKg = dto.BlowingLossKg,
@@ -308,7 +309,8 @@ public class RewindingProcessService
         string? productTypeName,
         string? thickness,
         string? semiProductWidth,
-        int? existingId = null
+        int? existingId = null,
+        DateTime? approvedAt = null
     )
     {
         if (dto.ExcessPO < 0)
@@ -341,6 +343,7 @@ public class RewindingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             BlowingLossKg = dto.BlowingLossKg,
@@ -414,7 +417,8 @@ public class RewindingProcessService
                         item.ProductTypeName,
                         item.Thickness,
                         item.SemiProductWidth,
-                        lineDto.Id);
+                        lineDto.Id,
+                        existingLine.ApprovedAt);
 
                     updatedLine.RewindingProcessId = existingLine.RewindingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);

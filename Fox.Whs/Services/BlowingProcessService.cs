@@ -334,6 +334,7 @@ public class BlowingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 ? DateTime.Now : null,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             WidthChange = dto.WidthChange,
@@ -374,7 +375,8 @@ public class BlowingProcessService
         string? productTypeName,
         string? thickness,
         string? semiProductWidth,
-        int? existingId = null
+        int? existingId = null,
+        DateTime? approvedAt = null
     )
     {
         if (dto.ExcessPO < 0)
@@ -408,6 +410,7 @@ public class BlowingProcessService
             RequiredDate = requiredDate,
             IsCompleted = dto.IsCompleted,
             Status = dto.Status,
+            ApprovedAt = dto.Status == 1 && approvedAt == null ? DateTime.Now : approvedAt,
             ActualCompletionDate = dto.ActualCompletionDate,
             DelayReason = dto.DelayReason,
             WidthChange = dto.WidthChange,
@@ -505,7 +508,7 @@ public class BlowingProcessService
                 {
                     var updatedLine = MapUpdateToBlowingProcessLine(lineDto, item.ItemCode, item.ItemName, productionOrder?.CardCode, productionOrder?.CustomerName,
                         productionOrder?.ProductionBatch, productionOrder?.DateOfNeedBlowing, item.ProductType,
-                        item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id);
+                        item.ProductTypeName, item.Thickness, item.SemiProductWidth, lineDto.Id, existingLine.ApprovedAt);
                     updatedLine.BlowingProcessId = existingLine.BlowingProcessId; // Giữ nguyên khóa ngoại
                     _dbContext.Entry(existingLine).CurrentValues.SetValues(updatedLine);
                 }

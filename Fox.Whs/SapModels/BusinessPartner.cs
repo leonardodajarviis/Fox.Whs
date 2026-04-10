@@ -10,6 +10,6 @@ public class BusinessPartner
     [Column("CardCode"), Key]
     public string CardCode { get; set; } = null!;
 
-    [Column("CardName")]
+    [Column("CardFName")]
     public string? CardName { get; set; }
 }

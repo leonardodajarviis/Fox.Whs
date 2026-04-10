@@ -246,6 +246,11 @@ public class PrintingProcessLine
     public int Status { get; set; }
 
     /// <summary>
+    /// Thời gian được duyệt
+    /// </summary>
+    public DateTime? ApprovedAt { get; set; }
+
+    /// <summary>
     /// Chậm tiến độ - ngày hoàn thành thực tế
     /// </summary>
     public DateTime? ActualCompletionDate { get; set; }
