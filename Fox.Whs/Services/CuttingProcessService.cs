@@ -338,7 +338,7 @@ public class CuttingProcessService
         // Tính toán tổng DC cho line
         line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
             line.PrintingLossKg + line.HumanLossKg +
-            line.MachineLossKg;
+            line.MachineLossKg + line.TransferKg;
 
         return line;
     }
@@ -427,7 +427,7 @@ public class CuttingProcessService
         // Tính toán tổng DC cho line
         line.TotalLossKg = line.ProcessingLossKg + line.BlowingLossKg +
             line.PrintingLossKg + line.HumanLossKg +
-            line.MachineLossKg;
+            line.MachineLossKg + line.TransferKg;
 
         return line;
     }
