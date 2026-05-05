@@ -28,6 +28,7 @@ builder.Services.AddScoped<PrintingProcessService>();
 builder.Services.AddScoped<CuttingProcessService>();
 builder.Services.AddScoped<GrainMixingProcessService>();
 builder.Services.AddScoped<GrainMixingBlowingProcessService>();
+builder.Services.AddScoped<AuditLogService>();
 builder.Services.AddScoped<AuditSaveChangesInterceptor>();
 
 builder.Services.AddDbContext<AppDbContext>((sp, options) =>
