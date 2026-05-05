@@ -47,6 +47,7 @@ public class AppDbContext : DbContext
     public DbSet<ProductionOrderGrainMixing> ProductionOrderGrainMixings { get; set; }
 
     public DbSet<UserSession> UserSessions { get; set; }
+    public DbSet<AuditLog> AuditLogs { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

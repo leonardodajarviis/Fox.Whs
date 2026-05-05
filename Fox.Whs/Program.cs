@@ -28,15 +28,18 @@ builder.Services.AddScoped<PrintingProcessService>();
 builder.Services.AddScoped<CuttingProcessService>();
 builder.Services.AddScoped<GrainMixingProcessService>();
 builder.Services.AddScoped<GrainMixingBlowingProcessService>();
+builder.Services.AddScoped<AuditSaveChangesInterceptor>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
+builder.Services.AddDbContext<AppDbContext>((sp, options) =>
+    options
+        .UseSqlServer(
             builder.Configuration.GetConnectionString("AppDbConnection")
             ,
             sqlOptions => sqlOptions.CommandTimeout(30)
         )
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors()
+        .AddInterceptors(sp.GetRequiredService<AuditSaveChangesInterceptor>())
 );
 
 

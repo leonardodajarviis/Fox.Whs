@@ -8,6 +8,6 @@ migration-remove:
 migration-update:
 	dotnet ef database update --project Fox.Whs --startup-project Fox.Whs
 
-publish:
+publish-server:
 	dotnet publish Fox.Whs/Fox.Whs.csproj -c Release -o publish
 # ...existing code...
