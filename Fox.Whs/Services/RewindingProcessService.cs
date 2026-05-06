@@ -384,6 +384,17 @@ public class RewindingProcessService
             .Where(line => !dtoLineIds.Contains(line.Id))
             .ToList();
 
+        var completedLinesToRemove = linesToRemove
+            .Where(line => line.Status == 1)
+            .Select(line => line.Id)
+            .ToList();
+
+        if (completedLinesToRemove.Count > 0)
+        {
+            throw new BadRequestException(
+                $"Không thể xóa các line đã được duyệt (Status = 1): {string.Join(", ", completedLinesToRemove)}");
+        }
+
         foreach (var line in linesToRemove)
         {
             rewindingProcess.Lines.Remove(line);
