@@ -1,0 +1,155 @@
+### Idempotency-Key behavior tests for /api/grain-mixing-processes
+### Run sequentially. Replace @host, @token, and DTO fields with real values.
+
+@host = https://localhost:5001
+@token = YOUR_ACCESS_TOKEN_HERE
+
+# Cùng một UUID dùng xuyên suốt 2 lần POST đầu tiên (cùng payload + payload khác)
+@key1 = 9d8f3a52-1f3c-4f4d-9b3e-1a2b3c4d5e6f
+# UUID khác cho test race condition (gửi song song)
+@key2 = a1b2c3d4-e5f6-4a7b-8c9d-0123456789ab
+# UUID không phải v4 (sai version)
+@badKey = 9d8f3a52-1f3c-1f4d-9b3e-1a2b3c4d5e6f
+
+
+### 1. POST lần 1 — cùng key, cùng payload → tạo bản ghi mới, trả 200
+POST {{host}}/api/grain-mixing-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{key1}}
+
+{
+  "isDraft": true,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 2,
+  "totalHoursWorked": 8,
+  "notes": "idempotency test",
+  "lines": []
+}
+
+
+### 2. POST lần 2 — cùng key, cùng payload → KHÔNG tạo bản ghi mới, replay y hệt response lần 1
+###    Kiểm tra: status 200, body giống request 1, header `Idempotent-Replayed: true`
+POST {{host}}/api/grain-mixing-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{key1}}
+
+{
+  "isDraft": true,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 2,
+  "totalHoursWorked": 8,
+  "notes": "idempotency test",
+  "lines": []
+}
+
+
+### 3. POST lần 3 — cùng key, payload KHÁC → 422 với message rõ ràng
+POST {{host}}/api/grain-mixing-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{key1}}
+
+{
+  "isDraft": false,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 99,
+  "totalHoursWorked": 99,
+  "notes": "DIFFERENT payload",
+  "lines": []
+}
+
+
+### 4. POST không có header Idempotency-Key → xử lý bình thường, tạo bản ghi mới
+POST {{host}}/api/grain-mixing-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isDraft": true,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 1,
+  "totalHoursWorked": 4,
+  "notes": "no idempotency header",
+  "lines": []
+}
+
+
+### 5. POST với UUID sai format (không phải v4) → 400
+POST {{host}}/api/grain-mixing-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{badKey}}
+
+{
+  "isDraft": true,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 1,
+  "totalHoursWorked": 4,
+  "notes": "bad uuid",
+  "lines": []
+}
+
+
+### 6. PUT cùng key 2 lần liên tiếp → lần 2 replay (giả sử Id 1 tồn tại)
+###    Chạy 6a, sau đó chạy 6b ngay — 6b phải trả response giống 6a.
+@putKey = b1c2d3e4-f5a6-4b7c-8d9e-fa0b1c2d3e4f
+
+### 6a. PUT lần 1
+PUT {{host}}/api/grain-mixing-processes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{putKey}}
+
+{
+  "isDraft": false,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 3,
+  "totalHoursWorked": 10,
+  "notes": "PUT idempotency test",
+  "lines": []
+}
+
+### 6b. PUT lần 2 (cùng key, cùng payload)
+PUT {{host}}/api/grain-mixing-processes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: {{putKey}}
+
+{
+  "isDraft": false,
+  "productionDate": "2026-05-14T00:00:00Z",
+  "workerCount": 3,
+  "totalHoursWorked": 10,
+  "notes": "PUT idempotency test",
+  "lines": []
+}
+
+
+### 7. (Manual) Race condition test:
+### Mở 2 terminal, gửi song song POST cùng {{key2}} + cùng payload.
+### Kỳ vọng:
+###   - Một request thắng → tạo 1 bản ghi, trả 200 với data.
+###   - Request còn lại có thể trả 200 (replay) hoặc 409 nếu insert idempotency_keys
+###     thua race (DbUpdateException được swallow, request đó vẫn nhận đủ response gốc).
+### Ví dụ chạy song song bằng curl:
+###   curl -k -X POST {{host}}/api/grain-mixing-processes \
+###        -H "Authorization: Bearer {{token}}" \
+###        -H "Content-Type: application/json" \
+###        -H "Idempotency-Key: {{key2}}" \
+###        -d '{...}' &
+###   curl -k -X POST {{host}}/api/grain-mixing-processes \
+###        -H "Authorization: Bearer {{token}}" \
+###        -H "Content-Type: application/json" \
+###        -H "Idempotency-Key: {{key2}}" \
+###        -d '{...}' &
+###   wait
+### Sau đó kiểm tra DB: SELECT * FROM FoxWms_GrainMixingProcess WHERE ... -- chỉ có 1 row.
+
+
+### 8. (Manual) TTL test: sau 24h, key cũ có thể dùng lại.
+### Cách verify nhanh không cần chờ 24h:
+###   UPDATE FoxWms_IdempotencyKeys SET ExpiresAt = DATEADD(MINUTE, -1, SYSUTCDATETIME())
+###     WHERE [Key] = '<key1>';
+### Sau đó POST lại với {{key1}} → kỳ vọng tạo bản ghi mới (row idempotency bị xoá rồi insert lại).

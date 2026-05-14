@@ -3,6 +3,7 @@ using Fox.Whs.Data;
 using Fox.Whs.Extensions;
 using Fox.Whs.Services;
 using Fox.Whs.Filters;
+using Fox.Whs.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +82,10 @@ app.UseHttpsRedirection();
 // Thêm Authentication & Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Idempotency-Key handling cho các endpoint tạo/cập nhật báo cáo sản xuất.
+// Đặt sau auth để có HttpContext.User, trước MapControllers để short-circuit replay.
+app.UseIdempotency();
 
 // Map controllers nếu bạn đã thêm
 app.MapControllers();

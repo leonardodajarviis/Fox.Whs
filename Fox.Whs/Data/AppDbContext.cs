@@ -48,11 +48,18 @@ public class AppDbContext : DbContext
 
     public DbSet<UserSession> UserSessions { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<IdempotencyKey> IdempotencyKeys { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<IdempotencyKey>(entity =>
+        {
+            entity.HasIndex(e => new { e.Key, e.UserId, e.Method, e.Path }).IsUnique();
+            entity.HasIndex(e => e.ExpiresAt);
+        });
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
