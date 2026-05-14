@@ -118,7 +118,7 @@ public class AuditSaveChangesInterceptor : SaveChangesInterceptor
 
     private void FlushDeferredAddedAudits(DbContext? context)
     {
-        if (context is null || _deferredAddedEntries.Count == 0)
+        if (context is null || _isFlushingDeferred || _deferredAddedEntries.Count == 0)
         {
             return;
         }
@@ -138,7 +138,7 @@ public class AuditSaveChangesInterceptor : SaveChangesInterceptor
 
     private async Task FlushDeferredAddedAuditsAsync(DbContext? context, CancellationToken cancellationToken)
     {
-        if (context is null || _deferredAddedEntries.Count == 0)
+        if (context is null || _isFlushingDeferred || _deferredAddedEntries.Count == 0)
         {
             return;
         }
