@@ -18,6 +18,8 @@ namespace Fox.Whs.Middlewares;
 public class IdempotencyMiddleware
 {
     private const string HeaderName = "Idempotency-Key";
+    private const string TestDelayHeaderName = "X-Test-Delay-Ms";
+    private const int MaxTestDelayMs = 30_000;
     private static readonly TimeSpan Ttl = TimeSpan.FromHours(24);
 
     private static readonly Regex UuidV4Regex = new(
@@ -48,8 +50,10 @@ public class IdempotencyMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, AppDbContext db)
+    public async Task InvokeAsync(HttpContext context, AppDbContext db, IWebHostEnvironment env)
     {
+        await ApplyTestDelayAsync(context, env);
+
         if (!ShouldHandle(context))
         {
             await _next(context);
@@ -103,14 +107,10 @@ public class IdempotencyMiddleware
                     .Where(k => k.Id == existing.Id)
                     .ExecuteDeleteAsync();
             }
-            else if (existing.RequestHash != requestHash)
-            {
-                await WriteErrorAsync(context, HttpStatusCode.UnprocessableEntity,
-                    "Idempotency key reused with different payload.");
-                return;
-            }
             else
             {
+                // Cùng key + còn hạn → replay response cũ, bất kể payload có khác.
+                // RequestHash vẫn được lưu để debug, nhưng không dùng để reject.
                 await ReplayAsync(context, existing);
                 return;
             }
@@ -170,10 +170,29 @@ public class IdempotencyMiddleware
         }
     }
 
+    /// <summary>
+    /// Áp dụng delay nhân tạo qua header X-Test-Delay-Ms để giả lập mạng/server chậm.
+    /// Chỉ hoạt động trong môi trường Development để tránh bị abuse ở production.
+    /// Giá trị clamp về [0, MaxTestDelayMs].
+    /// </summary>
+    private static async Task ApplyTestDelayAsync(HttpContext context, IWebHostEnvironment env)
+    {
+        var raw = GetHeaderValue(context.Request, TestDelayHeaderName);
+        if (string.IsNullOrEmpty(raw)) return;
+
+        if (!int.TryParse(raw, out var ms) || ms <= 0) return;
+
+        ms = Math.Min(ms, MaxTestDelayMs);
+        await Task.Delay(ms, context.RequestAborted);
+    }
+
     private static bool ShouldHandle(HttpContext context)
     {
+        // Chỉ dedupe POST. PUT bị bỏ qua vì FE giữ form mở, cùng UUID nhưng
+        // mỗi lần save một payload khác nhau (cập nhật từng phần) — nếu replay
+        // response cũ thì các lần update sau sẽ bị nuốt mất.
         var method = context.Request.Method;
-        if (!HttpMethods.IsPost(method) && !HttpMethods.IsPut(method))
+        if (!HttpMethods.IsPost(method))
             return false;
 
         var path = context.Request.Path;
